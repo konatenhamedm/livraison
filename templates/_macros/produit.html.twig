@@ -1,0 +1,39 @@
+
+{% macro ligne_document_produit(colonne) %}
+    <tr class="row-colonne even pointer table-light">
+        <td class="p-2">
+          
+            <div style="display:no " class="field-matiere">{{ form_widget(colonne.fournisseur) }}</div>
+        </td>
+        <td class="p-2">
+          
+            <div style="display:no " class="field-matiere">{{ form_widget(colonne.prix) }}</div>
+        </td>
+    
+        <td class="p-2 del-col " data-parent=".row-colonne">{# <a href="#" class="btn btn-danger btn-xs"><span class="bi bi-trash"></span></a> #}</td>
+    </tr>
+{% endmacro  %}
+
+
+{% macro prototype_ligne_document_produit(form) %}
+    <div class="list-colonne"  data-prototype="{{ _self.ligne_document_produit(form.fournisseurProduits.vars.prototype)|e }}"></div>
+
+      <button type="button" data-protoname="__name__" class="btn btn-default add_line btn-xs" id="add_ligne"  data-protoclass=".list-colonne" data-container=".column-container">
+        <i class="fa fa-plus"></i> Ajouter un fournisseur
+    </button><br>
+    <table class="table table-bordered table-custom">
+        <thead class="thead-dark">
+            <tr>
+                <th width="50%" class="p-2">Fournisseur</th>
+                <th width="45%" class="p-2 text-end">prix</th>
+               
+                <th></th>
+            </tr>
+        </thead>
+        <tbody  class="column-container proto-container" data-childclass=""">
+            {% for item in form.fournisseurProduits %}
+                {{ _self.ligne_document_produit(item|e) }}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}
