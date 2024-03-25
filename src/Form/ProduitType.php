@@ -8,6 +8,7 @@ use App\Entity\Produit;
 use App\Form\DataTransformer\ThousandNumberTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -20,6 +21,7 @@ class ProduitType extends AbstractType
     {
         $builder
             ->add('libelle')
+            ->add('poids')
             ->add('prix', TextType::class, [
                 'attr' => ['class' => 'input-money input-mnt ']
             ])
@@ -56,7 +58,24 @@ class ProduitType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
 
-            ]);
+            ])
+
+            ->add(
+                'unite',
+                ChoiceType::class,
+                [
+                    'placeholder' => 'Choisir une unité',
+                    'label' => 'Privilèges Supplémentaires',
+                    'required'     => false,
+                    'expanded'     => false,
+                    'attr' => ['class' => 'has-select2'],
+                    'multiple' => false,
+                    'choices'  => array_flip([
+                        'K' => 'K',
+                        'KG' => 'KG',
+                    ]),
+                ]
+            );
         $builder->get('prix')->addModelTransformer(new ThousandNumberTransformer());
     }
 

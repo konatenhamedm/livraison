@@ -36,9 +36,19 @@ class Produit
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: FournisseurProduit::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $fournisseurProduits;
 
+    #[ORM\Column(length: 255)]
+    private ?string $unite = null;
+
+    #[ORM\Column]
+    private ?int $poids = null;
+
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: LigneCommande::class)]
+    private Collection $ligneCommandes;
+
     public function __construct()
     {
         $this->fournisseurProduits = new ArrayCollection();
+        $this->ligneCommandes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -130,6 +140,60 @@ class Produit
             // set the owning side to null (unless already changed)
             if ($fournisseurProduit->getProduit() === $this) {
                 $fournisseurProduit->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUnite(): ?string
+    {
+        return $this->unite;
+    }
+
+    public function setUnite(string $unite): static
+    {
+        $this->unite = $unite;
+
+        return $this;
+    }
+
+    public function getPoids(): ?int
+    {
+        return $this->poids;
+    }
+
+    public function setPoids(int $poids): static
+    {
+        $this->poids = $poids;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LigneCommande>
+     */
+    public function getLigneCommandes(): Collection
+    {
+        return $this->ligneCommandes;
+    }
+
+    public function addLigneCommande(LigneCommande $ligneCommande): static
+    {
+        if (!$this->ligneCommandes->contains($ligneCommande)) {
+            $this->ligneCommandes->add($ligneCommande);
+            $ligneCommande->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLigneCommande(LigneCommande $ligneCommande): static
+    {
+        if ($this->ligneCommandes->removeElement($ligneCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($ligneCommande->getProduit() === $this) {
+                $ligneCommande->setProduit(null);
             }
         }
 

@@ -10,12 +10,21 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    #[Route(path: '/', name: 'app_login')]
+    #[Route(path: '/sf-login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        if ($this->getUser()) {
+        if ($this->getUser() && in_array('ROLE_CLIENT', $this->getUser()->getRoles())) {
+
+
+            return $this->redirectToRoute('app_site');
+        }
+
+        if ($this->getUser() && !in_array('ROLE_CLIENT', $this->getUser()->getRoles())) {
+
+
             return $this->redirectToRoute('app_default');
         }
+
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();

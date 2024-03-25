@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    
+<!-- Mirrored from themewagon.github.io/fruitables/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 19 Mar 2024 08:28:27 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+        <meta charset="utf-8">
+        <title>Livraison</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+
+        <!-- Google Web Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com/">
+        <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&amp;family=Raleway:wght@600;800&amp;display=swap" rel="stylesheet"> 
+
+        <!-- Icon Font Stylesheet -->
+        <link rel="stylesheet" href="{{ asset('site/releases/v5.15.4/css/all.css')}}"/>
+        <link href="{{ asset('site/npm/bootstrap-icons%401.4.1/font/bootstrap-icons.css')}}" rel="stylesheet">
+
+        <!-- Libraries Stylesheet -->
+        <link href="{{ asset('site/lib/lightbox/css/lightbox.min.css')}}" rel="stylesheet">
+        <link href="{{ asset('site/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
+
+
+        <!-- Customized Bootstrap Stylesheet -->
+        <link href="{{ asset('site/css/bootstrap.min.css')}}" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="{{ asset('site/css/style.css')}}" rel="stylesheet">
+
+        {% block inline_stylesheets %}{% endblock %}
+    </head>
+
+    <body>
+
+        <!-- Spinner Start -->
+        <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+            <div class="spinner-grow text-primary" role="status"></div>
+        </div>
+        <!-- Spinner End -->
+
+
+        {% include "site/_includes/header.html.twig" %}
+
+
+            {% block content %}
+            
+            
+            {% endblock %}
+
+
+
+        {% include "site/_includes/footer.html.twig" %}
+
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
+
+        
+    <!-- JavaScript Libraries -->
+    <script src="{{ asset('site/ajax/libs/jquery/3.6.4/jquery.min.js')}}"></script>
+    <script src="{{ asset('site/npm/bootstrap%405.0.0/dist/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{ asset('site/lib/easing/easing.min.js')}}"></script>
+    <script src="{{ asset('site/lib/waypoints/waypoints.min.js')}}"></script>
+    <script src="{{ asset('site/lib/lightbox/js/lightbox.min.js')}}"></script>
+    <script src="{{ asset('site/lib/owlcarousel/owl.carousel.min.js')}}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{{ asset('site/js/main.js')}}"></script>
+    <script src="{{ asset('assets/plugins/global/jquery.form.js') }}"></script>
+		<script src="{{ asset('assets/scripts/admin.js') }}"></script>
+		<script src="{{ asset('assets/scripts/init.js') }}"></script>
+       {% block java %}{% endblock %}
+    </body>
+
+
+<!-- Mirrored from themewagon.github.io/fruitables/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 19 Mar 2024 08:29:17 GMT -->
+</html>

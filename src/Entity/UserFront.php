@@ -118,4 +118,21 @@ class UserFront implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addRole($role)
+    {
+        $role = strtoupper($role);
+        if ($role === 'ROLE_USER') {
+            return $this;
+        }
+
+        if (!in_array($role, $this->roles, true)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
 }

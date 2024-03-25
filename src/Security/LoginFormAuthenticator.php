@@ -23,6 +23,8 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public const DEFAULT_ROUTE = 'app_default';
 
+    public const DEFAULT_ROUTE_USER = 'app_site';
+
     public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
     }
@@ -51,13 +53,22 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+
+        // dd($token->getUser()->getRoles());
+        $route = '';
+        if (in_array('ROLE_CLIENT', $token->getUser()->getRoles())) {
+            $route = self::DEFAULT_ROUTE_USER;
+        } else {
+            $route = self::DEFAULT_ROUTE;
+        }
+
+
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
-        
-        return new RedirectResponse($this->urlGenerator->generate(self::DEFAULT_ROUTE));
 
+        return new RedirectResponse($this->urlGenerator->generate($route));
     }
 
     protected function getLoginUrl(Request $request): string

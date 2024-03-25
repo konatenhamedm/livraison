@@ -1,0 +1,190 @@
+{% extends 'site/base.html.twig' %}
+
+{% block content %}
+
+<!-- Modal Search Start -->
+        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content rounded-0">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex align-items-center">
+                        <div class="input-group w-75 mx-auto d-flex">
+                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Search End -->
+
+
+             {#    {% include "site/_includes/slider.html.twig" , {etat: 'false'} %} #}
+{{ include('site/_includes/slider.html.twig', {etat: true}) }}
+
+
+        <!-- Fruits Shop Start-->
+        <div class="container-fluid fruite py-5">
+            <div class="container py-5">
+                <div class="tab-class text-center">
+                    <div class="row g-4">
+                        <div class="col-lg-4 text-start">
+                          {#   <h1>Our Organic Products</h1> #}
+                        </div>
+                        <div class="col-lg-8 text-end">
+                            <ul class="nav nav-pills d-inline-flex text-center mb-5">
+
+                            {% for key,categorie in categories %}
+                                <li class="nav-item">
+                                    <a class="d-flex m-2 py-2 bg-light rounded-pill {% if key == 0 %} active {% endif %} " data-bs-toggle="pill" href="#{{ categorie.libelle |replace({' ': ''})}}">
+                                        <span class="text-dark" style="width: 130px;">{{ categorie.libelle }}</span>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                                
+                             {#    <li class="nav-item">
+                                    <a class="d-flex py-2 m-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2">
+                                        <span class="text-dark" style="width: 130px;">Vegetables</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-3">
+                                        <span class="text-dark" style="width: 130px;">Fruits</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-4">
+                                        <span class="text-dark" style="width: 130px;">Bread</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-5">
+                                        <span class="text-dark" style="width: 130px;">Meat</span>
+                                    </a>
+                                </li> #}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                     {% for key,categorie in categories %}
+                        <div id="{{ categorie.libelle |replace({' ': ''})}}" class="tab-pane fade show p-0 {% if key == 0 %} active {% endif %}">
+                            <div class="row g-4">
+                                <div class="col-lg-12">
+                                    <div class="row g-4">
+                                       
+                                       {% for produit in produits %}
+
+
+                                       {% if produit.categorie.id == categorie.id %}
+                                        <div class="col-md-6 col-lg-4 col-xl-3">
+                                            <div class="rounded position-relative fruite-item">
+                                                <div class="fruite-img">
+                                                    <img src="{{ asset('uploads/'~ produit.fichier.path ~'/'~ produit.fichier.alt   )}}" class="img-fluid w-100 rounded-top" alt="">
+                                                </div>
+                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">{{ categorie.libelle }}</div>
+                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                    <h4>{{ produit.libelle }}</h4>
+                                                    <p>{{ produit.description }}</p>
+                                                    <div class="d-flex justify-content-between flex-lg-wrap">
+                                                        <p class="text-dark fs-5 fw-bold mb-0">{{produit.prix }} fr / {{produit.unite}}</p>
+                                                        <a href="{{ path('cart_add', { 'id' : produit.id }) }}" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Ajouter au panier</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                       {% endif %}
+                                         
+                                       
+                                       {% endfor %}
+                                      
+                                       
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                      
+                       
+                    </div>
+                </div>      
+            </div>
+        </div>
+        <!-- Fruits Shop End-->
+
+
+       
+
+
+        <!-- Vesitable Shop Start-->
+        <div class="container-fluid vesitable py-5">
+            <div class="container py-5">
+                <h1 class="mb-0">Catégorie 3</h1>
+                <div class="owl-carousel vegetable-carousel justify-content-center">
+                    {% for produit in vegetals %}
+                        <div class="border border-primary rounded position-relative vesitable-item">
+                        <div class="vesitable-img">
+                            <img src="{{ asset('uploads/'~ produit.fichier.path ~'/'~ produit.fichier.alt   )}}" class="img-fluid w-100 rounded-top" alt="">
+                        </div>
+                        <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">{{ produit.categorie.libelle }}</div>
+                        <div class="p-4 rounded-bottom">
+                            <h4>{{ produit.libelle}}</h4>
+                            <p>{{ produit.description }}</p>
+                            <div class="d-flex justify-content-between flex-lg-wrap">
+                                <p class="text-dark fs-5 fw-bold mb-0">{{produit.prix }} fr / {{produit.unite}}</p>
+                                <a href="{{ path('cart_add', { 'id' : produit.id }) }}" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i>  Ajouter au panier</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                
+                </div>
+            </div>
+        </div>
+        <!-- Vesitable Shop End -->
+
+
+
+        <!-- Fact Start -->
+        <div class="container-fluid py-5">
+            <div class="container">
+                <div class="bg-light p-5 rounded">
+                    <div class="row g-4 justify-content-center">
+                        <div class="col-md-6 col-lg-6 col-xl-3">
+                            <div class="counter bg-white rounded p-5">
+                                <i class="fa fa-users text-secondary"></i>
+                                <h4>satisfied customers</h4>
+                                <h1>1963</h1>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-xl-3">
+                            <div class="counter bg-white rounded p-5">
+                                <i class="fa fa-users text-secondary"></i>
+                                <h4>quality of service</h4>
+                                <h1>99%</h1>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-xl-3">
+                            <div class="counter bg-white rounded p-5">
+                                <i class="fa fa-users text-secondary"></i>
+                                <h4>quality certificates</h4>
+                                <h1>33</h1>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-xl-3">
+                            <div class="counter bg-white rounded p-5">
+                                <i class="fa fa-users text-secondary"></i>
+                                <h4>Available Products</h4>
+                                <h1>789</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fact Start -->
+
+{% endblock %}
