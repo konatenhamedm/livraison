@@ -9,9 +9,11 @@
          {#   <img alt="Logo" src="{{ asset('assets/media/logos/logo_tt.png') }}" class="logo"  />#}
            {#{{ dump(menu.findParametre | length ) }}#}
             {#<h4>Suzang group</h4>#}
-            
+             
                 {% if menu.findParametre | length > 0 %}
-            <img alt="Logo" width="160" height="65" src="{{ asset('uploads/' ~ menu.findParametre.logo.path ~'/'~ menu.findParametre.logo.alt) }}" class="logo"/>
+
+               
+            <img alt="Logo" width="120" height="100" src="{{ asset('uploads/' ~ menu.findParametre.logo.path ~'/'~ menu.findParametre.logo.alt) }}" class="logo"/>
             {% else %}
                 {# <img alt="Logo" width="160" height="65" src="{{ asset('assets/media/logos/logo_tt.png') }}" class="logo"  /> #}
                 <h2 class="text-center">LIVRAISON</h2>

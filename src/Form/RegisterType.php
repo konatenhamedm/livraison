@@ -25,27 +25,29 @@ class RegisterType extends AbstractType
         $builder
 
 
-            /* ->add('username', TextType::class, ['label' => 'Nom utilisateur', 'attr' => ['placeholder' => '']])*/
+            ->add('username', TextType::class, ['label' => false, 'attr' => ['placeholder' => 'Nom utilisateur'], 'required' => true,])
 
             ->add('email', EmailType::class, [
-                'label' => 'Email (Login)', 'attr' => ['placeholder' => '']
+                'label' => false, 'attr' => ['placeholder' => 'Email (Login)'],
+                'required' => true,
 
             ])
             ->add(
                 'plainPassword',
                 RepeatedType::class,
                 [
+
                     'type'            => PasswordType::class,
                     'invalid_message' => 'Les mots de passe doivent être identiques.',
                     'required'        => $options['passwordRequired'] ?? true,
-                    'first_options'   => ['label' => 'Mot de passe'],
-                    'second_options'  => ['label' => 'Répétez le mot de passe'],
+                    'first_options'   => ['label' => false, 'attr' => ['placeholder' => 'Mot de passe']],
+                    'second_options'  => ['label' => false, 'attr' => ['placeholder' => 'Repétez le mot de passe']],
                 ]
             )
-            ->add('nom', TextType::class, ['label' => 'Nom', 'attr' => ['placeholder' => '']])
-            ->add('situation', TextType::class, ['label' => 'Situation géographique', 'attr' => ['placeholder' => '']])
-            ->add('prenom', TextType::class, ['label' => 'Prénoms', 'attr' => ['placeholder' => '']])
-            ->add('contact', null, ['label' => 'Contact(s)', 'attr' => ['placeholder' => ''], 'required' => false, 'empty_data' => '']);
+            /*  ->add('nom', TextType::class, ['label' => 'Nom', 'attr' => ['placeholder' => '']]) */
+            /*  ->add('situation', TextType::class, ['label' => 'Situation géographique', 'attr' => ['placeholder' => '']]) */
+            /* ->add('prenom', TextType::class, ['label' => 'Prénoms', 'attr' => ['placeholder' => '']]) */
+            ->add('contact', TextType::class, ['label' => false, 'attr' => ['placeholder' => 'Contact(s)'], 'required' => true, 'empty_data' => '']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

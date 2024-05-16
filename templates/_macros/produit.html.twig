@@ -30,7 +30,7 @@
                 <th></th>
             </tr>
         </thead>
-        <tbody  class="column-container proto-container" data-childclass=""">
+        <tbody  class="column-container proto-container" data-childclass="">
             {% for item in form.fournisseurProduits %}
                 {{ _self.ligne_document_produit(item|e) }}
             {% endfor %}

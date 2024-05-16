@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Form\RegisterType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use App\DTO\InscriptionDTO;
 
 class SecurityController extends AbstractController
 {
@@ -16,7 +18,7 @@ class SecurityController extends AbstractController
         if ($this->getUser() && in_array('ROLE_CLIENT', $this->getUser()->getRoles())) {
 
 
-            return $this->redirectToRoute('app_site');
+            return $this->redirectToRoute('new_site');
         }
 
         if ($this->getUser() && !in_array('ROLE_CLIENT', $this->getUser()->getRoles())) {
@@ -32,6 +34,45 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+    }
+    #[Route(path: '/authentication/resume', name: 'app_auth_resume')]
+    public function loginResume(AuthenticationUtils $authenticationUtils): Response
+    {
+
+
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+
+        $inscriptionDTO = new InscriptionDTO();
+        $form = $this->createForm(RegisterType::class, $inscriptionDTO, [
+            'method' => 'POST',
+            //'type'=>'autre',
+            'action' => $this->generateUrl('app_register'),
+        ]);
+
+        return $this->render('new_site/authentification.html.twig', ['last_username' => $lastUsername, 'error' => $error,  'form' => $form->createView()]);
+    }
+    #[Route(path: '/authentication/simple', name: 'app_auth_simple')]
+    public function loginSimple(AuthenticationUtils $authenticationUtils): Response
+    {
+
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        $inscriptionDTO = new InscriptionDTO();
+        $form = $this->createForm(RegisterType::class, $inscriptionDTO, [
+            'method' => 'POST',
+            //'type'=>'autre',
+            'action' => $this->generateUrl('app_register'),
+        ]);
+
+
+
+
+        return $this->render('new_site/authentification_simple.html.twig', ['last_username' => $lastUsername, 'error' => $error,  'form' => $form->createView()]);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]

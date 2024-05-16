@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Entity\UtilisateurSimple;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,10 +21,12 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
+    public const LOGIN_ROUTE_RESUME = 'app_auth_resume';
 
     public const DEFAULT_ROUTE = 'app_default';
 
-    public const DEFAULT_ROUTE_USER = 'app_site';
+    public const DEFAULT_ROUTE_USER = 'new_site';
+    public const DEFAULT_ROUTE_RESUME = 'resume';
 
     public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
@@ -32,8 +35,18 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function supports(Request $request): bool
     {
-        return self::LOGIN_ROUTE === $request->attributes->get('_route')
-            && $request->isMethod('POST');
+
+        /* dd(); */
+
+        if ($request->attributes->get('_route') == self::LOGIN_ROUTE) {
+            return self::LOGIN_ROUTE === $request->attributes->get('_route')
+                && $request->isMethod('POST');
+        } else {
+            // dd('');
+            return self::LOGIN_ROUTE_RESUME === $request->attributes->get('_route')
+                && $request->isMethod('POST');
+        }
+        //return $response;
     }
 
     public function authenticate(Request $request): Passport
@@ -54,11 +67,17 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
 
-        // dd($token->getUser()->getRoles());
+
+        //dd($token->getUser(), $request->attributes->get('_route'));
         $route = '';
-        if (in_array('ROLE_CLIENT', $token->getUser()->getRoles())) {
+        if (($token->getUser() instanceof UtilisateurSimple) && ($request->attributes->get('_route') == self::LOGIN_ROUTE_RESUME)) {
+            //dd("1");
+            $route = self::DEFAULT_ROUTE_RESUME;
+        } elseif (($token->getUser() instanceof UtilisateurSimple) && ($request->attributes->get('_route') != self::LOGIN_ROUTE_RESUME)) {
+            //dd("2");
             $route = self::DEFAULT_ROUTE_USER;
         } else {
+            //dd("3");
             $route = self::DEFAULT_ROUTE;
         }
 

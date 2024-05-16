@@ -1,0 +1,245 @@
+{% extends 'new_site/base.html.twig' %}
+
+{% block breadcrumbs %}
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{{ path('new_site') }}" rel="nofollow">Accueil</a>
+                <span></span> Votre panier
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block content %}
+    
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table shopping-summery text-center clean">
+                            <thead>
+                                <tr class="main-heading">
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Libelle</th>
+                                    <th scope="col">Prix unitaire</th>
+                                    <th scope="col">Quantite</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in items %}
+                                <tr>
+                                    <td class="image product-thumbnail"><img src="{{ asset('uploads/'~ item.produit.fichier.path ~'/'~ item.produit.fichier.alt) }}" alt="#"></td>
+                                    <td class="product-des product-name">
+                                        <h5 class="product-name"><a href="shop-product-right.html">{{ item.produit.libelle }}</a></h5>
+                                    </td>
+                                    <td class="price" data-title="Prix unitaire"><span>{{ item.produit.prix }} FCFA</span></td>
+                                    <td class="text-center" data-title="Stock">
+                                        <div class="detail-qty border radius  m-auto">
+                                            <a href="javascript:void(0);" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
+                                            <span class="qty-val">{{ item.quantite }}</span>
+                                            <a href="javascript:void(0);" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                        </div>
+                                    </td>
+                                    <td class="text-right" data-title="Cart">
+                                        <span class="total-price">{{ item.produit.prix * item.quantite }} FCFA</span>
+                                    </td>
+                                    <td class="action removeFromCart" data-id="{{ item.produit.id }}" data-title="Retirer"><a href="javascript:void(0)" class="text-muted"><i class="fi-rs-trash"></i></a></td>
+                                </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <a href="#" class="text-muted">Votre panier est vide !</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                                {% if items %}
+                                    <tr>
+                                        <td colspan="4" class="text-center">
+                                            <a href="#" class="text-muted"> Total du panier</a>
+                                        </td>
+                                        <td class="text-end">
+                                            <a href="#" class="text-muted" id="totalPanier"> {{ total }} FCFA</a>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" class="text-end">
+                                            <a href="javascript:void(0);" class="text-muted emptyCart"> <i class="fi-rs-cross-small"></i> Vider le panier</a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="cart-action text-end mt-md-5">
+                        {# <a class="btn  mr-10 mb-sm-15"><i class="fi-rs-shuffle mr-10"></i>Update Cart</a> #}
+                        <a href="{{ path('new_site') }}" class="btn "><i class="fi-rs-shopping-bag mr-10"></i>Continuer mes achats</a>
+                        {% if items %}
+                            <a href="{{ path('resume') }}" class="btn ms-2"> <i class="fi-rs-box-alt mr-10"></i> Passer au résumé</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        
+
+        $(document).ready(function() {
+            function updateTotalPanier() {
+                var totalSum = 0;
+                $('.total-price').each(function() {
+                    var price = parseFloat($(this).text().replace(' FCFA', ''));
+                    totalSum += price;
+                });
+                $('#totalPanier').text(totalSum + ' FCFA');
+            }
+
+            function supprimerDuPanier(id) {
+                var url = "{{ path('supprimer_du_panier', {id: 'id'}) }}".replace('id', id);
+                var data = {};
+
+                var type = 'POST';
+
+                var success = function (res) {
+                    console.log(res);
+                    $('#panierNbre').text(res.data.panierNbre);
+                    if(res.data.panierNbre == 0) {
+                        $('#panierNbre').addClass('d-none');
+                    }
+
+                    HoldOn.close()
+                }
+                var error = function (e) {
+                    console.log(e);
+
+                    HoldOn.close()
+                }
+                var beforeSend = function () {
+                    HoldOn.open()
+                }
+
+                sendAjax({url: url, type: type, data: data, success: success, error: error, options: {beforeSend: beforeSend}})
+            }
+            
+            function viderLePanier(){
+                var url = "{{ path('vider_le_panier') }}";
+                var data = {};
+
+                var type = 'POST';
+
+                var success = function (res) {
+                    console.log(res);
+                    $('#panierNbre').text(res.data.panierNbre);
+                    if(res.data.panierNbre == 0) {
+                        $('#panierNbre').addClass('d-none');
+                    }
+                    HoldOn.close()
+                    
+                    window.location.reload();
+
+                }
+                var error = function (e) {
+                    console.log(e);
+
+                    HoldOn.close()
+                }
+                var beforeSend = function () {
+                    HoldOn.open()
+                }
+
+                sendAjax({url: url, type: type, data: data, success: success, error: error, options: {beforeSend: beforeSend}})
+            }
+            
+            $('.removeFromCart').on('click', function () {
+                $this = $(this);
+                supprimerDuPanier($(this).data('id'))
+
+                if($this.parents('tr').length > 0) {
+                    $this.parents('tr').remove();
+                }
+                updateTotalPanier();
+
+            })
+
+            $('.emptyCart').on('click', function () {
+                viderLePanier()
+            })
+
+            var updateTimers = [];
+
+            $('.qty-up, .qty-down').click(function() {
+                var $row = $(this).closest('tr');
+                var $qty = $row.find('.qty-val');
+                var currentQty = parseInt($qty.text());
+
+                if ($(this).hasClass('qty-up')) {
+                    $qty.text(currentQty + 1);
+                } else if ($(this).hasClass('qty-down') && currentQty > 1) {
+                    $qty.text(currentQty - 1);
+                }
+
+                var pricePerUnit = parseFloat($row.find('.price span').text().replace(' FCFA', ''));
+                var newTotal = (parseInt($qty.text()) * pricePerUnit);
+
+                $row.find('.total-price').text(newTotal + ' FCFA');
+
+                var productId = $row.find('.removeFromCart').data('id');
+                
+                // Reset the timer if it's already set
+                clearTimeout(updateTimers[productId]);
+
+                // Set a new timer
+                updateTimers[productId] = setTimeout(function() {
+                    ajouterAuPanier(productId, $qty.text(), true);
+                }, 2000); // 2000 milliseconds = 2 seconds
+
+                updateTotalPanier(); // Update the total panier whenever the quantity changes
+
+            });
+
+            updateTotalPanier(); // Initial calculation on page load
+        });
+
+
+/*
+        $(document).ready(function () {
+            // $('#quickViewModal').modal('show');
+            $('#quickViewModal').on('hidden.bs.modal', function (e) {
+                
+            })
+
+            $('.qty-up, .qty-down').click(function() {
+                var $row = $(this).closest('tr'); // Get the closest table row
+                var $qty = $row.find('.qty-val'); // Find the quantity span
+                var currentQty = parseInt($qty.text()); // Get the current quantity as an integer
+
+                if ($(this).hasClass('qty-up')) {
+                    $qty.text(currentQty + 1); // Increment the quantity
+                } else if ($(this).hasClass('qty-down') && currentQty > 1) {
+                    $qty.text(currentQty - 1); // Decrement the quantity
+                }
+
+                var pricePerUnit = parseFloat($row.find('.price span').text().replace(' FCFA', '')); // Get the unit price
+                var newTotal = (parseInt($qty.text()) * pricePerUnit).toFixed(2); // Calculate the new total price
+
+                $row.find('.total-price').text(newTotal + ' FCFA'); // Update the total price in the row
+            });
+
+        })
+    */
+    </script>
+{% endblock %}

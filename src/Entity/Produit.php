@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\ProduitRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
@@ -45,10 +47,18 @@ class Produit
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: LigneCommande::class)]
     private Collection $ligneCommandes;
 
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Image::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $images;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateCreation = null;
+
     public function __construct()
     {
         $this->fournisseurProduits = new ArrayCollection();
         $this->ligneCommandes = new ArrayCollection();
+        $this->images = new ArrayCollection();
+        $this->dateCreation = new DateTime();
     }
 
     public function getId(): ?int
@@ -196,6 +206,48 @@ class Produit
                 $ligneCommande->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Image>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Image $image): static
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): static
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getProduit() === $this) {
+                $image->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->dateCreation;
+    }
+
+    public function setDateCreation(\DateTimeInterface $dateCreation): static
+    {
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

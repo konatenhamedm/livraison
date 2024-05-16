@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\ConfigApp;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @extends ServiceEntityRepository<ConfigApp>
@@ -16,9 +17,18 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ConfigAppRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    protected $entreprise;
+    protected $user;
+    public function __construct(ManagerRegistry $registry, Security $security,)
     {
         parent::__construct($registry, ConfigApp::class);
+        if ($security->getUser() != null) {
+            $this->entreprise = $security->getUser()->getEmploye()->getEntreprise()->getCode();
+        } else {
+            $this->entreprise = 'ENT1';
+        }
+        $this->user = $security->getUser();
+        // dd($this->entreprise);
     }
 
     public function save(ConfigApp $entity, bool $flush = false): void
@@ -42,10 +52,10 @@ class ConfigAppRepository extends ServiceEntityRepository
 
     public function findConfig()
     {
-        return $this->createQueryBuilder('c')
+        return   $this->createQueryBuilder('c')
             ->innerJoin('c.entreprise', 'e')
-            ->where('e.denomination = :entreprise')
-            ->setParameter('entreprise', 'IMMO-PLUS')
+            ->where('e.code = :entreprise')
+            ->setParameter('entreprise', $this->entreprise)
             ->getQuery()
             ->getOneOrNullResult();
     }

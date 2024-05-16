@@ -1,0 +1,284 @@
+{% extends 'new_site/base.html.twig' %}
+
+{% block breadcrumbs %}
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{{ path('new_site') }}" rel="nofollow">Accueil</a>
+                <span></span> Contact
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block content %}
+    
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-25">
+                        <h4>Détails de livraison</h4>
+                    </div>
+
+                    {% if app.user  %}
+                        
+                        <form method="post">
+                            {# <div class="form-group">
+                                <input type="text" required="" name="lname" placeholder="Nom *">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" required="" name="fname" placeholder="Prénoms *">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="phone" placeholder="Numero de téléphone *">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="email" placeholder="Email *">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="billing_address" required="" placeholder="Adresse *">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="billing_address2" required="" placeholder="Adresse 2">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="city" placeholder="Ville *">
+                            </div>#}
+                            <div class="mb-20">
+                                <h5>Lieu de livraison et informations complémentaires</h5>
+                            </div> 
+                            <div class="form-group mb-30">
+                                <textarea rows="5" placeholder="Notes" id="lieu"></textarea>
+                            </div>
+                        </form>
+                    {% else %}
+                        <div class="container mb-20 mb-sm-15">
+                            <div class="toggle_info">
+                                <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Vous avez déjà un compte?</span> <a href="#loginformulaire" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Connectez-vous</a></span>
+                            </div>
+                            <div class="panel-collapse collapse login_form" id="loginformulaire">
+                                <div class="panel-body">
+                                    <p class="mb-30 font-sm">Merci de renseigner le formulaire ci-dessous pour finaliser la procédure &amp; et les informations de livraison</p>
+                                  <form  action="{{ path('app_auth_resume') }}" method="POST">
+                                     {% if error %}
+                                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                        {% endif %}
+
+                                        {% if app.user %}
+                                            <div class="mb-3">
+                                                Vous êtes connecté en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
+                                            </div>
+                                        {% endif %}
+                                        <div class="form-group">
+                                            <input type="email" required="" value="{{ last_username }}" name="username" autocomplete="off" placeholder="Votre Email">
+                                             
+                                        </div>
+                                        <div class="form-group">
+                                            <input required="" type="password" name="password" placeholder="Mot de passe" name="password" autocomplete="off">
+                                          
+                                        </div>
+                                        <div class="login_footer form-group">
+                                            <div class="chek-form">
+                                                <div class="custome-checkbox">
+                                                    {# <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="">
+                                                    <label class="form-check-label" for="exampleCheckbox1"><span>Se souvenir de moi</span></label> #}
+                                                </div>
+                                            </div>
+                                           {#  <a class="text-muted" href="#">Mot de passe oublié?</a> #}
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-fill-out btn-block hover-up" >Se connecter</button>
+                                        </div>
+                                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+
+                          </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="container mb-20 mb-sm-15">
+                            <div class="toggle_info">
+                                <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Vous avez pas encore de compte?</span> <a href="#registerformulaire" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Inscrivez-vous</a></span>
+                            </div>
+                            <div class="panel-collapse collapse login_form" id="registerformulaire">
+                                <div class="panel-body">
+                                    <p class="mb-30 font-sm">Merci de renseigner le formulaire ci-dessous pour finaliser la procédure &amp; et les informations de livraison</p>
+                                  {#   <form method="post">
+                                        <div class="form-group">
+                                            <input type="text" required="" name="username" placeholder="Nom d'utilisateur">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" required="" name="email" placeholder="Email">
+                                        </div>
+                                        <div class="form-group">
+                                            <input required="" type="password" name="password" placeholder="Mot de passe">
+                                        </div>
+                                        <div class="form-group">
+                                            <input required="" type="password" name="password" placeholder="Confirmation du mot de passe">
+                                        </div>
+                                        <div class="login_footer form-group">
+                                            <div class="chek-form">
+                                                <div class="custome-checkbox">
+                                                    <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox12" value="">
+                                                    <label class="form-check-label" for="exampleCheckbox12"><span>J'accepte les termes &amp; de confidentialité.</span></label>
+                                                </div>
+                                            </div>
+                                            <a href="page-privacy-policy.html"><i class="fi-rs-book-alt mr-5 text-muted"></i>En savoir plus</a>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-fill-out btn-block hover-up" name="login">Soumettre &amp; S'inscrire</button>
+                                        </div>
+                                    </form> #}
+
+                                    {{ form_start(form, action="{{ path('app_register') }}") }}
+                                                        {#  <form method="post"  action="{{ path('app_register') }}"> #}
+                        {{ include('_includes/ajax/response.html.twig') }}
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                               {#  <input type="text" required="" name="username" placeholder="Nom d'utilisateur"> #}
+                                                {{ form_row(form.username, {attr: {class: 'form-control form-control-sm bg-transparent'}}) }}
+                                            </div>
+                                           
+                                        </div>
+                                        <div class="col-md-6">
+                                             <div class="form-group">
+                                               {#  <input type="text" required="" name="email" placeholder="Email"> #}
+                                               {{ form_row(form.email, {attr: {class: 'form-control form-control-sm bg-transparent'}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-md-12">
+                                             <div class="form-group">
+                                               {#  <input type="text" required="" name="email" placeholder="Email"> #}
+                                               {{ form_row(form.contact, {attr: {class: 'form-control form-control-sm bg-transparent'}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                   {#  <input required="" type="password" name="password" placeholder="Mot de passe"> #}
+                                                   {{ form_row(form.plainPassword.first, {attr: {class: 'form-control form-control-sm bg-transparent'}}) }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                   {#  <input required="" type="password" name="password" placeholder="Confirmation du mot de passe"> #}
+                                                   {{ form_row(form.plainPassword.second, {attr: {class: 'form-control form-control-sm bg-transparent'}}) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="divider-text-center mt-0 mb-0">
+                                        <span> </span>
+                                    </div>
+                                      {#   <div class="login_footer form-group">
+                                            <div class="chek-form">
+                                                <div class="custome-checkbox">
+                                                    <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox12" value="">
+                                                    <label class="form-check-label" for="exampleCheckbox12"><span>J'accepte les termes &amp; de confidentialité.</span></label>
+                                                </div>
+                                            </div>
+                                            <a href="page-privacy-policy.html"><i class="fi-rs-book-alt mr-5 text-muted"></i>En savoir plus</a>
+                                        </div> #}
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-main btn-ajax">
+			<span class="spinner-border d-none  spinner-ajax spinner-border-sm" role="status" aria-hidden="true"></span>
+			Valider
+			<!--end::Indicator progress-->
+		</button>
+                                        </div>
+                                  {{ form_end(form)}}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <div class="order_review">
+                        <div class="mb-20">
+                            <h4>Votre commande</h4>
+                        </div>
+                        <div class="table-responsive order_table text-center">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">Produit</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in items %}
+                                        <tr>
+                                            <td class="image product-thumbnail"><img src="{{ asset('uploads/'~ item.produit.fichier.path ~'/'~ item.produit.fichier.alt) }}" alt="#"></td>
+                                            <td>
+                                                <h5><a href="shop-product-full.html">{{ item.produit.libelle }}</a></h5> <span class="product-qty">x {{ item.quantite }}</span>
+                                            </td>
+                                            <td>{{ item.produit.prix * item.quantite }} FCFA</td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    <tr>
+                                        <th>Sous total</th>
+                                        <td class="product-subtotal" colspan="2">{{ sousTotal }} FCFA</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Livraison</th>
+                                        <td colspan="2"><em>Livraison gratuite</em></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total</th>
+                                        <td colspan="2" class="product-subtotal"><span class="font-xl text-brand fw-900">{{ total }} FCFA</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                        {# <div class="payment_method">
+                            <div class="mb-25">
+                                <h5>Paiement</h5>
+                            </div>
+                            <div class="payment_option">
+                                <div class="custome-radio">
+                                    <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios3" checked="">
+                                    <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse" data-target="#bankTranfer" aria-controls="bankTranfer">Direct Bank Transfer</label>
+                                    <div class="form-group collapse in" id="bankTranfer">
+                                        <p class="text-muted mt-5">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration. </p>
+                                    </div>
+                                </div>
+                                <div class="custome-radio">
+                                    <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios4" checked="">
+                                    <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse" data-target="#checkPayment" aria-controls="checkPayment">Check Payment</label>
+                                    <div class="form-group collapse in" id="checkPayment">
+                                        <p class="text-muted mt-5">Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode. </p>
+                                    </div>
+                                </div>
+                                <div class="custome-radio">
+                                    <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios5" checked="">
+                                    <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse" data-target="#paypal" aria-controls="paypal">Paypal</label>
+                                    <div class="form-group collapse in" id="paypal">
+                                        <p class="text-muted mt-5">Pay via PayPal; you can pay with your credit card if you don't have a PayPal account.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> #}
+                        {% if app.user  %}
+                            <a href="#" class="btn btn-fill-out btn-block mt-30">Confirmer la commande</a>
+                        {% else %}
+                            <p>Veuillez vous connecter à votre compte pour pouvoir procéder au paiement</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    </script>
+{% endblock %}

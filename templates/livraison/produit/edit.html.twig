@@ -1,6 +1,7 @@
 {% block page_content %}
     {% form_theme form 'widget/fields-block.html.twig' %}
     {% from '_macros/produit.html.twig' import prototype_ligne_document_produit %}
+        {% from '_macros/image.html.twig' import prototype_ligne_document_image %}
     <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Modification Produit</h5>
         <div class="btn btn-icon btn-sm  ms-2" data-bs-dismiss="modal" aria-label="Close">
@@ -29,14 +30,15 @@
                             {% include '_includes/photo.html.twig'  with {'fichier':form.fichier,'data':produit} %}
                         </div>
                 </div>
-<div class="row">
+                <div class="row">
                  <div class="col-md-6">{{ form_row(form.unite) }}</div>
                  <div class="col-md-6">{{ form_row(form.poids) }}</div>
                 </div>
                 <div class="row">
                  <div class="col-md-12">{{ form_row(form.description) }}</div>
                 </div>
-
+                <br>
+                {{ prototype_ligne_document_image(form,produit) }}
                 <br>
                 {{ prototype_ligne_document_produit(form) }}
     </div>
@@ -50,6 +52,7 @@
 {% endblock %}
 
 {% block java %}
+<script src="{{ asset('assets/image.js')}}"></script>
     <script>
      KTImageInput.createInstances();
 var imageInputElement = document.querySelector("#kt_image_input_control");

@@ -97,6 +97,8 @@ class Menu
     public function findParametre()
     {
 
+        // dd('ggg');
+
         return $this->em->getRepository(ConfigApp::class)->findConfig();
     }
     public function getTest()

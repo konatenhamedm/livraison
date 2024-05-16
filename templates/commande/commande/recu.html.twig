@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Liste des versements</title>
+    <style>
+      {% block page_css %}
+        @page {
+
+          margin-footer: 0.5cm;
+
+          /*header: html_headerContent;*/
+          footer: html_pageFooter;
+          margin-top: 0.5cm;
+          margin-header: 0cm;
+         
+          /*background: ...
+  background-image: ...
+  background-position ...
+  background-repeat ...
+  background-color ...
+  background-gradient: ...*/
+        }
+        .clearfix:after,
+        {% endblock %} .clearfix:before {
+          content: " ";
+          display: table;
+        }
+
+        .clearfix:after {
+          clear: both;
+        }
+
+        .mention {
+  position: absolute;
+  bottom: 100px;
+}
+
+        /*@page :first {
+   header: html_headerContent;
+}*/
+caption{
+  margin-bottom: 15px;
+}
+      fieldset 
+	{
+		border: 1px solid #000 !important;
+		margin: 0;
+		xmin-width: 0;
+		padding: 10px;       
+		position: relative;
+		border-radius:4px;
+		background-color:#fff;
+		padding-left:10px!important;
+	}	
+	
+		legend
+		{
+       padding: 0 10px; 
+      margin-left: 100px;
+			font-size:14px;
+			font-weight:bold;
+			margin-bottom: 0px; 
+			width: 35%; 
+			border: 1px solid #ddd;
+			border-radius: 4px; 
+			background-color: #ffffff;
+		}
+
+        table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  
+}
+        @media all {
+          /*.content { display: block; page-break-inside: avoid; }*/
+        }
+
+        .content {
+          /*margin-top: 18cm;*/
+        }
+
+        {# .table-responsive.table-bordered {
+          border: 0;
+        } #}
+
+        .double_underline {
+            text-decoration:underline;
+            border-bottom: 1px solid #000;
+            text-align: center;
+        }
+    </style>
+  </head>
+<body style="font-size:12px;">
+ <div class="Info_client">
+            <br>
+            <div>
+              {% set var = "uploads/" ~ 'logo.png' %}
+        <img src="{{ var |replace({'/': "\\"}) }}" width="100px" height="60px"/>
+               {#  <img height="60px" width="100px" src="K:\PROJET\GOMBOS\new_ufrseg\public\assets\lg.jpeg"> #}
+            
+     {# <h4 style="font-weight: bolder;"><strong>TOP GRENIER</strong></h4> #}</div>
+        </div>
+         <hr>
+        <br>
+
+ <table>
+        <thead >
+            <tr>
+                <th width="5%" class="p-2">Nº</th>
+                <th width="30%" class="p-2">Libelle</th>
+                <th width="25%" class="p-2">Prix</th>
+                <th width="20%" class="p-2">Qte</th>
+                <th width="20%" class="p-2">Total</th>
+                
+            </tr>
+        </thead>
+        <tbody  class="row-container">
+            {% for key,item in data.ligneCommandes %}
+
+            <tr>
+              <td>{{ key+1 }}</td>
+              <td>{{ item.produit.libelle }}</td>
+              <td>{{ item.prix | number_format(0, '.')  }}</td>
+              <td>{{ item.quantite }}</td>
+              <td>{{ (item.quantite * item.prix) | number_format(0, '.') }}</td>
+            </tr>
+               
+            {% endfor %}
+        </tbody>
+         <tfoot>
+                                            <tr>
+                                                <th class="total text-center p-2 fw-bolder text-end" style="color:red;font-weight:bolder;font-size:14px;text-align: right;" colspan="4">Total commande</td>
+                                                <th class="text-end p-2 col "  style="color:red;font-weight:bolder;font-size:14px"  >{{ data.total | number_format(0, '.') }} Fr</th>
+                                               
+                                            </tr>
+                                            <tr>
+                                                <th class="total text-center p-2 fw-bolder text-end" style="color:red;font-weight:bolder;font-size:14px;text-align: right;" colspan="4">Montant frais</td>
+                                                <th class="text-end p-2 col "  style="color:red;font-weight:bolder;font-size:14px"  >{{ data.frais | number_format(0, '.') }} Fr</th>
+                                               
+                                            </tr>
+                                        
+                                        </tfoot>
+    </table>
+
+
+ <hr>
+<div>
+ <h5 style="text-align: center;">Cel:(225) 01 15 44 44 - BPV 43 Abidjan -Email: livraison@gmail.com</h5>
+</div>
+
+
+    
+    <htmlpagefooter name="pageFooter">
+      
+    </htmlpagefooter>
+</body>
+</html>
+
+
+

@@ -21,6 +21,10 @@ class Categorie
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Produit::class)]
     private Collection $produits;
 
+    #[ORM\ManyToOne(cascade: ["persist"], fetch: "EAGER")]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?FichierAdmin $fichier = null;
+
     public function __construct()
     {
         $this->produits = new ArrayCollection();
@@ -39,6 +43,18 @@ class Categorie
     public function setLibelle(string $libelle): static
     {
         $this->libelle = $libelle;
+
+        return $this;
+    }
+
+    public function getFichier(): ?FichierAdmin
+    {
+        return $this->fichier;
+    }
+
+    public function setFichier(?FichierAdmin $fichier): self
+    {
+        $this->fichier = $fichier;
 
         return $this;
     }

@@ -13,12 +13,12 @@ use Doctrine\Common\Collections\Collection;
 
 class InscriptionDTO
 {
-    #[Assert\NotBlank(message: 'Veuillez renseigner votre nom')]
+    /* #[Assert\NotBlank(message: 'Veuillez renseigner votre nom')]
     private ?string $nom;
 
 
     #[Assert\NotBlank(message: 'Veuillez renseigner votre prénom')]
-    private ?string $prenom;
+    private ?string $prenom; */
 
     private ?string $username;
 
@@ -26,7 +26,8 @@ class InscriptionDTO
     private ?string $plainPassword;
 
     private ?string $contact;
-    private ?string $situation;
+
+    /*  private ?string $situation; */
 
     #[Assert\NotBlank(message: 'Veuillez renseigner email')]
     private ?string $email = null;
@@ -43,60 +44,6 @@ class InscriptionDTO
     public function setEmail(?string $email): self
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of nom
-     */
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    /**
-     * Set the value of nom
-     */
-    public function setNom(?string $nom): self
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of nom
-     */
-    public function getSituation(): ?string
-    {
-        return $this->situation;
-    }
-
-    /**
-     * Set the value of nom
-     */
-    public function setSituation(?string $situation): self
-    {
-        $this->situation = $situation;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of prenom
-     */
-    public function getPrenom(): ?string
-    {
-        return $this->prenom;
-    }
-
-    /**
-     * Set the value of prenom
-     */
-    public function setPrenom(?string $prenom): self
-    {
-        $this->prenom = $prenom;
 
         return $this;
     }

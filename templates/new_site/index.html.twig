@@ -1,0 +1,36 @@
+{% extends 'new_site/base.html.twig' %}
+
+{% block modals %}
+    <!-- Quick view -->
+    {{ include('new_site/_includes/_modal.html.twig', {etat: true}) }}
+
+{% endblock %}
+
+{% block content %}
+    
+    {{ include('new_site/_includes/_slider.html.twig', {etat: true}) }}
+
+    {{ include('new_site/_includes/_grille_populaire_recent.html.twig') }}
+    
+    {{ include('new_site/_includes/_grille_categories.html.twig') }}
+    
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+        })
+        /*
+            $("#modal_produit_libelle").html('Mon produit');
+            $("#modal_produit_prix").html('18 000 FCFA');
+            $("#modal_produit_description").html('Ceci est une description');
+            $("#modal_produit_categorie_libelle").prop('href', "{{ path('new_site') }}").html('Electronique');
+            $("#modal_produit_btn_ajouter_panier").prop('data-id', "1");
+
+            $('#quickViewModal').modal('show');
+        */
+        // $('#quickViewModal').on('hidden.bs.modal', function (e) {
+            
+        // })
+    </script>
+{% endblock %}

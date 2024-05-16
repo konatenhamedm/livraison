@@ -53,6 +53,12 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface, 
     private ?Groupe $groupe = null;
 
 
+
+    public function __construct()
+    {
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;

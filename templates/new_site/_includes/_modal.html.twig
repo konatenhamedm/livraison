@@ -1,0 +1,82 @@
+<div class="modal fade custom-modal" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">              
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>       
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <div class="detail-gallery">
+                            <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+                            <!-- MAIN SLIDES -->
+                            <div class="product-image-slider" id="modal_produit_images">
+                                <figure class="border-radius-10">
+                                    <img src="{{ asset('evara-frontend/assets/imgs/shop/product-16-2.jpg') }}" alt="product image">
+                                </figure>
+                                <figure class="border-radius-10">
+                                    <img src="{{ asset('evara-frontend/assets/imgs/shop/product-16-1.jpg') }}" alt="product image">
+                                </figure>
+                                <figure class="border-radius-10">
+                                    <img src="{{ asset('evara-frontend/assets/imgs/shop/product-16-3.jpg') }}" alt="product image">
+                                </figure>
+                                <figure class="border-radius-10">
+                                    <img src="{{ asset('evara-frontend/assets/imgs/shop/product-16-4.jpg') }}" alt="product image">
+                                </figure>
+                                <figure class="border-radius-10">
+                                    <img src="{{ asset('evara-frontend/assets/imgs/shop/product-16-5.jpg') }}" alt="product image">
+                                </figure>
+                                <figure class="border-radius-10">
+                                    <img src="{{ asset('evara-frontend/assets/imgs/shop/product-16-6.jpg') }}" alt="product image">
+                                </figure>
+                                <figure class="border-radius-10">
+                                    <img src="{{ asset('evara-frontend/assets/imgs/shop/product-16-7.jpg') }}" alt="product image">
+                                </figure>
+                            </div>
+                            <!-- THUMBNAILS -->
+                            <div class="slider-nav-thumbnails pl-15 pr-15" id="modal_produit_thumbnails">
+                                <div><img src="{{ asset('evara-frontend/assets/imgs/shop/thumbnail-3.jpg') }}" alt="product image"></div>
+                                <div><img src="{{ asset('evara-frontend/assets/imgs/shop/thumbnail-4.jpg') }}" alt="product image"></div>
+                                <div><img src="{{ asset('evara-frontend/assets/imgs/shop/thumbnail-5.jpg') }}" alt="product image"></div>
+                                <div><img src="{{ asset('evara-frontend/assets/imgs/shop/thumbnail-6.jpg') }}" alt="product image"></div>
+                                <div><img src="{{ asset('evara-frontend/assets/imgs/shop/thumbnail-7.jpg') }}" alt="product image"></div>
+                                <div><img src="{{ asset('evara-frontend/assets/imgs/shop/thumbnail-8.jpg') }}" alt="product image"></div>
+                                <div><img src="{{ asset('evara-frontend/assets/imgs/shop/thumbnail-9.jpg') }}" alt="product image"></div>
+                            </div>
+                        </div>
+                        <!-- End Gallery -->
+                    </div>
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <div class="detail-info">
+                            <h3 id="modal_produit_libelle" class="title-detail mt-30">Colorful Pattern Shirts HD450</h3>
+                            
+                            <div class="clearfix product-price-cover">
+                                <div class="product-price primary-color float-left">
+                                    <ins><span class="text-brand" id="modal_produit_prix">2000 FCFA</span></ins>
+                                </div>
+                            </div>
+                            <div class="bt-1 border-color-1 mt-15 mb-15"></div>
+                            <div class="short-desc mb-30">
+                                <p class="font-sm" id="modal_produit_description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam rem officia, corrupti reiciendis minima nisi modi,!</p>
+                            </div>
+                            
+                            <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                            <div class="detail-extralink">
+                                <div class="detail-qty border radius">
+                                    <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
+                                    <span class="qty-val">1</span>
+                                    <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                </div>
+                                <div class="product-extra-link2">
+                                    <button type="submit" class="button button-add-to-cart addToCart" id="modal_produit_btn_ajouter_panier">Ajouter au panier</button>
+                                </div>
+                            </div>
+                            <ul class="product-meta font-xs color-grey mt-50">
+                                <li class="mb-5">Catégorie: <a href="#" id="modal_produit_categorie_libelle">FWM15VKT</a></li>
+                            </ul>
+                        </div>
+                        <!-- Detail Info -->
+                    </div>
+                </div>
+            </div>        
+        </div>
+    </div>
+</div>

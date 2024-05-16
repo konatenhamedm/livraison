@@ -1,0 +1,68 @@
+<section class="product-tabs section-padding position-relative wow fadeIn animated">
+        <div class="bg-square"></div>
+        <div class="container">
+            <div class="tab-header">
+                <ul class="nav nav-tabs" id="productTab" role="tablist">
+                    {% for key,categorie in categories %}
+                        <li class="nav-item" role="presentation">
+                            {# <a class="d-flex m-2 py-2 bg-light rounded-pill " data-bs-toggle="pill" href="#{{ categorie.libelle |replace({' ': ''})}}">
+                                <span class="text-dark" style="width: 130px;"></span>
+                            </a> #}
+                            <button class="nav-link {% if key == 0 %} active {% endif %} " id="nav-tab-categorie-{{ key }}" data-bs-toggle="tab" data-bs-target="#tab-categorie-{{ key }}" type="button" role="tab" aria-controls="tab-one" aria-selected="true">
+                                {{ categorie.libelle }}
+                            </button>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <a href="#" class="view-more d-none d-md-flex">View More<i class="fi-rs-angle-double-small-right"></i></a>
+            </div>
+            <!--End nav-tabs-->
+            <div class="tab-content wow fadeIn animated" id="productTabContent">
+                {% for key,categorie in categories %}
+                    <div class="tab-pane fade show {% if key == 0 %} active {% endif %}" id="tab-categorie-{{ key }}" role="tabpanel" aria-labelledby="tab-one">
+                        <div class="row product-grid-4">
+                            {% for produit in produits %}
+                                {% if produit.categorie.id == categorie.id %}
+                                    <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                                        <div class="product-cart-wrap mb-30">
+                                            <div class="product-img-action-wrap">
+                                                <div class="product-img product-img-zoom">
+                                                    <a href="javascript:void(0);" class="showDetailProduit" data-id="{{ produit.id }}">
+                                                        <img class="default-img" src="{{ asset('uploads/'~ produit.fichier.path ~'/'~ produit.fichier.alt) }}" alt="">
+                                                        <img class="hover-img" src="{{ asset('uploads/'~ produit.fichier.path ~'/'~ produit.fichier.alt) }}" alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="product-action-1">
+                                                    <a aria-label="Vue rapide" class="action-btn hover-up showDetailProduit" data-id="{{ produit.id }}"><i class="fi-rs-eye"></i></a>
+                                                </div>
+                                                {# <div class="product-badges product-badges-position product-badges-mrg">
+                                                    <span class="hot">Hot</span>
+                                                </div> #}
+                                            </div>
+                                            <div class="product-content-wrap">
+                                                <div class="product-category">
+                                                    <a href="shop-grid-right.html">{{ produit.categorie.libelle }}</a>
+                                                </div>
+                                                <h2><a href="shop-product-right.html">{{ produit.libelle }}</a></h2>
+                                                <div class="product-price">
+                                                    <span>{{ produit.prix }} FCFA</span>
+                                                    {# <span class="old-price">{{ produit.prix }} FCFA</span> #}
+                                                    <span class="d-block"><small>(Par {{produit.unite}})</small></span>
+                                                </div>
+                                                <div class="product-action-1 show">
+                                                    {# <a aria-label="Ajouter au panier" class="action-btn hover-up" href="{{ path('ajouter_au_panier', {'id': produit.id}) }}"><i class="fi-rs-shopping-bag-add"></i></a> #}
+                                                    <a aria-label="Ajouter au panier" class="action-btn hover-up addToCart" data-id="{{ produit.id }}" href="javascript:void(0);"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <!--End product-grid-4-->
+                    </div>
+                {% endfor %}
+            </div>
+            <!--End tab-content-->
+        </div>
+    </section>

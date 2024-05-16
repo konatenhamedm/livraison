@@ -1,0 +1,61 @@
+{% block page_content %}
+    <div class="modal-header">
+        <h4 class="modal-title">Détails Commande Nº {{ commande.code }}</h4>
+        <div class="btn btn-icon btn-sm  ms-2" data-bs-dismiss="modal" aria-label="Close">
+            <span class="svg-icon svg-icon-2x text-white">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="currentColor"></rect>
+					<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="currentColor"></rect>
+				</svg>
+            </span>
+        </div>
+    </div>
+   
+    <div class="modal-body">
+          <table class="table table-bordered table-custom">
+        <thead class="thead-dark">
+            <tr>
+                <th width="30%" class="p-2">Libelle</th>
+                <th width="25%" class="p-2">Prix</th>
+                <th width="20%" class="p-2">Qte</th>
+                <th width="25%" class="p-2">Total</th>
+                
+            </tr>
+        </thead>
+        <tbody  class="row-container">
+            {% for item in commande.ligneCommandes %}
+
+            <tr>
+              <td>{{ item.produit.libelle }}</td>
+              <td>{{ item.prix | number_format(0, '.')  }}</td>
+              <td>{{ item.quantite }}</td>
+              <td>{{ (item.quantite * item.prix) | number_format(0, '.') }}</td>
+            </tr>
+               
+            {% endfor %}
+        </tbody>
+         <tfoot>
+                                            <tr>
+                                                <th class="total text-center p-2 fw-bolder text-end" style="color:red;font-weight:bolder;font-size:14px;text-align: right;" colspan="3">Total commande</td>
+                                                <th class="text-end p-2 col "  style="color:red;font-weight:bolder;font-size:14px"  >{{ commande.total | number_format(0, '.') }} Fr</th>
+                                               
+                                            </tr>
+                                            <tr>
+                                                <th class="total text-center p-2 fw-bolder text-end" style="color:red;font-weight:bolder;font-size:14px;text-align: right;" colspan="3">Montant frais</td>
+                                                <th class="text-end p-2 col "  style="color:red;font-weight:bolder;font-size:14px"  >{{ commande.frais | number_format(0, '.') }} Fr</th>
+                                               
+                                            </tr>
+                                        
+                                        </tfoot>
+    </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn dark btn-outline" data-bs-dismiss="modal">Fermer</button>
+    </div>
+
+{% endblock %}
+{% block java %}
+    <script>
+        
+    </script>
+{% endblock %}

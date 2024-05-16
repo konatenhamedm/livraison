@@ -59,6 +59,21 @@ class ProduitType extends AbstractType
                 'prototype' => true,
 
             ])
+            ->add('images', CollectionType::class, [
+                'entry_type' => ImageType::class,
+                'entry_options' => [
+                    'label' => false,
+                    'doc_options' => $options['doc_options'],
+                    'required' => $options['doc_required'] ?? true,
+                    'validation_groups' => $options['validation_groups'],
+                ],
+                'allow_add' => true,
+                'label' => false,
+                'by_reference' => false,
+                'allow_delete' => true,
+                'prototype' => true,
+
+            ])
 
             ->add(
                 'unite',

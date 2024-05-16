@@ -1,0 +1,213 @@
+{% extends 'base-layout.html.twig' %}
+
+{% block title %}Liste des versements{% endblock %}
+{% block header %}versements{% endblock %}
+{% block breadcrumb %}{% endblock %}
+{% block body %}
+<div class="card shadow-sm">
+    <div class="card-header card-header-sm">
+        <h3 class="card-title"> Liste des versements</h3>
+        <div class="card-toolbar">
+           {#  {% if permition in ["CR","CRU","CRUD"] %}
+            <a href="{{ path('app_versment_versement_new') }}" class="btn btn-main btn-sm"  
+                data-bs-toggle="modal" data-bs-target="#exampleModalSizeLg2">
+                <i class="bi bi-plus-square text-light"></i>
+                Nouveau
+            </a>
+            {% endif %} #}
+        </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        {% form_theme form 'widget/fields-block.html.twig' %}
+            {{ form_start(form)}}
+            <fieldset>
+
+             <div class="row small" style="position:relative">
+               
+             </div>
+              <div class="row small" style="position:relative">
+           
+                <div class="col-md-5">{{ form_row(form.dateDebut) }}</div>
+                <div class="col-md-5">{{ form_row(form.dateFin) }}</div>
+                <div class="col-md-1 pt-5">
+                  <button class="btn btn-main btn-filter btn-sm" type="button">Rechercher</button>
+                </div>
+                <div class="col-md-1 p-5">
+               
+                 <a href="" target="_blank" type="sbmit" style="height: 35px;margin-top:0px" class="btn btn-warning btn-sm imprimer" name="search[imprime]"><i class="fa fa-print text-light"></i></a>
+
+                </div>
+                
+              </div>
+            </fieldset>
+            {{ form_end(form, {render_rest: false}) }}
+      </div>
+        <div class="row">
+            <div class="col-sm-12">
+                {% if permition != null %}
+                <div id="grid_app_versment_versement_" class="grid-dt-wrapper">Chargement....</div>
+                {% else %}
+                <div class="d-flex flex-column flex-center flex-column-fluid">
+                    <!--begin::Content-->
+                    <div class="d-flex flex-column flex-center text-center ">
+                        <!--begin::Wrapper-->
+                        <div class="card card-flush w-lg-650px py-5">
+                            <div class="card-body py-1 py-lg-20" style="margin-top: -88px">
+
+                                <!--begin::Title-->
+                                 {% include "_includes/message_error.html.twig" %}
+                                <!--end::Title-->
+                                <!--begin::Illustration-->
+                               
+
+
+                            </div>
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+{% block java %}
+  <script src="{{ asset('assets/js/datatables.js') }}"></script>
+  <script>
+    
+    $(function () {
+            $('.no-auto').each(function () {
+                const $this = $(this);
+                const $id = $('#' + $this.attr('id'));
+                init_date_picker($id,  'down', (start, e) => {
+                    //$this.val(start.format('DD/MM/YYYY'));
+                }, null, null, false);
+
+                $id.on('apply.daterangepicker', function (ev, picker) {
+                    $(this).val(picker.startDate.format('DD/MM/YYYY'));
+                });
+            });
+      const grid_prefix_id = "{{ grid_id }}";
+      const $old_grid = $('#grid_app_versment_versement_' + grid_prefix_id);
+      init_select2('.has-select2');
+
+      function loadDataTable($grid, dateDebut,dateFin ,options = null, contents = '') {
+        $grid.initDataTables(
+          options
+          ? options
+          : {{ datatable_settings(datatable) }}, {
+          searching: true,
+          ajaxUrl: Routing.generate('app_versment_versement_index', {
+            dateDebut: dateDebut,
+            dateFin: dateFin,
+           
+            
+          }),
+          language: {
+            url: asset_base_path + "/js/i18n/French.json"
+          },
+          headerCallback: function (tHead, aData, iStart, iEnd, aiDisplay) {},
+          initComplete: function (e, oSettings, json) {},
+        
+          drawCallback: function (row, data) {}
+        });
+      }
+
+
+      const $dateDebut = $('#{{ form.dateDebut.vars.id }}');
+      const $dateFin = $('#{{ form.dateFin.vars.id }}');
+   
+      
+       $('.imprimer').on('click', function (e) {
+
+       
+        let dateDebut_data = $dateDebut.val() ? $dateDebut.val().toString().replace(/\//g, "-")  : null
+        let dateFin_data = $dateFin.val() ? $dateFin.val().toString().replace(/\//g, "-")  : null
+ 
+     
+      
+      
+      
+       exexuteUrl(dateDebut_data,dateFin_data)
+     
+      });
+
+      function exexuteUrl(dateDebut,dateFin){
+      //window.open('https://localhost:8000/ads/versment/versement/imprime/all/'+dateDebut+'/'+dateFin+'/point des versements', '_blank')
+      window.open('http://livraison.youskil.com/ads/versment/versement/imprime/all/'+dateDebut+'/'+dateFin+'/point des versements', '_blank')
+      
+      }
+
+
+    
+
+      loadDataTable($old_grid, null,null, {{ datatable_settings(datatable) }});
+
+      $('.btn-filter').on('click', function (e) {
+        e.preventDefault();
+        const $this = $(this);
+        const $form = $this.closest('form');
+
+        //alert($dateDebut.val());
+        load_grid_data($form, $this, $dateDebut.val(),$dateFin.val());
+      });
+
+
+
+      function load_grid_data($form, $button, dateDebut,dateFin) {
+        const id = $old_grid.find('table').attr('id');
+        const $table = $old_grid.find(`#${id}`);
+        const table = $table.DataTable();
+        $.ajax({
+          url: $form.attr('action'),
+          type: $form.attr('method'),
+          data: {
+            dateDebut: dateDebut,
+            dateFin: dateFin,
+          },
+          beforeSend: function () {
+            $button.append('<span class="spinner-border spinner-ajax spinner-border-sm" role="status" aria-hidden="true"></span> ');
+            $button.prop('disabled', true);
+          },
+          complete: function () {
+            $button.prop('disabled', false);
+            $button.find('.spinner-ajax').remove();
+          },
+          success: function (html) {
+            table.destroy();
+            if ($table.length) {
+              $table.empty();
+            }
+
+           // let grid_val = `${niveau}_${caissiere}_${dateDebut}_${dateFin}`;
+            let grid_val = ``;
+
+            //alert(grid_val)
+
+            $old_grid.attr('id', `grid_app_versment_versement_${grid_val}`).empty().html(`
+                                    <div class="spinner spinner-track spinner-primary mr-15 text-primary">
+                                        <div class="ml-15">Chargement des données de la grille</div>
+                                    </div>
+                            `);
+            var options = {{ datatable_settings(datatable) }};
+            var name = `dt_app_versment_versement_${grid_val}`;
+
+            options['name'] = name;
+
+            console.log(name);
+
+            loadDataTable($old_grid, dateDebut,dateFin ,options)
+          }
+        });
+      }
+
+    });
+  </script>
+{% endblock %}

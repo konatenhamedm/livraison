@@ -1,6 +1,7 @@
 {% block page_content %}
     {% form_theme form 'widget/fields-block.html.twig' %}
     {% from '_macros/produit.html.twig' import prototype_ligne_document_produit %}
+    {% from '_macros/image.html.twig' import prototype_ligne_document_image %}
     <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Création Produit</h5>
         <div class="btn btn-icon btn-sm  ms-2" data-bs-dismiss="modal" aria-label="Close">
@@ -39,6 +40,9 @@
                 </div>
 
                 <br>
+                {{ prototype_ligne_document_image(form,null) }}
+                <br>
+                
                 {{ prototype_ligne_document_produit(form) }}
     </div>
     <div class="modal-footer">
@@ -51,6 +55,7 @@
 {% endblock %}
 
 {% block java %}
+<script src="{{ asset('assets/image.js')}}"></script>
     <script>
      KTImageInput.createInstances();
 var imageInputElement = document.querySelector("#kt_image_input_control");
@@ -182,5 +187,7 @@ var imageInput = KTImageInput.getInstance(imageInputElement);
 
 
         })
+
+        
     </script>
 {% endblock %}

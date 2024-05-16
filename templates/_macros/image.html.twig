@@ -1,0 +1,55 @@
+
+{% macro ligne_document_image(colonne,data) %}
+    {# <tr class="row-colonne-image even pointer table-light"> #}
+        <td class="p-2 row-colonne-image even pointer">
+          
+            <div style="display:no " class="field-matiere">
+
+           {#  {% if data is null %}
+            {% include '_includes/photo_image.html.twig'  with {'fichier':colonne.fichier,'data':null} %}
+            
+            {% else %} #}
+            {% include '_includes/photo_image.html.twig'  with {'fichier':colonne.fichier,'data':data} %}
+
+
+           {#  {% endif %} #}
+            
+            
+              
+            </div>
+            <div class="p-2 del-col-image " data-parent=".row-colonne-image" style="width: 114px;">
+            
+            </div>
+          
+        </td>
+       
+   {#  </tr> #}
+{% endmacro  %}
+
+
+
+{% macro prototype_ligne_document_image(form,data) %}
+    <div class="list-colonne-image"  data-prototype="{{ _self.ligne_document_image(form.images.vars.prototype,data)|e }}"></div>
+
+      <button type="button" data-protoname="__name__" class="btn btn-default  add_ligne btn-xs" id="add_ligne_image"  data-protoclass=".list-colonne-image" data-container=".column-container-image">
+        <i class="fa fa-plus"></i> Ajouter une image
+    </button><br>
+    <table class="table table-bordered table-custom">
+        <thead class="thead-dark">
+         {#    <tr>
+                <th width="50%" class="p-2">Fournisseur</th>
+                <th width="45%" class="p-2 text-end">prix</th>
+               
+                <th></th>
+            </tr> #}
+        </thead>
+        <tbody  class="column-container-image proto-container-image" data-childclass="">
+              <tr class="table-lighte">
+                {% for item in form.images %}
+                {{ _self.ligne_document_image(item|e) }}
+            {% endfor %}
+              
+              </tr>
+        </tbody>
+    </table>
+{% endmacro %}

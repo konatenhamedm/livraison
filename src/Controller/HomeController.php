@@ -11,6 +11,7 @@ use App\Form\RegisterType;
 use App\Form\UtilisateurType;
 use App\Repository\CategorieRepository;
 use App\Repository\CommandeRepository;
+use App\Repository\ConfigAppRepository;
 use App\Repository\LigneCommandeRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\UtilisateurSimpleRepository;
@@ -30,6 +31,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
+
 class HomeController extends AbstractController
 {
     #[Route(path: '/home', name: 'app_default')]
@@ -37,7 +39,7 @@ class HomeController extends AbstractController
     {
         return $this->render('home/index.html.twig');
     }
-    #[Route(path: '/register', name: 'app_register', methods: ['GET', 'POST'])]
+    #[Route(path: '/old/register', name: 'app_register', methods: ['GET', 'POST'])]
     public function register(
         Request $request,
         EntityManagerInterface $entityManager,
@@ -46,8 +48,14 @@ class HomeController extends AbstractController
         LoginFormAuthenticator $loginFormAuthenticator,
         FormError $formError,
         UtilisateurSimpleRepository $utilisateurRepository,
+        AuthenticationUtils $authenticationUtils
 
     ): Response {
+
+
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
 
         $inscriptionDTO = new InscriptionDTO();
         $form = $this->createForm(RegisterType::class, $inscriptionDTO, [
@@ -66,25 +74,16 @@ class HomeController extends AbstractController
         $fullRedirect = false;
         if ($form->isSubmitted()) {
             $response = [];
-            $redirect = $this->generateUrl("app_site");
+            $redirect = $this->generateUrl("new_site");
 
             $user = $utilisateurRepository->findOneByEmail($inscriptionDTO->getEmail());
             if ($form->isValid()) {
 
                 if (!$user) {
 
-                    /*   $utilisateur = new UserFront();
-                    $utilisateur->setPassword($userPasswordHasher->hashPassword($utilisateur, $inscriptionDTO->getPlainPassword()));
-                    $utilisateur->addRole('ROLE_CLIENT');
-                    $utilisateur->setEmail($inscriptionDTO->getEmail());
-                    $utilisateur->setUsername($inscriptionDTO->getEmail());
-
-                    $entityManager->persist($utilisateur);
- */
-
                     $userSimple = new UtilisateurSimple();
-                    $userSimple->setNom(strtoupper($inscriptionDTO->getNom()));
-                    $userSimple->setPrenoms(ucwords($inscriptionDTO->getPrenom()));
+                    $userSimple->setNom(strtoupper($inscriptionDTO->getUsername()));
+                    $userSimple->setPrenoms(ucwords($inscriptionDTO->getUsername()));
                     $userSimple->setEmail($inscriptionDTO->getEmail());
                     $userSimple->setContact($inscriptionDTO->getContact());
                     $userSimple->setUsername($inscriptionDTO->getEmail());
@@ -121,16 +120,18 @@ class HomeController extends AbstractController
 
 
             if ($isAjax) {
+                //dd($data);
                 return $this->json(compact('statut', 'message', 'redirect', 'data', 'fullRedirect'), $statutCode);
             } else {
                 if ($statut == 1) {
-                    return $this->redirect($redirect, Response::HTTP_OK);
+                    return $this->redirect($redirect);
                 }
             }
         }
 
-        return $this->render('site/login/register.html.twig', [
-            'form' => $form->createView()
+        return $this->render('new_site/authentification_simple.html.twig', [
+            'form' => $form->createView(),
+            'last_username' => $lastUsername, 'error' => $error,
         ]);
     }
     #[Route(path: '/login/site', name: 'app_login_site')]
@@ -152,9 +153,11 @@ class HomeController extends AbstractController
 
         return $this->render('site/login/index.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
-    #[Route(path: '/', name: 'app_site')]
-    public function indexSite(ProduitRepository $produitRepository, CategorieRepository $categorieRepository, SessionInterface $session): Response
+    #[Route(path: '/site', name: 'app_site')]
+    public function indexSite(ProduitRepository $produitRepository, CategorieRepository $categorieRepository, SessionInterface $session, ConfigAppRepository $configAppRepository): Response
     {
+
+        //dd($configAppRepository->findConfig());
         $panier = $session->get('panier', []);
 
         $panierWithData = [];
@@ -182,7 +185,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/panier', name: 'app_site_panier')]
+    #[Route(path: '/old/panier', name: 'app_site_panier')]
     public function indexCart(ProduitRepository $produitRepository, CategorieRepository $categorieRepository, SessionInterface $session): Response
     {
         $panier = $session->get('panier', []);
@@ -212,7 +215,7 @@ class HomeController extends AbstractController
     }
 
 
-    #[Route(path: '/ajouter/{id}', name: 'cart_add')]
+    #[Route(path: '/old/ajouter/{id}', name: 'cart_add')]
     public function add($id, SessionInterface $session)
     {
         $panier = $session->get('panier', []);
@@ -225,11 +228,16 @@ class HomeController extends AbstractController
 
         $session->set('panier', $panier);
 
-        return $this->redirectToRoute("app_site");
+        //dd(count($panier));
+
+        //return $this->redirectToRoute("app_site");
+        return $this->json([
+            'quantite' => count($panier)
+        ]);
     }
 
 
-    #[Route(path: '/supprimer/{id}', name: 'cart_remove')]
+    #[Route(path: '/old/supprimer/{id}', name: 'cart_remove')]
     public function remove($id, SessionInterface $session)
     {
         $panier = $session->get('panier', []);
@@ -240,66 +248,28 @@ class HomeController extends AbstractController
 
         $session->set('panier', $panier);
 
-        return $this->redirectToRoute('app_site_panier');
+        //return $this->redirectToRoute('app_site_panier');
+        return $this->json([
+            'quantite' => count($panier)
+        ]);
     }
-    #[Route(path: '/soumettre', name: 'cart_soumettre', methods: ['GET', 'POST'])]
-    public function soummetre(SessionInterface $session, ProduitRepository $produitRepository, CommandeRepository $commandeRepository, LigneCommandeRepository $ligneCommandeRepository)
+
+    private function numero($code)
     {
-        $panier = $session->get('panier', []);
-        $panierWithData = [];
 
-        foreach ($panier as $id => $quantity) {
-            $panierWithData[] = [
-                'product' => $produitRepository->find($id),
-                'quantity' => $quantity
-            ];
+        $query = $this->em->createQueryBuilder();
+        $query->select("count(a.id)")
+            ->from(Commande::class, 'a');
+
+        $nb = $query->getQuery()->getSingleScalarResult();
+        if ($nb == 0) {
+            $nb = 1;
+        } else {
+            $nb = $nb + 1;
         }
-        $total = 0;
-
-        foreach ($panierWithData as $couple) {
-            $total += $couple['product']->getPrix() * $couple['quantity'];
-        }
-
-
-        $commande = new Commande();
-
-        $commande->setLibelle('commande');
-        $commande->setDateCommande(new DateTime());
-        $commande->setTotal($total);
-
-        $commandeRepository->save($commande, true);
-
-        foreach ($panierWithData as $couple) {
-            // $total += $couple['product']->getPrix() * $couple['quantity'];
-
-            $ligne = new LigneCommande();
-
-            $ligne->setCommande($commande);
-            $ligne->setProduit($couple['product']);
-            $ligne->setPrix($couple['product']->getPrix() * $couple['quantity']);
-            $ligne->setEtat('recu_non_valide');
-            $ligne->setQuantite($couple['quantity']);
-
-            $ligneCommandeRepository->save($ligne, true);
-        }
-
-
-
-
-        foreach ($panierWithData as $couple) {
-
-            /*  unset($panier[$couple['product']->getId()]); */
-
-            if (!empty($panier[$couple['product']->getId()])) {
-                unset($panier[$couple['product']->getId()]);
-            }
-
-            $session->set('panier', $panier);
-        }
-
-
-        return $this->redirectToRoute('app_site');
+        return ($code . '-' . date("y") . '-' . str_pad($nb, 3, '0', STR_PAD_LEFT));
     }
+
 
     #[Route('/error_page', name: 'page_error_index', methods: ['GET', 'POST'])]
     public function errorIndex(Request $request): Response

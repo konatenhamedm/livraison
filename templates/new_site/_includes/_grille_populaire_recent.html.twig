@@ -1,0 +1,105 @@
+<section class="product-tabs section-padding position-relative wow fadeIn animated">
+        <div class="bg-square"></div>
+        <div class="container">
+            <div class="tab-header">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="nav-tab-one" data-bs-toggle="tab" data-bs-target="#tab-one" type="button" role="tab" aria-controls="tab-one" aria-selected="true">Les plus demandés</button>
+                    </li>
+                    {# <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="nav-tab-two" data-bs-toggle="tab" data-bs-target="#tab-two" type="button" role="tab" aria-controls="tab-two" aria-selected="false">Popular</button>
+                    </li> #}
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="nav-tab-three" data-bs-toggle="tab" data-bs-target="#tab-three" type="button" role="tab" aria-controls="tab-three" aria-selected="false">Les plus recents</button>
+                    </li>
+                </ul>
+                <a href="#" class="view-more d-none d-md-flex">Voir plus<i class="fi-rs-angle-double-small-right"></i></a>
+            </div>
+            <!--End nav-tabs-->
+            <div class="tab-content wow fadeIn animated" id="myTabContent">
+                <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
+                    <div class="row product-grid-4">
+                        {% for populaire in populaires %}
+                            <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                                <div class="product-cart-wrap mb-30">
+                                    <div class="product-img-action-wrap">
+                                        <div class="product-img product-img-zoom">
+                                            <a href="{{ path('detail_produit', {'id': populaire.id}) }}" class="showDetailProduit" data-id="{{ populaire.id }}">
+                                                <img class="default-img" src="{{ asset('uploads/'~ populaire.fichier.path ~'/'~ populaire.fichier.alt) }}" alt="" style="height: 278px;">
+                                                <img class="hover-img" src="{{ asset('evara-frontend/assets/imgs/shop/product-1-2.jpg') }}" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="product-action-1">
+                                            <a href="{{ path('detail_produit', {'id': populaire.id}) }}" aria-label="Vue rapide" class="action-btn hover-up showDetailProduit" data-id="{{ populaire.id }}"><i class="fi-rs-eye"></i></a>
+                                        </div>
+                                        {# <div class="product-badges product-badges-position product-badges-mrg">
+                                            <span class="hot">Hot</span>
+                                        </div> #}
+                                    </div>
+                                    <div class="product-content-wrap">
+                                        <div class="product-category">
+                                            <a href="shop-grid-right.html">{{ populaire.categorie.libelle }}</a>
+                                        </div>
+                                        <h2><a href="{{ path('detail_produit', {'id': populaire.id}) }}" class="showDetailProduit" data-id="{{ populaire.id }}">{{ populaire.libelle }}</a></h2>
+                                        
+                                        <div class="product-price">
+                                            <span>{{ populaire.prix }} FCFA</span>
+                                            {# <span class="old-price">{{ populaire.prix }} FCFA</span> #}
+                                            <span class="d-block"><small>(Par {{populaire.unite}})</small></span>
+                                        </div>
+                                        <div class="product-action-1 show">
+                                            <a aria-label="Ajouter au panier" class="action-btn hover-up addToCart" data-id="{{ populaire.id }}" href="javascript:void(0);"><i class="fi-rs-shopping-bag-add"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <!--End product-grid-4-->
+                </div>
+                <!--En tab one (Featured)-->
+                <div class="tab-pane fade" id="tab-three" role="tabpanel" aria-labelledby="tab-three">
+                    <div class="row product-grid-4">
+                        {% for recent in recents %}
+                            <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                                <div class="product-cart-wrap mb-30">
+                                    <div class="product-img-action-wrap">
+                                        <div class="product-img product-img-zoom">
+                                            <a href="{{ path('detail_produit', {'id': recent.id}) }}" class="showDetailProduit" data-id="{{ recent.id }}">
+                                                <img class="default-img" src="{{ asset('uploads/'~ recent.fichier.path ~'/'~ recent.fichier.alt) }}" alt="" style="height: 278px;">
+                                                <img class="hover-img" src="{{ asset('evara-frontend/assets/imgs/shop/product-1-2.jpg') }}" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="product-action-1">
+                                            <a href="{{ path('detail_produit', {'id': recent.id}) }}" aria-label="Vue rapide" class="action-btn hover-up showDetailProduit" data-id="{{ recent.id }}"><i class="fi-rs-eye"></i></a>
+                                        </div>
+                                        {# <div class="product-badges product-badges-position product-badges-mrg">
+                                            <span class="hot">Hot</span>
+                                        </div> #}
+                                    </div>
+                                    <div class="product-content-wrap">
+                                        <div class="product-category">
+                                            <a href="shop-grid-right.html">{{ recent.categorie.libelle }}</a>
+                                        </div>
+                                        <h2><a href="{{ path('detail_produit', {'id': recent.id}) }}" class="showDetailProduit" data-id="{{ recent.id }}">{{ recent.libelle }}</a></h2>
+                                        
+                                        <div class="product-price">
+                                            <span>{{ recent.prix }} FCFA</span>
+                                            {# <span class="old-price">{{ recent.prix }} FCFA</span> #}
+                                            <span class="d-block"><small>(Par {{recent.unite}})</small></span>
+                                        </div>
+                                        <div class="product-action-1 show">
+                                            <a aria-label="Ajouter au panier" class="action-btn hover-up addToCart" data-id="{{ recent.id }}" href="javascript:void(0);"><i class="fi-rs-shopping-bag-add"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <!--End product-grid-4-->
+                </div>
+                <!--En tab three (New added)-->
+            </div>
+            <!--End tab-content-->
+        </div>
+    </section>

@@ -19,14 +19,14 @@
                          src="{{ asset('uploads/' ~ menu.findParametre.logoLogin.path ~'/'~ menu.findParametre.logoLogin.alt) }}"
                          class="h-60px h-lg-75px"/>
                 {% else %}
-                    <img alt="Logo" src="{{ asset('assets/media/logos/logo_tt.png') }}" class="h-60px h-lg-75px"/>
+                    <img alt="Logo" src="{{ asset('uploads/logo.png') }}" class="h-60px h-lg-75px"/>
                 {% endif %}
             </a>
             <!--begin::Title-->
             <h1 class="text-dark fw-bolder mb-3">Connexion</h1>
             <!--end::Title-->
             <!--begin::Subtitle-->
-            <div class="text-gray-500 fw-semibold fs-6">IMMOPLUS, LA GESTION IMMOBILIÈRE INTELLIGENTE</div>
+            <div class="text-gray-500 fw-semibold fs-6">TOP GRENIER, APPLICATION DE LIVRAISON</div>
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
@@ -69,7 +69,7 @@
         <!--end::Wrapper-->
         <!--begin::Submit button-->
         <div class="d-grid mb-10">
-            <button type="submit" class="btn btn-main">
+            <button type="submit" class="btn btn-success">
                 <!--begin::Indicator label-->
                 <span class="indicator-label">Connexion</span>
                 <!--end::Indicator progress-->
