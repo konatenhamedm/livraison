@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\DTO\InscriptionDTO;
+use App\Entity\Categorie;
 use App\Entity\Commande;
 use App\Entity\Produit;
 use App\Entity\LigneCommande;
@@ -79,11 +80,57 @@ class NewSiteController extends AbstractController
         ]);
     }
 
-    #[Route(path: 'toutes-les-categories', name: 'liste_categories')]
-    public function liste_categories(Request $request): Response
+    #[Route('produit/{id}', name: 'detail_produit', methods: ['GET'])]
+    public function detailProduit(Produit $produit)
     {
-        return $this->render('new_site/categories.html.twig');
+        $files = [
+            "uploads/" . $produit->getFichier()->getPath() . '/' . $produit->getFichier()->getAlt(),
+        ];
+
+        foreach ($produit->getImages() as $image) {
+            array_push($files, "uploads/" . $image->getFichier()->getPath() . '/' . $image->getFichier()->getAlt());
+        }
+
+        return $this->render('new_site/produit.html.twig', [
+            'produit' => $produit
+        ]);
+
+        return $this->json([
+            'data' =>
+            [
+                "produit" => [
+                    'id' => $produit->getId(),
+                    'libelle' => $produit->getLibelle(),
+                    'description' => $produit->getDescription(),
+                    'prix' => $produit->getPrix(),
+                    'categorie_id' => $produit->getCategorie()->getId(),
+                    'categorie_libelle' => $produit->getCategorie()->getLibelle(),
+                    'images' => $files
+                ],
+            ]
+        ]);
     }
+
+
+    #[Route(path: 'toutes-les-categories', name: 'liste_categories')]
+    public function liste_categories(CategorieRepository $categorieRepository): Response
+    {
+        return $this->render('new_site/liste_categories.html.twig', [
+            'categories' => $categorieRepository->findAll(),
+        ]);
+    }
+
+
+
+    #[Route('categorie/{id}', name: 'detail_categorie', methods: ['GET'])]
+    public function detailCategorie(Categorie $categorie)
+    {
+
+        return $this->render('new_site/categorie.html.twig', [
+            'categorie' => $categorie
+        ]);
+    }
+
 
     #[Route(path: 'authentification', name: 'connexion_inscription')]
     public function connexion_inscription(Request $request): Response
@@ -314,38 +361,6 @@ class NewSiteController extends AbstractController
     }
 
 
-    #[Route('produit/{id}', name: 'detail_produit', methods: ['GET'])]
-    public function detailProduit(Produit $produit)
-    {
-        $files = [
-            "uploads/" . $produit->getFichier()->getPath() . '/' . $produit->getFichier()->getAlt(),
-        ];
-
-        foreach ($produit->getImages() as $image) {
-            array_push($files, "uploads/" . $image->getFichier()->getPath() . '/' . $image->getFichier()->getAlt());
-        }
-
-        return $this->render('new_site/produit.html.twig', [
-            'produit' => $produit
-        ]);
-
-        return $this->json([
-            'data' =>
-            [
-                "produit" => [
-                    'id' => $produit->getId(),
-                    'libelle' => $produit->getLibelle(),
-                    'description' => $produit->getDescription(),
-                    'prix' => $produit->getPrix(),
-                    'categorie_id' => $produit->getCategorie()->getId(),
-                    'categorie_libelle' => $produit->getCategorie()->getLibelle(),
-                    'images' => $files
-                ],
-            ]
-        ]);
-    }
-
-
 
 
     #[Route(path: '/home', name: 'app_default')]
@@ -503,7 +518,7 @@ class NewSiteController extends AbstractController
         } else {
             $nb = $nb + 1;
         }
-        return ('Commande' . ' - ' . date("m") . '-' . date("y") . '-'  . str_pad($nb, 3, '0', STR_PAD_LEFT));
+        return ('Commande' . ' n° ' . str_pad($nb, 3, '0', STR_PAD_LEFT)) . '-' . date("m") . '-' . date("y");
     }
     #[Route(path: 'soumettre', name: 'cart_soumettre', methods: ['GET', 'POST'])]
     public function soummetre(Request $request, SessionInterface $session, ProduitRepository $produitRepository, CommandeRepository $commandeRepository, LigneCommandeRepository $ligneCommandeRepository)
@@ -565,8 +580,17 @@ class NewSiteController extends AbstractController
             $session->set('panier', $panier);
         }
 
+        return $this->json([
+            'success' => True
+        ]);
 
         return $this->redirectToRoute('new_site');
+    }
+
+    #[Route('/commande-validée', name: 'commande_validee', methods: ['GET', 'POST'])]
+    public function commandeValidee(Request $request): Response
+    {
+        return $this->render('new_site/commande_validee.html.twig', []);
     }
 
     #[Route('/error_page', name: 'page_error_index', methods: ['GET', 'POST'])]

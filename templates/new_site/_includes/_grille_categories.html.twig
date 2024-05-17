@@ -14,7 +14,7 @@
                         </li>
                     {% endfor %}
                 </ul>
-                <a href="#" class="view-more d-none d-md-flex">View More<i class="fi-rs-angle-double-small-right"></i></a>
+                <a href="{{ path('liste_categories') }}" class="view-more d-none d-md-flex">Voir plus<i class="fi-rs-angle-double-small-right"></i></a>
             </div>
             <!--End nav-tabs-->
             <div class="tab-content wow fadeIn animated" id="productTabContent">
@@ -41,9 +41,9 @@
                                             </div>
                                             <div class="product-content-wrap">
                                                 <div class="product-category">
-                                                    <a href="shop-grid-right.html">{{ produit.categorie.libelle }}</a>
+                                                    <a href="{{ path('detail_categorie', {'id': produit.categorie.id }) }}">{{ produit.categorie.libelle }}</a>
                                                 </div>
-                                                <h2><a href="shop-product-right.html">{{ produit.libelle }}</a></h2>
+                                                <h2><a href="{{ path('detail_produit', {'id': produit.id }) }}">{{ produit.libelle }}</a></h2>
                                                 <div class="product-price">
                                                     <span>{{ produit.prix }} FCFA</span>
                                                     {# <span class="old-price">{{ produit.prix }} FCFA</span> #}

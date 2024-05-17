@@ -1,0 +1,48 @@
+{% extends 'new_site/base.html.twig' %}
+
+{% block breadcrumbs %}
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{{ path('new_site') }}" rel="nofollow">Accueil</a>
+                <span></span> Commande validée
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block content %}
+    
+<section class="mt-50 mb-50">
+    <div class="container">
+        <div class="container">
+            <div class="row align-items-center height-70vh text-center">
+                <div class="col-lg-8 m-auto">
+                    <p class="mb-50"><img src="{{ asset('evara-frontend/assets/imgs/theme/icons/feature-5.png') }}" alt="" class="hover-up"></p>
+                    <h2 class="mb-30">Commande validée</h2>
+                    <p class="font-lg text-grey-700 mb-30">
+                        Votre commande a bien été transmise.
+                    </p>
+                    <a class="btn btn-default submit-auto-width font-xs hover-up" href="{{ path('new_site') }}">Retour à la page d'accueil</a>
+                    {# <form class="contact-form-style text-center" id="contact-form" action="#" method="post">
+                        <div class="row">
+                            <div class="col-lg-6 m-auto">
+                                <div class="input-style mb-20 hover-up">
+                                    <input name="name" placeholder="Search" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </form> #}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    </script>
+{% endblock %}

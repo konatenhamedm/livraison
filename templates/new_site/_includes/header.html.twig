@@ -6,7 +6,7 @@
                     <div class="header-info">
                         <ul>
                             <li><i class="fi-rs-smartphone"></i> <a href="#">(+01) - 2345 - 6789</a></li>
-                            <li><i class="fi-rs-marker"></i><a  href="#">Nos Locaux</a></li>
+                            <li><i class="fi-rs-marker"></i><a  href="{{ path('contact') }}">Nos Locaux</a></li>
                         </ul>
                     </div>
                 </div>
@@ -54,7 +54,10 @@
                     <a href="{{ path('new_site') }}"><img src="{{ asset('logo.png') }}" alt="logo"></a>
                 </div>
                 <div class="main-categori-wrap d-none d-lg-block">
-                    <a class="categori-button-active" href="#">
+                    <a class="" href="{{ path('liste_categories') }}">
+                        <span class="fi-rs-apps"></span> Toutes les catégories
+                    </a>
+                    {# <a class="categori-button-active" href="{{ path('liste_categories') }}">
                         <span class="fi-rs-apps"></span> Toutes les catégories
                     </a>
                     <div class="categori-dropdown-wrap categori-dropdown-active-large">
@@ -232,7 +235,7 @@
                             </li>
                         </ul>
                         <div class="more_categories">Show more...</div>
-                    </div>
+                    </div> #}
                 </div>
                 <div class="main-menu main-menu-grow main-menu-padding-1 main-menu-lh-1 main-menu-mrg-1 hm3-menu-padding d-none d-lg-block hover-boder">
                     <nav>
@@ -262,7 +265,7 @@
                 <div class="header-action-right">
                     <div class="search-style-2">
                         <form action="#">
-                            <select class="select-active">
+                            {# <select class="select-active">
                                 <option>Tous</option>
                                 <option>Women's Clothing</option>
                                 <option>Men's Clothing</option>
@@ -274,8 +277,8 @@
                                 <option>Luggage & Bags</option>
                                 <option>Shoes</option>
                                 <option>Mother & Kids</option>
-                            </select>
-                            <input type="text" placeholder="Rechercher les éléments…">
+                            </select> #}
+                            <input type="text" placeholder="Rechercher un produit …">
                         </form>
                     </div>
                     <div class="header-action-2">

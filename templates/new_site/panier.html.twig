@@ -33,9 +33,13 @@
                             <tbody>
                                 {% for item in items %}
                                 <tr>
-                                    <td class="image product-thumbnail"><img src="{{ asset('uploads/'~ item.produit.fichier.path ~'/'~ item.produit.fichier.alt) }}" alt="#"></td>
+                                    <td class="image product-thumbnail">
+                                        <a href="{{ path('detail_produit', {"id": item.produit.id}) }}">
+                                            <img src="{{ asset('uploads/'~ item.produit.fichier.path ~'/'~ item.produit.fichier.alt) }}" alt="#">
+                                        </a>
+                                    </td>
                                     <td class="product-des product-name">
-                                        <h5 class="product-name"><a href="shop-product-right.html">{{ item.produit.libelle }}</a></h5>
+                                        <h5 class="product-name"><a href="{{ path('detail_produit', {"id": item.produit.id}) }}">{{ item.produit.libelle }}</h5>
                                     </td>
                                     <td class="price" data-title="Prix unitaire"><span>{{ item.produit.prix }} FCFA</span></td>
                                     <td class="text-center" data-title="Stock">
@@ -84,7 +88,7 @@
                         {# <a class="btn  mr-10 mb-sm-15"><i class="fi-rs-shuffle mr-10"></i>Update Cart</a> #}
                         <a href="{{ path('new_site') }}" class="btn "><i class="fi-rs-shopping-bag mr-10"></i>Continuer mes achats</a>
                         {% if items %}
-                            <a href="{{ path('resume') }}" class="btn ms-2"> <i class="fi-rs-box-alt mr-10"></i> Passer au résumé</a>
+                            <a href="{{ path('resume') }}" class="btn ms-2 mt-2 mt-sm-0"> <i class="fi-rs-box-alt mr-10"></i> Passer au résumé</a>
                         {% endif %}
                     </div>
                 </div>

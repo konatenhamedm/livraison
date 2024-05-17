@@ -213,9 +213,13 @@
                                 <tbody>
                                     {% for item in items %}
                                         <tr>
-                                            <td class="image product-thumbnail"><img src="{{ asset('uploads/'~ item.produit.fichier.path ~'/'~ item.produit.fichier.alt) }}" alt="#"></td>
+                                            <td class="image product-thumbnail">
+                                                <a href="{{ path('detail_produit', {'id': item.produit.id}) }}">
+                                                    <img src="{{ asset('uploads/'~ item.produit.fichier.path ~'/'~ item.produit.fichier.alt) }}" alt="#">
+                                                </a>
+                                            </td>
                                             <td>
-                                                <h5><a href="shop-product-full.html">{{ item.produit.libelle }}</a></h5> <span class="product-qty">x {{ item.quantite }}</span>
+                                                <h5><a href="{{ path('detail_produit', {'id': item.produit.id}) }}">{{ item.produit.libelle }}</a></h5> <span class="product-qty">x {{ item.quantite }}</span>
                                             </td>
                                             <td>{{ item.produit.prix * item.quantite }} FCFA</td>
                                         </tr>
@@ -266,7 +270,7 @@
                             </div>
                         </div> #}
                         {% if app.user  %}
-                            <a href="#" class="btn btn-fill-out btn-block mt-30">Confirmer la commande</a>
+                            <a href="#" class="btn btn-fill-out btn-block mt-30" id="btnConfirmerCommande">Confirmer la commande</a>
                         {% else %}
                             <p>Veuillez vous connecter à votre compte pour pouvoir procéder au paiement</p>
                         {% endif %}
@@ -280,5 +284,59 @@
 
 {% block scripts %}
     <script>
+    $(document).ready(function () {
+        function validerCommande() {
+            var url = "{{ path('supprimer_du_panier', {id: 'id'}) }}".replace('id', id);
+            var data = {
+                lieu: $('#lieu').val(),
+            };
+
+            var type = 'POST';
+
+            var success = function (res) {
+                console.log(res);
+                HoldOn.close()
+                location.href = "{{ path('commande_validee') }}";
+            }
+            var error = function (e) {
+                console.log(e);
+                HoldOn.close()
+            }
+            var beforeSend = function () {
+                HoldOn.open()
+            }
+
+            sendAjax({url: url, type: type, data: data, success: success, error: error, options: {beforeSend: beforeSend}})
+        }
+        function confirmerCommande() {
+            //var url = "{{ path('supprimer_du_panier', {id: 'id'}) }}".replace('id', id);
+            var url = "{{ path('cart_soumettre') }}"
+            var data = {
+                lieu: $('#lieu').val(),
+            };
+
+            var type = 'POST';
+
+            var success = function (res) {
+                console.log(res);
+                HoldOn.close()
+                location.href = "{{ path('commande_validee') }}";
+            }
+            var error = function (e) {
+                console.log(e);
+                HoldOn.close()
+            }
+            var beforeSend = function () {
+                HoldOn.open()
+            }
+
+            sendAjax({url: url, type: type, data: data, success: success, error: error, options: {beforeSend: beforeSend}})
+        }
+
+
+         $('#btnConfirmerCommande').on('click', function () {
+                confirmerCommande();
+            })
+    });
     </script>
 {% endblock %}

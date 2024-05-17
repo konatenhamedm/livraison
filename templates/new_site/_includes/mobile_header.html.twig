@@ -2,7 +2,7 @@
     <div class="mobile-header-wrapper-inner">
         <div class="mobile-header-top">
             <div class="mobile-header-logo">
-                <a href="{{ path('new_site')}}"><img src="{{ asset('evara-frontend/assets/imgs/theme/logo.svg') }}" alt="logo"></a>
+                {# <a href="{{ path('new_site')}}"><img src="{{ asset('evara-frontend/assets/imgs/theme/logo.svg') }}" alt="logo"></a> #}
             </div>
             <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
                 <button class="close-style search-close">
@@ -14,13 +14,16 @@
         <div class="mobile-header-content-area">
             <div class="mobile-search search-style-3 mobile-header-border">
                 <form action="#">
-                    <input type="text" placeholder="Search for items…">
+                    <input type="text" placeholder="Rechercher un produit …">
                     <button type="submit"><i class="fi-rs-search"></i></button>
                 </form>
             </div>
             <div class="mobile-menu-wrap mobile-header-border">
                 <div class="main-categori-wrap mobile-header-border">
-                    <a class="categori-button-active-2" href="#">
+                    <a class="my-4" href="{{ path('liste_categories') }}">
+                        <span class="fi-rs-apps"></span> Toutes les categories
+                    </a>
+                    {# <a class="categori-button-active-2" href="#">
                         <span class="fi-rs-apps"></span> Browse Categories
                     </a>
                     <div class="categori-dropdown-wrap categori-dropdown-active-small">
@@ -35,7 +38,7 @@
                             <li><a href="shop-grid-right.html"><i class="evara-font-teddy-bear"></i>Mother & Kids</a></li>
                             <li><a href="shop-grid-right.html"><i class="evara-font-kite"></i>Outdoor fun</a></li>
                         </ul>
-                    </div>
+                    </div> #}
                 </div>
                 <!-- mobile menu start -->
                 <nav>
@@ -141,23 +144,28 @@
             </div>
             <div class="mobile-header-info-wrap mobile-header-border">
                 <div class="single-mobile-header-info mt-30">
-                    <a  href="page-contact.html"> Our location </a>
+                    <a href="{{ path('contact') }}"> Nos Locaux </a>
                 </div>
                 <div class="single-mobile-header-info">
-                    <a href="page-login-register.html">Log In / Sign Up </a>
+                    {% if app.user %}
+                        Connecté en tant que {{ app.user.email }} , <a href="{{ path('app_logout') }}">Déconnexion</a>
+                    {% else %}
+                        <a href="{{ path('app_auth_simple') }}">Connexion / Inscription</a>
+                        
+                    {% endif %}
                 </div>
                 <div class="single-mobile-header-info">
                     <a href="#">(+01) - 2345 - 6789 </a>
                 </div>
             </div>
-            <div class="mobile-social-icon">
+            {# <div class="mobile-social-icon">
                 <h5 class="mb-15 text-grey-4">Follow Us</h5>
                 <a href="#"><img src="{{ asset('evara-frontend/assets/imgs/theme/icons/icon-facebook.svg') }}" alt=""></a>
                 <a href="#"><img src="{{ asset('evara-frontend/assets/imgs/theme/icons/icon-twitter.svg') }}" alt=""></a>
                 <a href="#"><img src="{{ asset('evara-frontend/assets/imgs/theme/icons/icon-instagram.svg') }}" alt=""></a>
                 <a href="#"><img src="{{ asset('evara-frontend/assets/imgs/theme/icons/icon-pinterest.svg') }}" alt=""></a>
                 <a href="#"><img src="{{ asset('evara-frontend/assets/imgs/theme/icons/icon-youtube.svg') }}" alt=""></a>
-            </div>
+            </div> #}
         </div>
     </div>
 </div>

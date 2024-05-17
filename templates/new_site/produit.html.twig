@@ -5,7 +5,7 @@
         <div class="container">
             <div class="breadcrumb">
                 <a href="{{ path('new_site') }}" rel="nofollow">Accueil</a>
-                <span></span> {{ produit.categorie.libelle }}
+                <span></span> <a href="{{ path('detail_categorie', {'id': produit.categorie.id }) }}" rel="nofollow">{{ produit.categorie.libelle }}</a>
                 <span></span> {{ produit.libelle }}
             </div>
         </div>
@@ -74,7 +74,7 @@
                                         </div>
                                     </div>
                                     <ul class="product-meta font-xs color-grey mt-50">
-                                        <li class="mb-5">Catégorie: <a href="#">{{ produit.categorie.libelle }}</a></li>
+                                        <li class="mb-5">Catégorie: <a href="{{ path('detail_categorie', {'id': produit.categorie.id }) }}">{{ produit.categorie.libelle }}</a></li>
                                     </ul>
                                 </div>
                                 <!-- Detail Info -->

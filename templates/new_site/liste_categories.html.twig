@@ -1,0 +1,42 @@
+{% extends 'new_site/base.html.twig' %}
+
+{% block breadcrumbs %}
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{{ path('new_site') }}" rel="nofollow">Accueil</a>
+                <span></span> Toutes les categories
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block content %}
+    
+<section class="mt-50 mb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                {% for categorie in categories %}
+                    {# <div class="col-lg-3 col-md-4 col-12 col-s4m-6"> #}
+                    <div class="d-inline-flex h2 me-md-3">
+                            <a href="{{ path('detail_categorie', {'id': categorie.id}) }}" class="showDetailcategorie btn" data-id="{{ categorie.id }}">{{ categorie.libelle }}</a>
+                        {# <div class="product-cart-wrap mb-30">
+                        </div> #}
+                    </div>
+                {% endfor %}
+
+                <div class="row product-grid-3">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    </script>
+{% endblock %}
