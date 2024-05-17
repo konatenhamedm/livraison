@@ -39,7 +39,14 @@
                     <div class="contact-from-area padding-20-row-col wow FadeInUp">
                         <h3 class="mb-10 text-center">Envoyez nous un message</h3>
                         <p class="text-muted mb-30 text-center font-sm">Librement, vous pouvez nous envoyer un message.</p>
-                       {#  <form class="contact-form-style text-center" id="contact-form" action="#" method="post"> #}
+                        
+                        <form class="contact-form-style text-center"  action="#" >
+                         <div class="alert alert-success messageSuccess"  role="alert">
+                        This is a success alert—check it out!
+                        </div>
+                        <div class="alert alert-danger messageDanger" role="alert">
+                        This is a danger alert—check it out!
+                        </div>
                             <div class="row">
                                 <div class="col-lg-6 col-md-6">
                                     <div class="input-style mb-20">
@@ -69,8 +76,10 @@
                                     <a href="#" class="btn btn-fill-out btn-block "  id="soumettreFormulaire">Envoyer un message</a>
                                 </div>
                             </div>
-                        {# </form> #}
-                        <p class="form-messege"></p>
+                        </form>
+                       {#  <p class="form-messege " id="resError"></p> #}
+
+                       
                     </div>
                 </div>
             </div>
@@ -83,10 +92,14 @@
 {% block scripts %}
     <script>
     $(document).ready(function () {
+
+        $('.messageSuccess').hide()
+        $('.messageDanger').hide()
       
         function soumettreFormulaire() {
             //var url = "{{ path('supprimer_du_panier', {id: 'id'}) }}".replace('id', id);
-            var url = "{{ path('soumettre_contact') }}"
+           // alert('')
+            var url = "{{ path('send_contact') }}"
             var data = {
                 nom: $('#nom').val(),
                 email: $('#email').val(),
@@ -97,8 +110,24 @@
             var type = 'POST';
 
             var success = function (res) {
+                //alert(res.success)
                 console.log(res);
                 HoldOn.close()
+
+                if(res.success == true){
+                    $('#nom').html('')
+                    $('.messageSuccess').show()
+                    $('.messageDanger').hide()
+                    $('.messageSuccess').html(res.message)
+        
+                  //  $('#resError').html(res.message)
+                }else{
+                    $('.messageSuccess').hide()
+                    $('.messageDanger').show()
+                    $('.messageDanger').html(res.message)
+                }
+
+
                 //location.href = "{{ path('contact') }}";
             }
             var error = function (e) {
@@ -114,7 +143,7 @@
 
 
          $('#soumettreFormulaire').on('click', function () {
-            alert('')
+            //alert('')
                 soumettreFormulaire();
             })
     });

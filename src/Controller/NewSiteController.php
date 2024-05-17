@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\DTO\InscriptionDTO;
 use App\Entity\Categorie;
 use App\Entity\Commande;
+use App\Entity\Contact;
 use App\Entity\Produit;
 use App\Entity\LigneCommande;
 use App\Entity\UserFront;
@@ -647,5 +648,40 @@ class NewSiteController extends AbstractController
             'title' => $title,
             'facture' => 0/*$isFacture*/
         ]);
+    }
+
+    #[Route(path: 'soumettre/contact', name: 'send_contact', methods: ['GET', 'POST'])]
+    public function sendContact(Request $request, EntityManagerInterface $entityManager, FormError $formError)
+    {
+        // $response = [];
+
+
+        //dd("");
+        // dd($request->get('nom'));
+        if (
+            $request->request->get('nom') != null && $request->request->get('email')  != null && $request->request->get('sujet')  != null
+            && $request->request->get('message')  != null
+            && $request->request->get('telephone')  != null
+
+        ) {
+            $contact = new Contact();
+            $contact->setTelephone($request->request->get('telephone'));
+            $contact->setNom($request->request->get('nom'));
+            $contact->setEmail($request->request->get('email'));
+            $contact->setSujet($request->request->get('sujet'));
+            $contact->setMessage($request->request->get('message'));
+
+            $entityManager->persist($contact);
+            $entityManager->flush();
+            $response['success'] = true;
+            $response['message'] = "Merci pour votre message";
+        } else {
+            $response['success'] = false;
+            $response['message'] = "S'il vous plait, veuillez remplir tous les champs";
+        }
+
+
+
+        return   $this->json($response);
     }
 }

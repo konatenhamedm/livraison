@@ -140,40 +140,7 @@ class ContactController extends BaseController
 
 
 
-    #[Route(path: '/soumettre/contact', name: 'soumettre_contact', methods: ['GET', 'POST'])]
-    public function soummetre(Request $request, EntityManagerInterface $entityManager, FormError $formError)
-    {
-        $response = [];
 
-
-        // dd("");
-        /*  dd($request->get('nom'));
-        if (
-            $request->get('nom') != null && $request->get('email')  != null && $request->get('sujet')  != null
-            && $request->get('message')  != null
-            && $request->get('telephone')  != null
-
-        ) { */
-        $contact = new Contact();
-        $contact->setTelephone($request->get('telephone'));
-        $contact->setNom($request->get('nom'));
-        $contact->setEmail($request->get('email'));
-        $contact->setSujet($request->get('sujet'));
-        $contact->setMessage($request->get('message'));
-
-        $entityManager->persist($contact);
-        $entityManager->flush();
-        $response['success'] = true;
-        /* } else {
-            $response['success'] = true;
-        } */
-
-
-
-        return   $this->json([
-            'success' => True
-        ]);
-    }
 
     #[Route('/new', name: 'app_contact_contact_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, FormError $formError): Response
