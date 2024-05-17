@@ -21,6 +21,6 @@ jobs:
           sshpass -e ssh -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
           "cd ../var/www/clients/client1/topgrenier.com/web/ &&
          git pull origin main &&
-         php bin/console d:f:l
+         php bin/console d:f:l --no-interaction 
 
          "  
