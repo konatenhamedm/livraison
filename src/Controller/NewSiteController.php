@@ -93,9 +93,34 @@ class NewSiteController extends AbstractController
     public function liste_produits(Request $request, ProduitRepository $produitRepository): Response
     {
         $page = $request->query->getInt('page', 1);
+        $search = $request->query->get('search', '');
+        
+        // Pour des données de test en environnement réel sinon 12
+        $nbrePerPage = 2;
+
+        $produits = $produitRepository->findProduitsPaginatedAllProduct($page,  $nbrePerPage); 
+
+        if($search != '') {
+            /**
+             * Todo : Implementer la logique de recherche pour les produits
+             * 
+             * Example : $produits = produits where libelle like %$search %
+             *  
+             * */ 
+
+            // $produits = [
+            //     'data' => [],
+            //     'pages' => 1,
+            //     'page' => 1,
+            //     'limit' => 12
+            // ];
+            
+            $produits = $produitRepository->findProduitsPaginatedAllProduct($page, $nbrePerPage); // Juste pour voir
+        }
 
         return $this->render('new_site/liste_produits.html.twig', [
-            'produits' => $produitRepository->findProduitsPaginatedAllProduct($page,  12),
+            'produits' => $produits,
+            'search' => $search,
         ]);
     }
 

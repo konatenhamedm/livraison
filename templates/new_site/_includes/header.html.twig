@@ -264,7 +264,7 @@
                 </div>
                 <div class="header-action-right">
                     <div class="search-style-2">
-                        <form action="#">
+                        <form action="{{ path('liste_produits') }}" method="get">
                             {# <select class="select-active">
                                 <option>Tous</option>
                                 <option>Women's Clothing</option>
@@ -278,7 +278,7 @@
                                 <option>Shoes</option>
                                 <option>Mother & Kids</option>
                             </select> #}
-                            <input type="text" placeholder="Rechercher un produit …">
+                            <input name="search" type="text" placeholder="Rechercher un produit …" value="{{ search ?? '' }}">
                         </form>
                     </div>
                     <div class="header-action-2">
