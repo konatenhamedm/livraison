@@ -39,36 +39,37 @@
                     <div class="contact-from-area padding-20-row-col wow FadeInUp">
                         <h3 class="mb-10 text-center">Envoyez nous un message</h3>
                         <p class="text-muted mb-30 text-center font-sm">Librement, vous pouvez nous envoyer un message.</p>
-                        <form class="contact-form-style text-center" id="contact-form" action="#" method="post">
+                       {#  <form class="contact-form-style text-center" id="contact-form" action="#" method="post"> #}
                             <div class="row">
                                 <div class="col-lg-6 col-md-6">
                                     <div class="input-style mb-20">
-                                        <input name="name" placeholder="Nom et prénoms" type="text">
+                                        <input name="name" placeholder="Nom et prénoms" type="text" id="nom">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <div class="input-style mb-20">
-                                        <input name="email" placeholder="Email" type="email">
+                                        <input name="email" placeholder="Email" type="email" id="email">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <div class="input-style mb-20">
-                                        <input name="telephone" placeholder="Numero de téléphone" type="tel">
+                                        <input name="telephone" placeholder="Numero de téléphone" type="tel" id="telephone">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <div class="input-style mb-20">
-                                        <input name="subject" placeholder="Sujet" type="text">
+                                        <input name="subject" placeholder="Sujet" type="text" id="sujet">
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12">
                                     <div class="textarea-style mb-30">
-                                        <textarea name="message" placeholder="Message"></textarea>
+                                        <textarea name="message" placeholder="Message" id="message"></textarea>
                                     </div>
-                                    <button class="submit submit-auto-width" type="submit">Envoyer un message</button>
+                                   
+                                    <a href="#" class="btn btn-fill-out btn-block "  id="soumettreFormulaire">Envoyer un message</a>
                                 </div>
                             </div>
-                        </form>
+                        {# </form> #}
                         <p class="form-messege"></p>
                     </div>
                 </div>
@@ -81,5 +82,41 @@
 
 {% block scripts %}
     <script>
+    $(document).ready(function () {
+      
+        function soumettreFormulaire() {
+            //var url = "{{ path('supprimer_du_panier', {id: 'id'}) }}".replace('id', id);
+            var url = "{{ path('soumettre_contact') }}"
+            var data = {
+                nom: $('#nom').val(),
+                email: $('#email').val(),
+                telephone: $('#telephone').val(),
+                sujet: $('#sujet').val(),
+                message: $('#message').val(),
+            };
+            var type = 'POST';
+
+            var success = function (res) {
+                console.log(res);
+                HoldOn.close()
+                //location.href = "{{ path('contact') }}";
+            }
+            var error = function (e) {
+                console.log(e);
+                HoldOn.close()
+            }
+            var beforeSend = function () {
+                HoldOn.open()
+            }
+
+            sendAjax({url: url, type: type, data: data, success: success, error: error, options: {beforeSend: beforeSend}})
+        }
+
+
+         $('#soumettreFormulaire').on('click', function () {
+            alert('')
+                soumettreFormulaire();
+            })
+    });
     </script>
 {% endblock %}

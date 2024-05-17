@@ -40,6 +40,8 @@ class NewSiteController extends AbstractController
     #[Route(path: '', name: 'new_site')]
     public function indexSite(ProduitRepository $produitRepository, CategorieRepository $categorieRepository, SessionInterface $session): Response
     {
+
+
         $panier = $session->get('panier', []);
 
         $panierWithData = [];
@@ -87,10 +89,12 @@ class NewSiteController extends AbstractController
     }
 
     #[Route(path: 'tous-les-produits', name: 'liste_produits')]
-    public function liste_produits(ProduitRepository $produitRepository): Response
+    public function liste_produits(Request $request, ProduitRepository $produitRepository): Response
     {
+        $page = $request->query->getInt('page', 1);
+
         return $this->render('new_site/liste_produits.html.twig', [
-            'produits' => $produitRepository->findAll(),
+            'produits' => $produitRepository->findProduitsPaginatedAllProduct($page,  12),
         ]);
     }
 

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Produit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,28 +22,83 @@ class ProduitRepository extends ServiceEntityRepository
         parent::__construct($registry, Produit::class);
     }
 
-//    /**
-//     * @return Produit[] Returns an array of Produit objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findProduitsPaginated(int $page, int $id, int $limit = 12): array
+    {
+        $limit = abs($limit);
 
-//    public function findOneBySomeField($value): ?Produit
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $resultat = [];
+        $qb = $this->createQueryBuilder('p')
+            ->innerJoin('p.categorie', 'c')
+            ->andWhere('c.id = :id')
+            ->setParameter('id', $id)
+            ->setMaxResults($limit)
+            ->setFirstResult(($page * $limit) - $limit);
+
+        $paginator = new Paginator($qb);
+        $data = $paginator->getQuery()->getResult();
+
+        if (empty($data)) {
+            return $resultat;
+        }
+
+        $pages = ceil($paginator->count() / $limit);
+        $resultat = [
+            'data' => $data,
+            'pages' => $pages,
+            'page' => $page,
+            'limit' => $limit
+        ];
+        return $resultat;
+    }
+    public function findProduitsPaginatedAllProduct(int $page, int $limit = 12): array
+    {
+        $limit = abs($limit);
+
+        $resultat = [];
+        $qb = $this->createQueryBuilder('p')
+            ->setMaxResults($limit)
+            ->setFirstResult(($page * $limit) - $limit);
+
+        $paginator = new Paginator($qb);
+        $data = $paginator->getQuery()->getResult();
+
+        if (empty($data)) {
+            return $resultat;
+        }
+
+        $pages = ceil($paginator->count() / $limit);
+        $resultat = [
+            'data' => $data,
+            'pages' => $pages,
+            'page' => $page,
+            'limit' => $limit
+        ];
+        return $resultat;
+    }
+
+
+    //    /**
+    //     * @return Produit[] Returns an array of Produit objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('p.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Produit
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

@@ -27,6 +27,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public const DEFAULT_ROUTE_USER = 'new_site';
     public const DEFAULT_ROUTE_RESUME = 'resume';
+    public const DEFAULT_ROUTE_SIMPLE = 'app_auth_simple';
 
     public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
@@ -41,9 +42,12 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         if ($request->attributes->get('_route') == self::LOGIN_ROUTE) {
             return self::LOGIN_ROUTE === $request->attributes->get('_route')
                 && $request->isMethod('POST');
-        } else {
+        } elseif ($request->attributes->get('_route') == self::LOGIN_ROUTE_RESUME) {
             // dd('');
             return self::LOGIN_ROUTE_RESUME === $request->attributes->get('_route')
+                && $request->isMethod('POST');
+        } else {
+            return self::DEFAULT_ROUTE_SIMPLE === $request->attributes->get('_route')
                 && $request->isMethod('POST');
         }
         //return $response;
@@ -92,6 +96,14 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     protected function getLoginUrl(Request $request): string
     {
-        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+        //dd($request->attributes->get('_route'));
+        if (($request->attributes->get('_route') == self::LOGIN_ROUTE_RESUME)) {
+            return $this->urlGenerator->generate(self::DEFAULT_ROUTE_RESUME);
+        } elseif (($request->attributes->get('_route') == self::LOGIN_ROUTE)) {
+            return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+        } else {
+            return $this->urlGenerator->generate(self::DEFAULT_ROUTE_SIMPLE);
+        }
+        //return $this->urlGenerator->generate(self::DEFAULT_ROUTE_RESUME);
     }
 }
