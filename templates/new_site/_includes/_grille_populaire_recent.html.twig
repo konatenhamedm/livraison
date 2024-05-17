@@ -19,7 +19,7 @@
             <div class="tab-content wow fadeIn animated" id="myTabContent">
                 <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
                     <div class="row product-grid-4">
-                        {% for populaire in populaires %}
+                        {% for populaire in populaires_index %}
                             <div class="col-lg-3 col-md-4 col-12 col-sm-6">
                                 <div class="product-cart-wrap mb-30">
                                     <div class="product-img-action-wrap">
@@ -60,7 +60,7 @@
                 <!--En tab one (Featured)-->
                 <div class="tab-pane fade" id="tab-three" role="tabpanel" aria-labelledby="tab-three">
                     <div class="row product-grid-4">
-                        {% for recent in recents %}
+                        {% for recent in recents_index %}
                             <div class="col-lg-3 col-md-4 col-12 col-sm-6">
                                 <div class="product-cart-wrap mb-30">
                                     <div class="product-img-action-wrap">

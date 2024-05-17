@@ -3,7 +3,7 @@
         <div class="container">
             <div class="tab-header">
                 <ul class="nav nav-tabs" id="productTab" role="tablist">
-                    {% for key,categorie in categories %}
+                    {% for key,categorie in categories_index|filter(item => item.produits|length > 0) %}
                         <li class="nav-item" role="presentation">
                             {# <a class="d-flex m-2 py-2 bg-light rounded-pill " data-bs-toggle="pill" href="#{{ categorie.libelle |replace({' ': ''})}}">
                                 <span class="text-dark" style="width: 130px;"></span>
@@ -18,11 +18,14 @@
             </div>
             <!--End nav-tabs-->
             <div class="tab-content wow fadeIn animated" id="productTabContent">
-                {% for key,categorie in categories %}
+            
+                {% for key,categorie in categories_index|filter(item => item.produits|length > 0)  %}
+
+                
                     <div class="tab-pane fade show {% if key == 0 %} active {% endif %}" id="tab-categorie-{{ key }}" role="tabpanel" aria-labelledby="tab-one">
                         <div class="row product-grid-4">
-                            {% for produit in produits %}
-                                {% if produit.categorie.id == categorie.id %}
+                            {% for produit in categorie.produits|slice(0, 12) %}
+                               {#  {% if produit.categorie.id == categorie.id %} #}
                                     <div class="col-lg-3 col-md-4 col-12 col-sm-6">
                                         <div class="product-cart-wrap mb-30">
                                             <div class="product-img-action-wrap">
@@ -56,7 +59,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                {% endif %}
+                                {# {% endif %} #}
                             {% endfor %}
                         </div>
                         <!--End product-grid-4-->

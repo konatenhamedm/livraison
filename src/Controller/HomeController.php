@@ -34,6 +34,19 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 class HomeController extends AbstractController
 {
+
+    #[Route(path: '/update/date')]
+    public function updateDateProduit(ProduitRepository $produitRepository): Response
+    {
+        $produits = $produitRepository->findAll();
+        foreach ($produits as $produit) {
+            $produit->setDateCreation(new DateTime());
+            $this->em->persist($produit);
+        }
+        $this->em->flush();
+        return $this->json('ok');
+    }
+
     #[Route(path: '/home', name: 'app_default')]
     public function index(Request $request): Response
     {

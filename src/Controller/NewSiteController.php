@@ -57,17 +57,31 @@ class NewSiteController extends AbstractController
             $total += $couple['product']->getPrix() * $couple['quantity'];
         }
 
+        $limitProduit = 5;
+        $limitCategorie = 6;
+        $limitPopulaire = 12;
+        $limitProduitCategorie = 12;
+
+        //dd($categorieRepository->findBy([], [], $limitCategorie));
+
         $populaires = $produitRepository->findAll();
+        $populaires_index = $produitRepository->findBy([], [], $limitPopulaire);
+        $recents_index = $produitRepository->findBy([], ['dateCreation' => 'DESC'], $limitPopulaire);
         $recents = $produitRepository->findBy([], ['dateCreation' => 'DESC']);
 
         return $this->render('new_site/index.html.twig', [
+            'produits_baniere' => $produitRepository->findBy([], ['dateCreation' => 'DESC'], $limitProduit),
             'produits' => $produitRepository->findAll(),
+            'produits_index' => $produitRepository->findBy([], [], $limitProduitCategorie),
             'categories' => $categorieRepository->findAll(),
+            'categories_index' => $categorieRepository->findBy([], [], $limitCategorie),
             "items" => $panierWithData,
             'nombre' => count($panierWithData),
             "total" => $total,
             'vegetals' => $produitRepository->findBy(['categorie' => 3]),
             'recents' => $recents,
+            'recents_index' => $recents_index,
+            'populaires_index' => $populaires_index,
             'populaires' => $populaires,
         ]);
     }
