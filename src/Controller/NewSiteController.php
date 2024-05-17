@@ -94,19 +94,19 @@ class NewSiteController extends AbstractController
     {
         $page = $request->query->getInt('page', 1);
         $search = $request->query->get('search', '');
-        
+
         // Pour des données de test en environnement réel sinon 12
-        $nbrePerPage = 2;
+        $nbrePerPage = 16;
 
-        $produits = $produitRepository->findProduitsPaginatedAllProduct($page,  $nbrePerPage); 
+        $produits = $produitRepository->findProduitsPaginatedAllProduct($page, $search, $nbrePerPage);
 
-        if($search != '') {
+        if ($search != '') {
             /**
              * Todo : Implementer la logique de recherche pour les produits
              * 
              * Example : $produits = produits where libelle like %$search %
              *  
-             * */ 
+             * */
 
             // $produits = [
             //     'data' => [],
@@ -114,8 +114,8 @@ class NewSiteController extends AbstractController
             //     'page' => 1,
             //     'limit' => 12
             // ];
-            
-            $produits = $produitRepository->findProduitsPaginatedAllProduct($page, $nbrePerPage); // Juste pour voir
+
+            $produits = $produitRepository->findProduitsPaginatedAllProduct($page, $search, $nbrePerPage); // Juste pour voir
         }
 
         return $this->render('new_site/liste_produits.html.twig', [

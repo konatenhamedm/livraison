@@ -50,7 +50,7 @@ class ProduitRepository extends ServiceEntityRepository
         ];
         return $resultat;
     }
-    public function findProduitsPaginatedAllProduct(int $page, int $limit = 12): array
+    public function findProduitsPaginatedAllProduct(int $page, $searchString, int $limit = 12): array
     {
         $limit = abs($limit);
 
@@ -58,6 +58,11 @@ class ProduitRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('p')
             ->setMaxResults($limit)
             ->setFirstResult(($page * $limit) - $limit);
+
+        if ($searchString != '') {
+            $qb->andWhere('p.libelle LIKE :search')
+                ->setParameter('search', '%' . $searchString . '%');
+        }
 
         $paginator = new Paginator($qb);
         $data = $paginator->getQuery()->getResult();
