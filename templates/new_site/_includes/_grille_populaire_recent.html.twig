@@ -26,7 +26,7 @@
                                         <div class="product-img product-img-zoom">
                                             <a href="{{ path('detail_produit', {'id': populaire.id}) }}" class="showDetailProduit" data-id="{{ populaire.id }}">
                                                 <img class="default-img" src="{{ asset('uploads/'~ populaire.fichier.path ~'/'~ populaire.fichier.alt) }}" alt="" style="height: 278px;">
-                                                <img class="hover-img" src="{{ asset('evara-frontend/assets/imgs/shop/product-1-2.jpg') }}" alt="">
+                                                <img class="hover-img" src="{{ asset('uploads/'~ populaire.fichier.path ~'/'~ populaire.fichier.alt) }}" alt="">
                                             </a>
                                         </div>
                                         <div class="product-action-1">
@@ -67,7 +67,7 @@
                                         <div class="product-img product-img-zoom">
                                             <a href="{{ path('detail_produit', {'id': recent.id}) }}" class="showDetailProduit" data-id="{{ recent.id }}">
                                                 <img class="default-img" src="{{ asset('uploads/'~ recent.fichier.path ~'/'~ recent.fichier.alt) }}" alt="" style="height: 278px;">
-                                                <img class="hover-img" src="{{ asset('evara-frontend/assets/imgs/shop/product-1-2.jpg') }}" alt="">
+                                                <img class="hover-img" src="{{ asset('uploads/'~ recent.fichier.path ~'/'~ recent.fichier.alt) }}" alt="">
                                             </a>
                                         </div>
                                         <div class="product-action-1">
