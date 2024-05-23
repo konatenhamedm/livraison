@@ -16,6 +16,7 @@ use App\Repository\CategorieRepository;
 use App\Repository\CommandeRepository;
 use App\Repository\LigneCommandeRepository;
 use App\Repository\ProduitRepository;
+use App\Repository\FavoriteRepository;
 use App\Repository\UtilisateurSimpleRepository;
 use App\Security\LoginFormAuthenticator;
 use App\Service\CartService;
@@ -95,28 +96,9 @@ class NewSiteController extends AbstractController
         $page = $request->query->getInt('page', 1);
         $search = $request->query->get('search', '');
 
-        // Pour des données de test en environnement réel sinon 12
         $nbrePerPage = 16;
 
         $produits = $produitRepository->findProduitsPaginatedAllProduct($page, $search, $nbrePerPage);
-
-        if ($search != '') {
-            /**
-             * Todo : Implementer la logique de recherche pour les produits
-             * 
-             * Example : $produits = produits where libelle like %$search %
-             *  
-             * */
-
-            // $produits = [
-            //     'data' => [],
-            //     'pages' => 1,
-            //     'page' => 1,
-            //     'limit' => 12
-            // ];
-
-            $produits = $produitRepository->findProduitsPaginatedAllProduct($page, $search, $nbrePerPage); // Juste pour voir
-        }
 
         return $this->render('new_site/liste_produits.html.twig', [
             'produits' => $produits,
@@ -337,7 +319,7 @@ class NewSiteController extends AbstractController
     }
 
     #[Route(path: 'panier/ajouter/{id}', name: 'ajouter_au_panier', methods: ['POST'])]
-    public function add($id, ProduitRepository $produitRepository, SessionInterface $session, Request $request)
+    public function addCart($id, ProduitRepository $produitRepository, SessionInterface $session, Request $request)
     {
         $panier = $session->get('panier', []);
 
@@ -373,7 +355,7 @@ class NewSiteController extends AbstractController
 
 
     #[Route(path: 'panier/supprimer/{id}', name: 'supprimer_du_panier')]
-    public function remove($id, ProduitRepository $produitRepository, SessionInterface $session)
+    public function removeCart($id, ProduitRepository $produitRepository, SessionInterface $session)
     {
         $panier = $session->get('panier', []);
 
@@ -399,7 +381,7 @@ class NewSiteController extends AbstractController
     }
 
     #[Route(path: 'panier/vider', name: 'vider_le_panier')]
-    public function empty(SessionInterface $session)
+    public function emptyCart(SessionInterface $session)
     {
         $panier = [];
 
@@ -417,6 +399,40 @@ class NewSiteController extends AbstractController
         ]);
     }
 
+
+    #[Route(path: 'favoris', name: 'favorites')]
+    public function indexFavorites(Request $request, FavoriteRepository $favoriteRepository): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_auth_simple');
+        }
+
+        $page = $request->query->getInt('page', 1);
+        $search = $request->query->get('search', '');
+
+        $nbrePerPage = 16;
+
+        $produits = $favoriteRepository->findProduitsPaginatedAllProduct($page, $search, $nbrePerPage);
+
+
+        return $this->render('new_site/favorites.html.twig', [
+            'produits' => $produits,
+            'search' => $search,
+        ]);
+    }
+
+    #[Route(path: 'favoris/ajouter/{id}', name: 'ajouter_aux_favoris')]
+    public function addFavorites($id, ProduitRepository $produitRepository, SessionInterface $session, Request $request)
+    {
+        // 
+    }
+
+
+    #[Route(path: 'favoris/supprimer/{id}', name: 'supprimer_des_favoris')]
+    public function removeFavorites($id, ProduitRepository $produitRepository, SessionInterface $session)
+    {
+        //
+    }
 
 
 

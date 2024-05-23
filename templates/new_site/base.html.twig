@@ -503,6 +503,13 @@
         }
 
         $(document).ready(function () {
+            $('#btnSearchMobile').click(function () {
+                $('.mobile-header-active').addClass('sidebar-visible');
+                $('body').addClass('mobile-menu-active');
+                $('#searchMobile').focus();
+            })
+
+
             $('.addToCart').on('click', function () {
                 ajouterAuPanier($(this).data('id'));
             })

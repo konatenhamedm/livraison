@@ -5,7 +5,7 @@
         <div class="container">
             <div class="breadcrumb">
                 <a href="{{ path('new_site') }}" rel="nofollow">Accueil</a>
-                <span></span> {% if search == '' %}Tous les produits{% else %}Resultat de recherche{% endif %}
+                <span></span> Ma liste d'envie
             </div>
         </div>
     </div>
@@ -20,11 +20,7 @@
             <div class="col-lg-12">
                 <div class="shop-product-fillter">
                     <div class="totall-product">
-                        {% if search == '' %}
-                            <p> Liste de <strong class="text-brand">tous les produits</strong></p>
-                        {% else %}
-                            <p> Resultat de recherche : <strong class="text-brand">{{ search }}</strong></p>
-                        {% endif %}
+                        <p> Liste des <strong class="text-brand">produits favoris</strong></p>
                     </div>
                     {# <div class="sort-by-product-area">
                         <div class="sort-by-cover mr-10">
@@ -105,7 +101,7 @@
                         </div>
                     {% endfor %}
 
-                    {% set path = "liste_produits" %}
+                    {% set path = "favorites" %}
                     {% set pages = produits.pages %}
                     {% set currentPage = produits.page %}
 

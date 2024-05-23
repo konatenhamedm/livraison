@@ -7,7 +7,9 @@
             </a>
         </div>
         <div class="product-action-1">
-            <a aria-label="Vue rapide" class="action-btn hover-up showDetailProduit" data-id="{{ product.id }}"><i class="fi-rs-eye"></i></a>
+            {# <a aria-label="Vue rapide" class="action-btn hover-up showDetailProduit" data-id="{{ product.id }}"><i class="fi-rs-eye"></i></a> #}
+            <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="{{ path('ajouter_aux_favoris', {'id': product.id }) }}"><i class="fi-rs-heart"></i></a>
+
         </div>
         {# <div class="product-badges product-badges-position product-badges-mrg">
             <span class="hot">Hot</span>

@@ -282,16 +282,23 @@
                         </form>
                     </div>
                     <div class="header-action-2">
-                        {# Wishlist icon #}
-                        {# <div class="header-action-icon-2">
-                            <a href="shop-wishlist.html">
-                                <img class="svgInject" alt="Evara" src="{{ asset('evara-frontend/assets/imgs/theme/icons/icon-heart.svg') }}">
-                                <span class="pro-count blue">4</span>
+                        <div class="header-action-icon-2 d-block d-lg-none ms-3">
+                            <a href="javascript:void(0);" id="btnSearchMobile">
+                                <img class="svgInject" alt="favorites" src="{{ asset('evara-frontend/assets/imgs/theme/icons/search.png') }}">
+                                {# <span class="pro-count blue">4</span> #}
                             </a>
-                        </div> #}
+                        </div>
+
+                        {# Wishlist icon #}
+                        <div class="header-action-icon-2">
+                            <a href="{{ path('favorites') }}">
+                                <img class="svgInject" alt="favorites" src="{{ asset('evara-frontend/assets/imgs/theme/icons/icon-heart.svg') }}">
+                                {# <span class="pro-count blue">4</span> #}
+                            </a>
+                        </div>
                         <div class="header-action-icon-2">
                             <a class="mini-cart-icon" href="{{ path('panier') }}">
-                                <img alt="Evara" src="{{ asset('evara-frontend/assets/imgs/theme/icons/icon-cart.svg') }}">
+                                <img alt="cart" src="{{ asset('evara-frontend/assets/imgs/theme/icons/icon-cart.svg') }}">
                                 <span id="panierNbre" class="pro-count blue {{ app.session.get('panier')|length == 0 ? 'd-none' : '' }}">{{ app.session.get('panier')|length }}</span>
                             </a>
                             {# <div class="cart-dropdown-wrap cart-dropdown-hm2">
@@ -339,7 +346,7 @@
                                 <span id="panierMontant" class=" h6 text-nowrap">{{ app.session.get('total_panier') ?? 0 }} FCFA</span>
                             </a>
                         </div>
-                        <div class="header-action-icon d-block d-lg-none">
+                        <div class="header-action-icon d-block d-lg-none ms-3">
                             <div class="burger-icon">
                                 <span class="burger-icon-top"></span>
                                 <span class="burger-icon-mid"></span>
