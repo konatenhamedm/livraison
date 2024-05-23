@@ -70,7 +70,8 @@
                 <div class="row product-grid-3">
                     {% for produit in produits.data %}
                         <div class="col-lg-3 col-md-4 col-12 col-sm-6">
-                            <div class="product-cart-wrap mb-30">
+                            {% include 'new_site/_includes/_produit_card.html.twig' with {product: produit} %}
+                            {# <div class="product-cart-wrap mb-30">
                                 <div class="product-img-action-wrap">
                                     <div class="product-img product-img-zoom">
                                         <a href="{{ path('detail_produit', {'id': produit.id}) }}" class="showDetailProduit" data-id="{{ produit.id }}">
@@ -81,9 +82,6 @@
                                     <div class="product-action-1">
                                         <a href="{{ path('detail_produit', {'id': produit.id}) }}" aria-label="Vue rapide" class="action-btn hover-up showDetailProduit" data-id="{{ produit.id }}"><i class="fi-rs-eye"></i></a>
                                     </div>
-                                    {# <div class="product-badges product-badges-position product-badges-mrg">
-                                        <span class="hot">Hot</span>
-                                    </div> #}
                                 </div>
                                 <div class="product-content-wrap">
                                     <div class="product-category">
@@ -92,14 +90,13 @@
                                     <h2><a href="{{ path('detail_produit', {'id': produit.id}) }}" class="showDetailProduit" data-id="{{ produit.id }}">{{ produit.libelle }}</a></h2>
                                     <div class="product-price">
                                         <span>{{ produit.prix }} FCFA</span>
-                                        {# <span class="old-price">{{ produit.prix }} FCFA</span> #}
                                         <span class="d-block"><small>(Par {{produit.unite}})</small></span>
                                     </div>
                                     <div class="product-action-1 show">
                                         <a aria-label="Ajouter au panier" class="action-btn hover-up addToCart" data-id="{{ produit.id }}" href="javascript:void(0);"><i class="fi-rs-shopping-bag-add"></i></a>
                                     </div>
                                 </div>
-                            </div>
+                            </div> #}
                         </div>
                     {% else %}
                         <div class="m-auto text-center">
@@ -251,5 +248,43 @@
 
 {% block scripts %}
     <script>
+        $(document).ready(function () {
+            
+            var updateTimers = [];
+            $('.qty-up, .qty-down').click(function() {
+                var $card = $(this).closest('.product-cart-wrap');
+                var $qty = $card.find('.qty-val');
+                var currentQty = parseInt($qty.text());
+                var pricePerUnit = parseFloat($card.find('span.price').text().replace(' FCFA', ''));
+
+                var montantPanier = $('#panierMontant').text().replace(' FCFA', '');
+
+                if ($(this).hasClass('qty-up')) {
+                    $qty.text(currentQty + 1);
+                    $('#panierMontant').text(parseFloat(montantPanier) + pricePerUnit + ' FCFA');
+                } else if ($(this).hasClass('qty-down') && currentQty > 1) {
+                    $qty.text(currentQty - 1);
+                    $('#panierMontant').text(parseFloat(montantPanier) - pricePerUnit + ' FCFA');
+                }
+
+                var newTotal = (parseInt($qty.text()) * pricePerUnit);
+
+                $card.find('.total-price').text(newTotal + ' FCFA');
+
+                var productId = $card.data('product_id');
+                
+                // Reset the timer if it's already set
+                clearTimeout(updateTimers[productId]);
+
+                // Set a new timer
+                updateTimers[productId] = setTimeout(function() {
+                    ajouterAuPanier(productId, $qty.text(), true);
+                }, 2000); // 2000 milliseconds = 2 seconds
+            });
+
+            $('.removeFromCart').on('click', function () {
+                supprimerDuPanier($(this).data('id'))
+            });
+        })
     </script>
 {% endblock %}
