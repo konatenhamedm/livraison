@@ -332,6 +332,13 @@
                                 </div>
                             </div> #}
                         </div>
+                        <div class="header-action-icon">
+                            <a href="{{ path('panier') }}">
+                                {# <img class="svgInject" alt="Evara" src="{{ asset('evara-frontend/assets/imgs/theme/icons/icon-heart.svg') }}">
+                                <span class="pro-count blue">4</span> #}
+                                <span id="panierMontant" class=" h6 text-nowrap">{{ app.session.get('total_panier') ?? 0 }} FCFA</span>
+                            </a>
+                        </div>
                         <div class="header-action-icon d-block d-lg-none">
                             <div class="burger-icon">
                                 <span class="burger-icon-top"></span>

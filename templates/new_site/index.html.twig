@@ -19,18 +19,43 @@
 {% block scripts %}
     <script>
         $(document).ready(function () {
-        })
-        /*
-            $("#modal_produit_libelle").html('Mon produit');
-            $("#modal_produit_prix").html('18 000 FCFA');
-            $("#modal_produit_description").html('Ceci est une description');
-            $("#modal_produit_categorie_libelle").prop('href', "{{ path('new_site') }}").html('Electronique');
-            $("#modal_produit_btn_ajouter_panier").prop('data-id', "1");
-
-            $('#quickViewModal').modal('show');
-        */
-        // $('#quickViewModal').on('hidden.bs.modal', function (e) {
             
-        // })
+            var updateTimers = [];
+            $('.qty-up, .qty-down').click(function() {
+                var $card = $(this).closest('.product-cart-wrap');
+                var $qty = $card.find('.qty-val');
+                var currentQty = parseInt($qty.text());
+                var pricePerUnit = parseFloat($card.find('span.price').text().replace(' FCFA', ''));
+
+                var montantPanier = $('#panierMontant').text().replace(' FCFA', '');
+
+                if ($(this).hasClass('qty-up')) {
+                    $qty.text(currentQty + 1);
+                    $('#panierMontant').text(parseFloat(montantPanier) + pricePerUnit + ' FCFA');
+                } else if ($(this).hasClass('qty-down') && currentQty > 1) {
+                    $qty.text(currentQty - 1);
+                    $('#panierMontant').text(parseFloat(montantPanier) - pricePerUnit + ' FCFA');
+                }
+
+                var newTotal = (parseInt($qty.text()) * pricePerUnit);
+
+                $card.find('.total-price').text(newTotal + ' FCFA');
+
+                var productId = $card.data('product_id');
+                
+                // Reset the timer if it's already set
+                clearTimeout(updateTimers[productId]);
+
+                // Set a new timer
+                updateTimers[productId] = setTimeout(function() {
+                    ajouterAuPanier(productId, $qty.text(), true);
+                }, 2000); // 2000 milliseconds = 2 seconds
+            });
+
+            $('.removeFromCart').on('click', function () {
+                supprimerDuPanier($(this).data('id'))
+            });
+        })
+        
     </script>
 {% endblock %}

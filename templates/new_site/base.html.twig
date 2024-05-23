@@ -357,6 +357,13 @@
                 console.log(res);
                 $('#panierNbre').removeClass('d-none');
                 $('#panierNbre').text(res.data.panierNbre);
+                $('#panierMontant').text(res.data.panierMontant + ' FCFA');
+
+                var $card = $('.product-cart-wrap[data-product_id="'+id+'"]');
+                if($card.length > 0) {
+                    $card.find('.produitCommande').removeClass('d-none')
+                    $card.find('.produitNonCommande').addClass('d-none')
+                }
 
                 if(!silent) HoldOn.close()
             }
@@ -368,6 +375,71 @@
             var beforeSend = function () {
                 // rel.html(`<i class="fa fa-spinner fa-pulse text-primary"></i>`).attr('data-original-title', 'Saving in progress')
                 if(!silent) HoldOn.open()
+            }
+
+            sendAjax({url: url, type: type, data: data, success: success, error: error, options: {beforeSend: beforeSend}})
+        }
+        
+        function supprimerDuPanier(id) {
+            var url = "{{ path('supprimer_du_panier', {id: 'id'}) }}".replace('id', id);
+            var data = {};
+
+            var type = 'POST';
+
+            var success = function (res) {
+                console.log(res);
+                $('#panierNbre').text(res.data.panierNbre);
+                $('#panierMontant').text(res.data.panierMontant + ' FCFA');
+                
+                if(res.data.panierNbre == 0) {
+                    $('#panierNbre').addClass('d-none');
+                }
+
+                var $card = $('.product-cart-wrap[data-product_id="'+id+'"]');
+                if($card.length > 0) {
+                    $card.find('.produitCommande').addClass('d-none')
+                    $card.find('.produitNonCommande').removeClass('d-none')
+                }
+
+                HoldOn.close()
+            }
+            var error = function (e) {
+                console.log(e);
+
+                HoldOn.close()
+            }
+            var beforeSend = function () {
+                HoldOn.open()
+            }
+
+            sendAjax({url: url, type: type, data: data, success: success, error: error, options: {beforeSend: beforeSend}})
+        }
+        
+        function viderLePanier(){
+            var url = "{{ path('vider_le_panier') }}";
+            var data = {};
+
+            var type = 'POST';
+
+            var success = function (res) {
+                console.log(res);
+                $('#panierNbre').text(res.data.panierNbre);
+                $('#panierMontant').text(res.data.panierMontant + ' FCFA');
+                if(res.data.panierNbre == 0) {
+                    $('#panierNbre').addClass('d-none');
+                }
+                HoldOn.close()
+                
+                window.location.reload();
+
+            }
+            var error = function (e) {
+                console.log(e);
+
+                HoldOn.close()
+            }
+            var beforeSend = function () {
+                HoldOn.open()
             }
 
             sendAjax({url: url, type: type, data: data, success: success, error: error, options: {beforeSend: beforeSend}})

@@ -3460,10 +3460,10 @@ table .product-thumbnail img {
 .product-cart-wrap .product-action-1.show {
   visibility: visible;
   opacity: 1;
-  bottom: 26px;
+  top: 46px;
   left: unset;
   right: 20px;
-  top: unset;
+  bottom: unset;
   -webkit-transform: none;
           transform: none;
 }
@@ -3479,6 +3479,10 @@ table .product-thumbnail img {
   position: relative;
   display: inline-block;
   border: 1px solid #cce7d0;
+}
+
+.product-cart-wrap .product-action-1 button, .product-cart-wrap .product-action-1 a.action-btn.btn-perso-danger {
+  background-color: #f6e8eb;
 }
 
 .product-cart-wrap .product-action-1 button.small, .product-cart-wrap .product-action-1 a.action-btn.small {
@@ -3514,6 +3518,10 @@ table .product-thumbnail img {
   transform: translateX(-50%) translateY(0px);
 }
 
+.product-cart-wrap .product-action-1 button:after, .product-cart-wrap .product-action-1 a.action-btn.btn-perso-danger:after {
+  background-color: #81081c;
+}
+
 .product-cart-wrap .product-action-1 button:before, .product-cart-wrap .product-action-1 a.action-btn:before {
   content: '';
   position: absolute;
@@ -3531,6 +3539,10 @@ table .product-thumbnail img {
   visibility: hidden;
 }
 
+.product-cart-wrap .product-action-1 button:before, .product-cart-wrap .product-action-1 a.action-btn.btn-pero-danger:before {
+  border-top-color: #81081c;
+}
+
 .product-cart-wrap .product-action-1 button:last-child, .product-cart-wrap .product-action-1 a.action-btn:last-child {
   margin-right: 0;
 }
@@ -3543,6 +3555,10 @@ table .product-thumbnail img {
 .product-cart-wrap .product-action-1 button:hover, .product-cart-wrap .product-action-1 a.action-btn:hover {
   background-color: #088178;
   border: 1px solid transparent;
+}
+
+.product-cart-wrap .product-action-1 button:hover, .product-cart-wrap .product-action-1 a.action-btn.btn-perso-danger:hover {
+  background-color: #81081c;
 }
 
 .product-cart-wrap .product-action-1 button:hover:after, .product-cart-wrap .product-action-1 a.action-btn:hover:after {
@@ -4199,6 +4215,9 @@ table .product-thumbnail img {
   font-weight: 500;
 }
 
+.product-list .product-cart-wrap .product-content-wrap .product-action-1 a.action-btn.btn-perso-danger {
+  background-color: #81081c;
+}
 .product-list .product-cart-wrap .product-content-wrap .product-action-1 a.action-btn i {
   margin-right: 8px;
   color: #fff;
@@ -4399,6 +4418,14 @@ table .product-thumbnail img {
 
 .detail-qty > a.qty-down {
   bottom: 0;
+}
+
+.detail-qty > a.qty-left {
+  left: 0;
+}
+
+.detail-qty > a.qty-right {
+  right: 0;
 }
 
 .attr-detail .select-box select {

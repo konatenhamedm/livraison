@@ -287,8 +287,6 @@ class NewSiteController extends AbstractController
                 }
             }
 
-
-
             if ($isAjax) {
                 //dd($data);
                 return $this->json(compact('statut', 'message', 'redirect', 'data', 'fullRedirect'), $statutCode);
@@ -339,7 +337,7 @@ class NewSiteController extends AbstractController
     }
 
     #[Route(path: 'panier/ajouter/{id}', name: 'ajouter_au_panier', methods: ['POST'])]
-    public function add($id, SessionInterface $session, Request $request)
+    public function add($id, ProduitRepository $produitRepository, SessionInterface $session, Request $request)
     {
         $panier = $session->get('panier', []);
 
@@ -353,7 +351,14 @@ class NewSiteController extends AbstractController
             $panier[$id]++;
         }
 
+        $montant = 0;
+        foreach ($panier as $id => $quantity) {
+            $montant += $quantity * $produitRepository->find($id)->getPrix();
+        }
+
         $session->set('panier', $panier);
+        $session->set('total_panier', $montant);
+
 
         // return $this->redirectToRoute("app_site");
 
@@ -361,21 +366,26 @@ class NewSiteController extends AbstractController
             'data' =>
             [
                 "panierNbre" => count($panier),
+                "panierMontant" => $montant
             ]
         ]);
     }
 
 
     #[Route(path: 'panier/supprimer/{id}', name: 'supprimer_du_panier')]
-    public function remove($id, SessionInterface $session)
+    public function remove($id, ProduitRepository $produitRepository, SessionInterface $session)
     {
         $panier = $session->get('panier', []);
 
+        $montant = $session->get('total_panier') - ($panier[$id] * $produitRepository->find($id)->getPrix());
+        
         if (!empty($panier[$id])) {
             unset($panier[$id]);
         }
 
+
         $session->set('panier', $panier);
+        $session->set('total_panier', $montant);
 
         // return $this->redirectToRoute('app_site_panier');
 
@@ -383,6 +393,7 @@ class NewSiteController extends AbstractController
             'data' =>
             [
                 "panierNbre" => count($panier),
+                "panierMontant" => $session->get('total_panier')
             ]
         ]);
     }
@@ -393,6 +404,7 @@ class NewSiteController extends AbstractController
         $panier = [];
 
         $session->set('panier', $panier);
+        $session->set('total_panier', 0);
 
         // return $this->redirectToRoute('app_site_panier');
 
@@ -400,6 +412,7 @@ class NewSiteController extends AbstractController
             'data' =>
             [
                 "panierNbre" => count($panier),
+                "panierMontant" => 0
             ]
         ]);
     }

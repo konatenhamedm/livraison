@@ -1,0 +1,46 @@
+<div class="product-cart-wrap mb-30" data-product_id="{{ product.id }}">
+    <div class="product-img-action-wrap">
+        <div class="product-img product-img-zoom">
+            <a href="javascript:void(0);" class="showDetailProduit" data-id="{{ product.id }}">
+                <img class="default-img my-3 m-auto" src="{{ asset('uploads/'~ product.fichier.path ~'/'~ product.fichier.alt) }}" alt="" style="height: 100px; width: auto;">
+                {# <img class="hover-img" src="{{ asset('uploads/'~ product.fichier.path ~'/'~ product.fichier.alt) }}" alt="" style="height: 278px;"> #}
+            </a>
+        </div>
+        <div class="product-action-1">
+            <a aria-label="Vue rapide" class="action-btn hover-up showDetailProduit" data-id="{{ product.id }}"><i class="fi-rs-eye"></i></a>
+        </div>
+        {# <div class="product-badges product-badges-position product-badges-mrg">
+            <span class="hot">Hot</span>
+        </div> #}
+    </div>
+    <div class="product-content-wrap">
+        <div class="product-category">
+            <a href="{{ path('detail_categorie', {'id': product.categorie.id }) }}">{{ product.categorie.libelle }}</a>
+        </div>
+        <h2><a href="{{ path('detail_produit', {'id': product.id }) }}">{{ product.libelle }}</a></h2>
+        <div class="product-price">
+            <span class="price">{{ product.prix }} FCFA</span>
+            {# <span class="old-price">{{ product.prix }} FCFA</span> #}
+            <span class="d-block"><small>(Par {{product.unite}})</small></span>
+        </div>
+        
+        
+        <div class="product-action-1 show">
+            {# <a aria-label="Ajouter au panier" class="action-btn hover-up" href="{{ path('ajouter_au_panier', {'id': product.id}) }}"><i class="fi-rs-shopping-bag-add"></i></a> #}
+            <a aria-label="Ajouter au panier" class="action-btn hover-up addToCart produitNonCommande {% if app.session.get('panier')[product.id] is defined %}d-none{% endif %}" data-id="{{ product.id }}" href="javascript:void(0);"><i class="fi-rs-shopping-bag-add"></i></a>
+            <a aria-label="Retirer du panier" class="action-btn btn-perso-danger hover-up removeFromCart produitCommande {% if app.session.get('panier')[product.id] is not defined %}d-none{% endif %}" data-id="{{ product.id }}" href="javascript:void(0);"><i class="fi-rs-trash"></i></a>
+        </div>
+        
+        <div class="produitCommande {% if app.session.get('panier')[product.id] is not defined %}d-none{% endif %}">
+            <hr class="divider">
+            <div class="d-flex justify-content-between">
+                <span class="total-price">{{ (app.session.get('panier')[product.id] ?? 1) * product.prix }} FCFA</span>
+                <div class="detail-qty border radius">
+                    <a href="javascript:void(0);" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
+                    <span class="qty-val px-2">{{ app.session.get('panier')[product.id] ?? 1 }}</span>
+                    <a href="javascript:void(0);" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                </div>
+            </div>
+        </div>    
+    </div>
+</div>

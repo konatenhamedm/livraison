@@ -25,41 +25,9 @@
                     <div class="tab-pane fade show {% if key == 0 %} active {% endif %}" id="tab-categorie-{{ key }}" role="tabpanel" aria-labelledby="tab-one">
                         <div class="row product-grid-4">
                             {% for produit in categorie.produits|slice(0, 12) %}
-                               {#  {% if produit.categorie.id == categorie.id %} #}
-                                    <div class="col-lg-3 col-md-4 col-12 col-sm-6">
-                                        <div class="product-cart-wrap mb-30">
-                                            <div class="product-img-action-wrap">
-                                                <div class="product-img product-img-zoom">
-                                                    <a href="javascript:void(0);" class="showDetailProduit" data-id="{{ produit.id }}">
-                                                        <img class="default-img" src="{{ asset('uploads/'~ produit.fichier.path ~'/'~ produit.fichier.alt) }}" alt="">
-                                                        <img class="hover-img" src="{{ asset('uploads/'~ produit.fichier.path ~'/'~ produit.fichier.alt) }}" alt="">
-                                                    </a>
-                                                </div>
-                                                <div class="product-action-1">
-                                                    <a aria-label="Vue rapide" class="action-btn hover-up showDetailProduit" data-id="{{ produit.id }}"><i class="fi-rs-eye"></i></a>
-                                                </div>
-                                                {# <div class="product-badges product-badges-position product-badges-mrg">
-                                                    <span class="hot">Hot</span>
-                                                </div> #}
-                                            </div>
-                                            <div class="product-content-wrap">
-                                                <div class="product-category">
-                                                    <a href="{{ path('detail_categorie', {'id': produit.categorie.id }) }}">{{ produit.categorie.libelle }}</a>
-                                                </div>
-                                                <h2><a href="{{ path('detail_produit', {'id': produit.id }) }}">{{ produit.libelle }}</a></h2>
-                                                <div class="product-price">
-                                                    <span>{{ produit.prix }} FCFA</span>
-                                                    {# <span class="old-price">{{ produit.prix }} FCFA</span> #}
-                                                    <span class="d-block"><small>(Par {{produit.unite}})</small></span>
-                                                </div>
-                                                <div class="product-action-1 show">
-                                                    {# <a aria-label="Ajouter au panier" class="action-btn hover-up" href="{{ path('ajouter_au_panier', {'id': produit.id}) }}"><i class="fi-rs-shopping-bag-add"></i></a> #}
-                                                    <a aria-label="Ajouter au panier" class="action-btn hover-up addToCart" data-id="{{ produit.id }}" href="javascript:void(0);"><i class="fi-rs-shopping-bag-add"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {# {% endif %} #}
+                                <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                                    {% include 'new_site/_includes/_produit_card.html.twig' with {product: produit} %}
+                                </div>
                             {% endfor %}
                         </div>
                         <!--End product-grid-4-->

@@ -53,12 +53,16 @@ class Produit
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateCreation = null;
 
+    #[ORM\OneToMany(mappedBy: 'id_produit', targetEntity: Favorite::class)]
+    private Collection $favorites;
+
     public function __construct()
     {
         $this->fournisseurProduits = new ArrayCollection();
         $this->ligneCommandes = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->dateCreation = new DateTime();
+        $this->favorites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -248,6 +252,36 @@ class Produit
     public function setDateCreation(\DateTimeInterface $dateCreation): static
     {
         $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Favorite>
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(Favorite $favorite): static
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites->add($favorite);
+            $favorite->setIdProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(Favorite $favorite): static
+    {
+        if ($this->favorites->removeElement($favorite)) {
+            // set the owning side to null (unless already changed)
+            if ($favorite->getIdProduit() === $this) {
+                $favorite->setIdProduit(null);
+            }
+        }
 
         return $this;
     }
