@@ -425,7 +425,8 @@ class NewSiteController extends AbstractController
     public function addFavorites(Produit $produit, FavoriteRepository $favoriteRepository, Request $request)
     {
         if (!$this->getUser()) {
-            return $this->redirectToRoute('app_auth_simple', ['redirect' => $this->generateUrl('ajouter_aux_favoris', ['produit' => $produit])]);
+            // return $this->redirectToRoute('app_auth_simple', ['redirect' => $this->generateUrl('ajouter_aux_favoris', ['produit' => $produit.id])]);
+            return $this->redirectToRoute('app_auth_simple');
         }
 
         $favorite = $favoriteRepository->findOneBy(['produit' => $produit, 'userFront' => $this->getUser()]);
