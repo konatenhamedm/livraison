@@ -360,7 +360,7 @@ class NewSiteController extends AbstractController
         $panier = $session->get('panier', []);
 
         $montant = $session->get('total_panier') - ($panier[$id] * $produitRepository->find($id)->getPrix());
-        
+
         if (!empty($panier[$id])) {
             unset($panier[$id]);
         }
@@ -412,7 +412,7 @@ class NewSiteController extends AbstractController
 
         $nbrePerPage = 16;
 
-        $produits = $favoriteRepository->findProduitsPaginatedAllProduct($page, $search, $nbrePerPage);
+        $produits = $favoriteRepository->findProduitsPaginatedFavorites($page, $search, $nbrePerPage);
 
 
         return $this->render('new_site/favorites.html.twig', [

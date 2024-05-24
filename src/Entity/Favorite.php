@@ -16,52 +16,52 @@ class Favorite
 
     #[ORM\ManyToOne(inversedBy: 'favorites')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?UserFront $id_userfront = null;
+    private ?userFront $userFront = null;
 
     #[ORM\ManyToOne(inversedBy: 'favorites')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Produit $id_produit = null;
+    private ?Produit $produit = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date_fav = null;
+    private ?\DateTimeInterface $dateFav = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIdUserfront(): ?UserFront
+    public function getUserFront(): ?userFront
     {
-        return $this->id_userfront;
+        return $this->userFront;
     }
 
-    public function setIdUserfront(?UserFront $id_userfront): static
+    public function setUserFront(?userFront $userFront): static
     {
-        $this->id_userfront = $id_userfront;
+        $this->userFront = $userFront;
 
         return $this;
     }
 
-    public function getIdProduit(): ?Produit
+    public function getProduit(): ?Produit
     {
-        return $this->id_produit;
+        return $this->produit;
     }
 
-    public function setIdProduit(?Produit $id_produit): static
+    public function setProduit(?Produit $produit): static
     {
-        $this->id_produit = $id_produit;
+        $this->produit = $produit;
 
         return $this;
     }
 
     public function getDateFav(): ?\DateTimeInterface
     {
-        return $this->date_fav;
+        return $this->dateFav;
     }
 
-    public function setDateFav(\DateTimeInterface $date_fav): static
+    public function setDateFav(\DateTimeInterface $dateFav): static
     {
-        $this->date_fav = $date_fav;
+        $this->dateFav = $dateFav;
 
         return $this;
     }
