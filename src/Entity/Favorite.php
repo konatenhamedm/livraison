@@ -16,7 +16,7 @@ class Favorite
 
     #[ORM\ManyToOne(inversedBy: 'favorites')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?userFront $userFront = null;
+    private ?UserFront $userFront = null;
 
     #[ORM\ManyToOne(inversedBy: 'favorites')]
     #[ORM\JoinColumn(nullable: false)]
@@ -30,12 +30,12 @@ class Favorite
         return $this->id;
     }
 
-    public function getUserFront(): ?userFront
+    public function getUserFront(): ?UserFront
     {
         return $this->userFront;
     }
 
-    public function setUserFront(?userFront $userFront): static
+    public function setUserFront(?UserFront $userFront): static
     {
         $this->userFront = $userFront;
 

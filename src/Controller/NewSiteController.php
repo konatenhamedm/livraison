@@ -6,9 +6,9 @@ use App\DTO\InscriptionDTO;
 use App\Entity\Categorie;
 use App\Entity\Commande;
 use App\Entity\Contact;
+use App\Entity\Favorite;
 use App\Entity\Produit;
 use App\Entity\LigneCommande;
-use App\Entity\UserFront;
 use App\Entity\UtilisateurSimple;
 use App\Form\RegisterType;
 use App\Form\UtilisateurType;
@@ -404,7 +404,7 @@ class NewSiteController extends AbstractController
     public function indexFavorites(Request $request, FavoriteRepository $favoriteRepository): Response
     {
         if (!$this->getUser()) {
-            return $this->redirectToRoute('app_auth_simple');
+            return $this->redirectToRoute('app_auth_simple', ['redirect' => $this->generateUrl('favorites')]);
         }
 
         $page = $request->query->getInt('page', 1);
@@ -412,24 +412,40 @@ class NewSiteController extends AbstractController
 
         $nbrePerPage = 16;
 
-        $produits = $favoriteRepository->findProduitsPaginatedFavorites($page, $search, $nbrePerPage);
+        $favorites = $favoriteRepository->findProduitsPaginatedFavorites($page, $search, $nbrePerPage);
 
 
         return $this->render('new_site/favorites.html.twig', [
-            'produits' => $produits,
+            'favorites' => $favorites,
             'search' => $search,
         ]);
     }
 
-    #[Route(path: 'favoris/ajouter/{id}', name: 'ajouter_aux_favoris')]
-    public function addFavorites($id, ProduitRepository $produitRepository, SessionInterface $session, Request $request)
+    #[Route(path: 'favoris/ajouter/{produit}', name: 'ajouter_aux_favoris')]
+    public function addFavorites(Produit $produit, FavoriteRepository $favoriteRepository, Request $request)
     {
-        // 
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_auth_simple', ['redirect' => $this->generateUrl('ajouter_aux_favoris', ['produit' => $produit])]);
+        }
+
+        $favorite = $favoriteRepository->findOneBy(['produit' => $produit, 'userFront' => $this->getUser()]);
+        if (!$favorite) {
+            $favorite = new Favorite();
+            $favorite->setProduit($produit);
+            $favorite->setUserFront($this->getUser());
+            $favorite->setDateFav(date_create());
+
+            $favoriteRepository->save($favorite, true);
+        } else {
+            $favoriteRepository->remove($favorite, true);
+        }
+
+        return $this->redirectToRoute('favorites');
     }
 
 
-    #[Route(path: 'favoris/supprimer/{id}', name: 'supprimer_des_favoris')]
-    public function removeFavorites($id, ProduitRepository $produitRepository, SessionInterface $session)
+    #[Route(path: 'favoris/supprimer/{produit}', name: 'supprimer_des_favoris')]
+    public function removeFavorites(Produit $produit, FavoriteRepository $favoriteRepository, SessionInterface $session)
     {
         //
     }

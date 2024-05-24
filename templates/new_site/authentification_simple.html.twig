@@ -61,7 +61,8 @@
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-fill-out btn-block hover-up" >Se connecter</button>
                                         </div>
-                                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+                                    <input type="hidden" name="redirect" value="{{ redirect }}">
 
                           </form>
                                 </div>

@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Favorite;
-use App\Entity\UserFront;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -26,6 +25,24 @@ class FavoriteRepository extends ServiceEntityRepository
         $this->user = $security->getUser();
     }
 
+    public function save(Favorite $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Favorite $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
     public function findProduitsPaginatedFavorites(int $page, $searchString,  int $limit = 12): array
     {
         $limit = abs($limit);
@@ -46,9 +63,9 @@ class FavoriteRepository extends ServiceEntityRepository
         $paginator = new Paginator($qb);
         $data = $paginator->getQuery()->getResult();
 
-        if (empty($data)) {
-            return $resultat;
-        }
+        // if (empty($data)) {
+        //     return $resultat;
+        // }
 
         $pages = ceil($paginator->count() / $limit);
         $resultat = [

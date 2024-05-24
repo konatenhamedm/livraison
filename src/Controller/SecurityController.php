@@ -55,7 +55,7 @@ class SecurityController extends AbstractController
         return $this->render('new_site/authentification.html.twig', ['last_username' => $lastUsername, 'error' => $error,  'form' => $form->createView()]);
     }
     #[Route(path: '/authentication/simple', name: 'app_auth_simple')]
-    public function loginSimple(AuthenticationUtils $authenticationUtils): Response
+    public function loginSimple(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
 
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -69,10 +69,10 @@ class SecurityController extends AbstractController
             'action' => $this->generateUrl('app_register'),
         ]);
 
+        $redirect = $request->query->get('redirect', '');
 
 
-
-        return $this->render('new_site/authentification_simple.html.twig', ['last_username' => $lastUsername, 'error' => $error,  'form' => $form->createView()]);
+        return $this->render('new_site/authentification_simple.html.twig', ['redirect' => $redirect, 'last_username' => $lastUsername, 'error' => $error,  'form' => $form->createView()]);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]

@@ -37,9 +37,9 @@ class ProduitRepository extends ServiceEntityRepository
         $paginator = new Paginator($qb);
         $data = $paginator->getQuery()->getResult();
 
-        if (empty($data)) {
-            return $resultat;
-        }
+        // if (empty($data)) {
+        //     return $resultat;
+        // }
 
         $pages = ceil($paginator->count() / $limit);
         $resultat = [

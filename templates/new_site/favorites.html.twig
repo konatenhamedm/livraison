@@ -64,9 +64,9 @@
                     </div> #}
                 </div>
                 <div class="row product-grid-3">
-                    {% for produit in produits.data %}
+                    {% for favorite in favorites.data %}
                         <div class="col-lg-3 col-md-4 col-12 col-sm-6">
-                            {% include 'new_site/_includes/_produit_card.html.twig' with {product: produit} %}
+                            {% include 'new_site/_includes/_produit_card.html.twig' with {product: favorite.produit} %}
                             {# <div class="product-cart-wrap mb-30">
                                 <div class="product-img-action-wrap">
                                     <div class="product-img product-img-zoom">
@@ -102,8 +102,8 @@
                     {% endfor %}
 
                     {% set path = "favorites" %}
-                    {% set pages = produits.pages %}
-                    {% set currentPage = produits.page %}
+                    {% set pages = favorites.pages %}
+                    {% set currentPage = favorites.page %}
 
                     {% include "new_site/_partials/_pagination.html.twig" %}
 
