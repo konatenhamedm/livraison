@@ -20,14 +20,15 @@ class EmployeType extends AbstractType
 {
     private $groupe;
     private $entreprise;
-    public function __construct(Security $security){
+    public function __construct(Security $security)
+    {
         $this->groupe = $security->getUser()->getGroupe()->getCode();
         $this->entreprise = $security->getUser()->getEmploye()->getEntreprise();
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        if($this->groupe == "SADM") {
+        if ($this->groupe == "SADM") {
             $builder->add('entreprise', EntityType::class, [
                 'class' => Entreprise::class,
                 'choice_label' => 'denomination',
@@ -62,65 +63,62 @@ class EmployeType extends AbstractType
                 ->add('fonction',  EntityType::class, [
                     'class' => Fonction::class,
                     'choice_label' => 'libelle',
-                    'query_builder' => function (EntityRepository $er)  {
-                          return $er->createQueryBuilder('f')
-                              ->orderBy('f.id', 'ASC');
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('f')
+                            ->orderBy('f.id', 'ASC');
                     },
 
                     'label' => 'Fonction',
                     'attr' => ['class' => 'has-select2 form-select commune']
                 ]);
-               /* ->add('service', EntityType::class, [
+            /* ->add('service', EntityType::class, [
                     'class' => Service::class,
                     'choice_label' => 'libelle',
                     'label' => 'Direction',
                     'attr' => ['class' => 'has-select2 form-select']
                 ]);*/
-                }else{
+        } else {
 
 
-        $builder
-            ->add(
-                'piece',
-                FichierType::class,
-                [
-                    /*  'label' => 'Fichier',*/
-                    'label' => 'Inséré une pièce',
-                    'doc_options' => $options['doc_options'],
-                    'required' => $options['doc_required'] ?? true,
-                    'validation_groups' => $options['validation_groups'],
-                ]
-            )
-            ->add('civilite', EntityType::class, [
-                'class' => Civilite::class,
-                'choice_label' => 'code',
-                'label' => 'Civilité',
-                'attr' => ['class' => 'has-select2 form-select']
-            ])
-            ->add('matricule', null, ['label' => 'Matricule'])
-            ->add('numPiece', null, ['label' => 'Numéro pièce'])
-            ->add('residence', null, ['label' => 'Lieu de résidence'])
-            ->add('contact', null, ['label' => 'Contact(s)'])
-            ->add('adresseMail', EmailType::class, ['label' => 'Adresse E-mail', 'required' => false, 'empty_data' => ''])
-            ->add('nom', null, ['label' => 'Nom'])
-            ->add('prenom', null, ['label' => 'Prénoms'])
-            ->add('fonction',  EntityType::class, [
-                'class' => Fonction::class,
-                'choice_label' => 'libelle',
-                'label'=>'Fonction',
-                'query_builder' => function (EntityRepository $er)  {
+            $builder
+                ->add(
+                    'piece',
+                    FichierType::class,
+                    [
+                        /*  'label' => 'Fichier',*/
+                        'label' => 'Inséré une pièce',
+                        'doc_options' => $options['doc_options'],
+                        'required' => $options['doc_required'] ?? true,
+                        'validation_groups' => $options['validation_groups'],
+                    ]
+                )
+                ->add('civilite', EntityType::class, [
+                    'class' => Civilite::class,
+                    'choice_label' => 'code',
+                    'label' => 'Civilité',
+                    'attr' => ['class' => 'has-select2 form-select']
+                ])
+                ->add('matricule', null, ['label' => 'Matricule'])
+                ->add('numPiece', null, ['label' => 'Numéro pièce'])
+                ->add('residence', null, ['label' => 'Lieu de résidence'])
+                ->add('contact', null, ['label' => 'Contact(s)'])
+                ->add('adresseMail', EmailType::class, ['label' => 'Adresse E-mail', 'required' => false, 'empty_data' => ''])
+                ->add('nom', null, ['label' => 'Nom'])
+                ->add('prenom', null, ['label' => 'Prénoms'])
+                ->add('fonction',  EntityType::class, [
+                    'class' => Fonction::class,
+                    'choice_label' => 'libelle',
+                    'label' => 'Fonction',
+                    'query_builder' => function (EntityRepository $er) {
 
-                    return $er->createQueryBuilder('f')
-                        ->innerJoin('f.entreprise', 'e')
-                      /*  ->andWhere('e =: entreprise')
+                        return $er->createQueryBuilder('f')
+                            /*  ->innerJoin('f.entreprise', 'e') */
+                            /*  ->andWhere('e =: entreprise')
                         ->setParameter('entreprise', $this->entreprise)*/
-                        ->orderBy('f.id', 'ASC');
-
-                },
-                'attr' => ['class' => 'has-select2 form-select commune']
-            ])
-
-        ;
+                            ->orderBy('f.id', 'ASC');
+                    },
+                    'attr' => ['class' => 'has-select2 form-select commune']
+                ]);
         }
     }
 
