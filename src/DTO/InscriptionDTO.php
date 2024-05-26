@@ -26,6 +26,7 @@ class InscriptionDTO
     private ?string $plainPassword;
 
     private ?string $contact;
+    private ?string $adresse;
 
     /*  private ?string $situation; */
 
@@ -101,6 +102,24 @@ class InscriptionDTO
     public function setContact(?string $contact): self
     {
         $this->contact = $contact;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of adresse
+     */
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    /**
+     * Set the value of adresse
+     */
+    public function setAdresse(?string $adresse): self
+    {
+        $this->adresse = $adresse;
 
         return $this;
     }

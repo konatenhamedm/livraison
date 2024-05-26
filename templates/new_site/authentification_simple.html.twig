@@ -119,8 +119,15 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="divider-text-center mt-0 mb-0">
-                                        <span> </span>
+                                        {# <div class="divider-text-center mt-0 mb-0">
+                                        <span> </span> #}
+                                        <div class="col-md-12">
+                                             <div class="form-group">
+                                               {#  <input type="text" required="" name="email" placeholder="Email"> #}
+                                               {{ form_row(form.adresse, {attr: {class: 'form-control form-control-sm bg-transparent'}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
                                     </div>
                                       {#   <div class="login_footer form-group">
                                             <div class="chek-form">
