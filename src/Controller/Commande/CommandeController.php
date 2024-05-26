@@ -198,7 +198,7 @@ class CommandeController extends BaseController
                         return true;
                     } elseif ($permission == 'RU' && $etat == 'commande_livrer' || $etat == 'commande_attribuer') {
                         return true;
-                    } elseif ($permission == 'CRUD' && $etat == 'commande_livrer' || $etat == 'commande_attribuer') {
+                    } elseif ($permission == 'CRUD' && $etat == 'commande_livrer' || $etat == 'commande_attribuer' || $etat == 'commande_non_traiter') {
                         return true;
                     } elseif ($permission == 'CRU' && $etat == 'commande_livrer' || $etat == 'commande_attribuer') {
                         return true;
