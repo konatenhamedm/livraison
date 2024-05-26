@@ -354,15 +354,14 @@
             var type = 'POST';
 
             var success = function (res) {
-                console.log(res);
                 $('#panierNbre').removeClass('d-none');
                 $('#panierNbre').text(res.data.panierNbre);
                 $('#panierMontant').text(res.data.panierMontant + ' FCFA');
 
-                var $card = $('.product-cart-wrap[data-product_id="'+id+'"]');
-                if($card.length > 0) {
-                    $card.find('.produitCommande').removeClass('d-none')
-                    $card.find('.produitNonCommande').addClass('d-none')
+                var $cards = $('.product-cart-wrap[data-product_id="'+id+'"]');
+                if($cards.length > 0) {
+                    $cards.find('.produitCommande').removeClass('d-none')
+                    $cards.find('.produitNonCommande').addClass('d-none')
                 }
 
                 if(!silent) HoldOn.close()
@@ -375,19 +374,42 @@
             var beforeSend = function () {
                 // rel.html(`<i class="fa fa-spinner fa-pulse text-primary"></i>`).attr('data-original-title', 'Saving in progress')
                 if(!silent) HoldOn.open()
+
+                var $cards = $('.product-cart-wrap[data-product_id="'+id+'"]');
+                if($cards.length > 0 && quantite <= 1)  {
+                    var pricePerUnit = 0
+                    var montantPanier = parseFloat($('#panierMontant').text().replace(' FCFA', ''));
+
+                    $cards.each(function () {
+                        var $card = $(this);
+
+                        pricePerUnit = parseFloat($card.find('span.price:first').text().replace(' FCFA', ''));
+
+                    })
+                    $cards.find('.total-price').text(pricePerUnit + ' FCFA');
+
+                    $cards.find('.produitCommande').removeClass('d-none')
+                    $cards.find('.produitNonCommande').addClass('d-none')
+                    
+                    var nbrePanier = parseFloat($('#panierNbre').text()) + 1
+                    $('#panierNbre').removeClass('d-none');
+                    $('#panierNbre').text(nbrePanier);
+                    
+                    montantPanier = montantPanier + pricePerUnit
+                    $('#panierMontant').text(montantPanier + ' FCFA');
+                }
             }
 
             sendAjax({url: url, type: type, data: data, success: success, error: error, options: {beforeSend: beforeSend}})
         }
         
-        function supprimerDuPanier(id) {
+        function supprimerDuPanier(id, silent = false) {
             var url = "{{ path('supprimer_du_panier', {id: 'id'}) }}".replace('id', id);
             var data = {};
 
             var type = 'POST';
 
             var success = function (res) {
-                console.log(res);
                 $('#panierNbre').text(res.data.panierNbre);
                 $('#panierMontant').text(res.data.panierMontant + ' FCFA');
                 
@@ -395,40 +417,63 @@
                     $('#panierNbre').addClass('d-none');
                 }
 
-                var $card = $('.product-cart-wrap[data-product_id="'+id+'"]');
-                if($card.length > 0) {
-                    $card.find('.produitCommande').addClass('d-none')
-                    $card.find('.produitNonCommande').removeClass('d-none')
+                var $cards = $('.product-cart-wrap[data-product_id="'+id+'"]');
+                if($cards.length > 0) {
+                    $cards.find('.produitCommande').addClass('d-none')
+                    $cards.find('.produitNonCommande').removeClass('d-none')
                 }
 
-                HoldOn.close()
+                if(!silent) HoldOn.close()
             }
             var error = function (e) {
                 console.log(e);
 
-                HoldOn.close()
+                if(!silent) HoldOn.close()
             }
             var beforeSend = function () {
-                HoldOn.open()
+                if(!silent) HoldOn.open()
+
+                var $cards = $('.product-cart-wrap[data-product_id="'+id+'"]');
+                if($cards.length > 0)  {
+                    var totalPrice = 0
+                    var montantPanier = parseFloat($('#panierMontant').text().replace(' FCFA', ''));
+
+                    $cards.each(function () {
+                        var $card = $(this);
+
+                        totalPrice = parseFloat($card.find('.total-price').text().replace(' FCFA', ''));
+                        console.log($card.find('.total-price'))
+                    })
+
+                    var nbrePanier = parseFloat($('#panierNbre').text()) - 1
+                    if(nbrePanier == 0) $('#panierNbre').addClass('d-none');
+                    $('#panierNbre').text(nbrePanier);
+                    
+                    montantPanier = montantPanier - totalPrice;
+                    $('#panierMontant').text(montantPanier + ' FCFA');
+                        
+                    $cards.find('.qty-val').text(1);
+                    $cards.find('.produitCommande').addClass('d-none')
+                    $cards.find('.produitNonCommande').removeClass('d-none')
+                }
             }
 
             sendAjax({url: url, type: type, data: data, success: success, error: error, options: {beforeSend: beforeSend}})
         }
         
-        function viderLePanier(){
+        function viderLePanier(silent = false) {
             var url = "{{ path('vider_le_panier') }}";
             var data = {};
 
             var type = 'POST';
 
             var success = function (res) {
-                console.log(res);
                 $('#panierNbre').text(res.data.panierNbre);
                 $('#panierMontant').text(res.data.panierMontant + ' FCFA');
                 if(res.data.panierNbre == 0) {
                     $('#panierNbre').addClass('d-none');
                 }
-                HoldOn.close()
+                if(!silent) HoldOn.close()
                 
                 window.location.reload();
 
@@ -436,10 +481,10 @@
             var error = function (e) {
                 console.log(e);
 
-                HoldOn.close()
+                if(!silent) HoldOn.close()
             }
             var beforeSend = function () {
-                HoldOn.open()
+                if(!silent) HoldOn.open()
             }
 
             sendAjax({url: url, type: type, data: data, success: success, error: error, options: {beforeSend: beforeSend}})
@@ -511,19 +556,23 @@
 
 
             $('.addToCart').on('click', function () {
-                ajouterAuPanier($(this).data('id'));
+                ajouterAuPanier($(this).data('id'), 1, true);
             })
             $('.addToCartQuantite').on('click', function () {
                 var $qty = $(this).closest('.quantiteParent').find('.qty-val:first')
-                var quantite = parseInt($qty.text());
+                var quantite = parseFloat($qty.text());
                 
-                ajouterAuPanier($(this).data('id'), quantite);
+                ajouterAuPanier($(this).data('id'), quantite, true);
             })
             /* 
                 $('.showDetailProduit').on('click', function () {
                     consulterDetailProduit($(this).data('id')); 
                 });
            */
+
+            $('.removeFromCart').on('click', function () {
+                supprimerDuPanier($(this).data('id'), true)
+            });
         })
     </script>
     {% block scripts %}{% endblock %}
