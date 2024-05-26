@@ -23,6 +23,8 @@
             var updateTimers = [];
             $('.qty-up, .qty-down').click(function() {
                 var $card = $(this).closest('.product-cart-wrap');
+                var productId = $card.data('product_id');
+
                 var $qty = $card.find('.qty-val');
                 var currentQty = parseInt($qty.text());
                 var pricePerUnit = parseFloat($card.find('span.price').text().replace(' FCFA', ''));
@@ -39,9 +41,9 @@
 
                 var newTotal = (parseInt($qty.text()) * pricePerUnit);
 
-                $card.find('.total-price').text(newTotal + ' FCFA');
-
-                var productId = $card.data('product_id');
+                var cards = $('.product-cart-wrap[data-product_id="'+productId+'"]')
+                cards.find('.total-price').text(newTotal + ' FCFA');
+                cards.find('.qty-val').text($qty.text());
                 
                 // Reset the timer if it's already set
                 clearTimeout(updateTimers[productId]);
@@ -52,9 +54,7 @@
                 }, 2000); // 2000 milliseconds = 2 seconds
             });
 
-            $('.removeFromCart').on('click', function () {
-                supprimerDuPanier($(this).data('id'))
-            });
+
         })
         
     </script>

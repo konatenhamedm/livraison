@@ -1728,7 +1728,8 @@ label {
 }
 
 .hero-slider-1.style-3 .slider-1-height-3 {
-  height: 542px;
+  /* height: 542px; */
+  height: 630px;
 }
 
 .hero-slider-1.style-3 .slider-img {
@@ -5628,7 +5629,7 @@ h6.post-title {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  padding: 0 14px;
+  padding: 0px 0 0px 10px;
 }
 
 .header-action-2 .header-action-icon-2 > a svg {
@@ -6790,7 +6791,7 @@ h6.post-title {
   background-color: #fff;
   border-width: 0px;
   border-radius: 0 4px 4px 0;
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 span.fi-rs-apps {
@@ -7167,7 +7168,7 @@ span.fi-rs-apps {
 
 .main-categori-wrap {
   position: relative;
-  margin-right: 70px;
+  margin-right: 10px;
 }
 
 .main-categori-wrap > a {
@@ -9743,7 +9744,8 @@ span.fi-rs-apps {
     margin-bottom: 30px !important;
   }
   .hero-slider-1.style-3 .slider-1-height-3 {
-    height: 220px;
+    /* height: 220px; */
+    height: 270px;
   }
   .hero-slider-1.style-3 .hero-slider-content-2 {
     position: relative;
