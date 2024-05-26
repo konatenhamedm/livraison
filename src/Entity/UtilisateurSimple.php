@@ -23,6 +23,9 @@ class UtilisateurSimple extends UserFront
     #[ORM\Column(length: 255)]
     private ?string $contact = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $residence = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +63,18 @@ class UtilisateurSimple extends UserFront
     public function setContact(string $contact): static
     {
         $this->contact = $contact;
+
+        return $this;
+    }
+
+    public function getResidence(): ?string
+    {
+        return $this->residence;
+    }
+
+    public function setResidence(string $residence): static
+    {
+        $this->residence = $residence;
 
         return $this;
     }

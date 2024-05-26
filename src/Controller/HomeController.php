@@ -97,8 +97,10 @@ class HomeController extends AbstractController
                     $userSimple = new UtilisateurSimple();
                     $userSimple->setNom(strtoupper($inscriptionDTO->getUsername()));
                     $userSimple->setPrenoms(ucwords($inscriptionDTO->getUsername()));
+                    $userSimple->setResidence($inscriptionDTO->getResidence());
                     $userSimple->setEmail($inscriptionDTO->getEmail());
                     $userSimple->setContact($inscriptionDTO->getContact());
+                    $userSimple->setResidence($inscriptionDTO->getResidence());
                     $userSimple->setUsername($inscriptionDTO->getEmail());
                     $userSimple->addRole('ROLE_CLIENT');
                     $userSimple->setPassword($userPasswordHasher->hashPassword($userSimple, $inscriptionDTO->getPlainPassword()));

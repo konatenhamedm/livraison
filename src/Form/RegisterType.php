@@ -27,6 +27,7 @@ class RegisterType extends AbstractType
 
 
             ->add('username', TextType::class, ['label' => false, 'attr' => ['placeholder' => 'Nom utilisateur'], 'required' => true,])
+            ->add('residence', TextType::class, ['label' => false, 'attr' => ['placeholder' => 'Lieu de residence'], 'required' => true,])
 
             ->add('email', EmailType::class, [
                 'label' => false, 'attr' => ['placeholder' => 'Email (Login)'],

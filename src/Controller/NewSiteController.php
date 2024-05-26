@@ -238,6 +238,7 @@ class NewSiteController extends AbstractController
                     $userSimple->setPrenoms(ucwords($inscriptionDTO->getUsername()));
                     $userSimple->setEmail($inscriptionDTO->getEmail());
                     $userSimple->setContact($inscriptionDTO->getContact());
+                    $userSimple->setResidence($inscriptionDTO->getResidence());
                     $userSimple->setUsername($inscriptionDTO->getEmail());
                     $userSimple->addRole('ROLE_CLIENT');
                     $userSimple->setPassword($userPasswordHasher->hashPassword($userSimple, $inscriptionDTO->getPlainPassword()));
@@ -508,6 +509,7 @@ class NewSiteController extends AbstractController
                     $userSimple->setPrenoms(ucwords($inscriptionDTO->getPrenom())); */
                     $userSimple->setEmail($inscriptionDTO->getEmail());
                     $userSimple->setContact($inscriptionDTO->getContact());
+                    $userSimple->setResidence($inscriptionDTO->getResidence());
                     $userSimple->setUsername($inscriptionDTO->getEmail());
                     $userSimple->addRole('ROLE_CLIENT');
                     $userSimple->setPassword($userPasswordHasher->hashPassword($userSimple, $inscriptionDTO->getPlainPassword()));
@@ -628,12 +630,19 @@ class NewSiteController extends AbstractController
             $total += $couple['product']->getPrix() * $couple['quantity'];
         }
 
+        // dd($this->getUser()->getResidence(), $request->request->get('lieu'));
 
         $commande = new Commande();
 
         $commande->setLibelle($this->genererLibelleCommmande());
         $commande->setUtilisateur($this->getUser());
-        $commande->setLieu($request->request->get('lieu'));
+        if ($request->request->get('lieu') == "") {
+
+            $commande->setLieu($this->getUser()->getResidence());
+        } else {
+
+            $commande->setLieu($request->request->get('lieu'));
+        }
         $commande->setDateCommande(new DateTime());
         $commande->setCode($this->numero('CM'));
         $commande->setEtat(Commande::ETAPES['commande_non_traiter']);

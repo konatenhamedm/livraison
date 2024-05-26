@@ -34,8 +34,9 @@
                             </li> #}
                             <li>
                                 <i class="fi-rs-user"></i>
+                                
                                 {% if app.user %}
-                                   Connecté en tant que {{ app.user.email }} , <a href="{{ path('app_logout') }}">Déconnexion</a>
+                                   Connecté en tant que {{ app.user.username }} , <a href="{{ path('app_logout') }}">Déconnexion</a>
                                 {% else %}
                                    <a href="{{ path('app_auth_simple') }}">Connexion / Inscription</a>
                                     
