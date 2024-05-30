@@ -66,47 +66,14 @@
                     <div class="row product-grid-3">
                         {% for produit in categorie.produits %}
                             <div class="col-lg-3 col-md-4 col-12 col-sm-6">
-                                <div class="product-cart-wrap mb-30">
-                                    <div class="product-img-action-wrap">
-                                        <div class="product-img product-img-zoom">
-                                            <a href="{{ path('detail_produit', {'id': produit.id}) }}" class="showDetailProduit" data-id="{{ produit.id }}">
-                                                <img class="default-img" src="{{ asset('uploads/'~ produit.fichier.path ~'/'~ produit.fichier.alt) }}" alt="" style="height: 278px;">
-                                                <img class="hover-img" src="{{ asset('evara-frontend/assets/imgs/shop/product-1-2.jpg') }}" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="product-action-1">
-                                            <a href="{{ path('detail_produit', {'id': produit.id}) }}" aria-label="Vue rapide" class="action-btn hover-up showDetailProduit" data-id="{{ produit.id }}"><i class="fi-rs-eye"></i></a>
-                                        </div>
-                                        {# <div class="product-badges product-badges-position product-badges-mrg">
-                                            <span class="hot">Hot</span>
-                                        </div> #}
-                                    </div>
-                                    <div class="product-content-wrap">
-                                        <div class="product-category">
-                                            <a href="shop-grid-right.html">{{ produit.categorie.libelle }}</a>
-                                        </div>
-                                        <h2><a href="{{ path('detail_produit', {'id': produit.id}) }}" class="showDetailProduit" data-id="{{ produit.id }}">{{ produit.libelle }}</a></h2>
-                                        <div class="product-price">
-                                            <span>{{ produit.prix }} FCFA</span>
-                                            {# <span class="old-price">{{ produit.prix }} FCFA</span> #}
-                                            <span class="d-block"><small>(Par {{produit.unite}})</small></span>
-                                        </div>
-                                        <div class="product-action-1 show">
-                                            <a aria-label="Ajouter au panier" class="action-btn hover-up addToCart" data-id="{{ produit.id }}" href="javascript:void(0);"><i class="fi-rs-shopping-bag-add"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
+                                {% include 'new_site/_includes/_produit_card.html.twig' with {product: produit} %}
                             </div>
 
-                            {% else %}
-
-                             {# <div class="col-lg-3 col-md-4 col-12 col-sm-6"> #}
-                              {#   <div class="product-cart-wrap mb-30"> #}
-                                    <h2 class="font-lg text-grey-700 mb-30" style="text-align: center;">
-                            Il n'y aucun produits pour cette catégorie 
-                        </h2>
-                                   {# </div> #}
-                            {# </div> #}
+                        {% else %}
+                            <div class="m-auto text-center">
+                                <img src="{{ asset("evara-frontend/assets/imgs/theme/icons/feature-6.png") }}" alt="">
+                                <h4 class="mt-3 text-center text-muted">Aucun produit trouvé</h4>
+                            </div>
                                 
                         {% endfor %}
                     </div>
