@@ -8,7 +8,13 @@
                     <div class="card-1">
                         <figure class=" img-hover-scale overflow-hidden">
                             <a href="{{ path('detail_categorie', {'id': categorie.id }) }}">
+                            {% if categorie.fichier is not null %}
+                                
                             <img src="{{ asset('uploads/'~ categorie.fichier.path ~'/'~ categorie.fichier.alt) }}" alt="">
+                            {% else %}
+                                
+                            <img src="{{ asset('evara-frontend/assets/imgs/shop/category-thumb-1.jpg') }}" alt="">
+                            {% endif %}
                             </a>
                         </figure>
                         <h5><a href="{{ path('detail_categorie', {'id': categorie.id }) }}">{{ categorie.libelle }}</a></h5>

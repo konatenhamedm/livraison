@@ -2,8 +2,18 @@
     <div class="product-img-action-wrap">
         <div class="product-img product-img-zoom">
             <a href="javascript:void(0);" class="showDetailProduit" data-id="{{ categorie.id }}">
-                <img class="default-img my-3 m-auto" src="{{ asset('uploads/'~ categorie.fichier.path ~'/'~ categorie.fichier.alt) }}" alt="" style="height: 100px; width: auto;">
-                <img class="hover-img" src="{{ asset('uploads/'~ categorie.fichier.path ~'/'~ categorie.fichier.alt) }}" alt="" style="height: 278px;">
+               
+
+                  {% if categorie.fichier is not null %}
+                                
+                            <img class="default-img my-3 m-auto" src="{{ asset('uploads/'~ categorie.fichier.path ~'/'~ categorie.fichier.alt) }}" alt="" style="height: 100px; width: auto;">
+                             <img class="hover-img" src="{{ asset('uploads/'~ categorie.fichier.path ~'/'~ categorie.fichier.alt) }}" alt="" style="height: 278px;">
+                            {% else %}
+                             <img class="default-img my-3 m-auto" src="{{ asset('evara-frontend/assets/imgs/shop/category-thumb-1.jpg') }}" alt="" style="height: 100px; width: auto;">
+                            <img class="hover-img" src="{{ asset('evara-frontend/assets/imgs/shop/category-thumb-1.jpg') }}" alt="" style="height: 278px;">
+                                
+                           
+                            {% endif %}
             </a>
         </div>
         <div class="product-action-1">
