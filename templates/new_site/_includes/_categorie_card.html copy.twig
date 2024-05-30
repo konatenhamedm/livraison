@@ -1,0 +1,47 @@
+<div class="product-cart-wrap mb-30" data-categorie_id="{{ categorie.id }}">
+    <div class="product-img-action-wrap">
+        <div class="product-img product-img-zoom">
+            <a href="javascript:void(0);" class="showDetailProduit" data-id="{{ categorie.id }}">
+               
+
+                  {% if categorie.fichier is not null %}
+                                
+                    <img class="default-img my-3 m-auto" src="{{ asset('uploads/'~ categorie.fichier.path ~'/'~ categorie.fichier.alt) }}" alt="" style="height: 100px; width: auto;">
+                    <img class="hover-img my-3 m-auto" src="{{ asset('uploads/'~ categorie.fichier.path ~'/'~ categorie.fichier.alt) }}" alt="" style="height: 100px; width: auto;">
+                {% else %}
+                    <img class="default-img my-3 m-auto" src="{{ asset('evara-frontend/assets/imgs/shop/category-thumb-1.jpg') }}" alt="" style="height: 100px; width: auto;">
+                    <img class="hover-img my-3 m-auto" src="{{ asset('evara-frontend/assets/imgs/shop/category-thumb-1.jpg') }}" alt="" style="height: 100px; width: auto;">
+            
+                {% endif %}
+            </a>
+        </div>
+        <div class="product-action-1">
+            {# <a aria-label="Vue rapide" class="action-btn hover-up showDetailProduit" data-id="{{ categorie.id }}"><i class="fi-rs-eye"></i></a> #}
+            {# <a aria-label="Ajouter aux favoris" class="action-btn small hover-up btnAjoutFavoris" href="{{ path('ajouter_aux_favoris', {'produit': categorie.id }) }}"><i class="fi-rs-heart"></i></a>
+            <a aria-label="Retirer des favoris" class="action-btn small hover-up btn-perso-danger btnRetirerFavoris d-none" href="{{ path('supprimer_des_favoris', {'produit': categorie.id }) }}"><i class="fi-rs-heart"></i></a> #}
+
+        </div>
+        {# <div class="product-badges product-badges-position product-badges-mrg">
+            <span class="hot">Hot</span>
+        </div> #}
+    </div>
+    <div class="product-content-wrap">
+        {# <div class="product-category">
+            <a href="{{ path('detail_categorie', {'id': categorie.id }) }}">{{ categorie.libelle }}</a>
+        </div> #}
+        <h2 style="text-align: center;"><a href="{{ path('detail_categorie', {'id': categorie.id }) }}">{{ categorie.libelle }}</a></h2>
+        <div class="product-price">
+            {# <span class="price">{{ categorie.prix }} FCFA</span> #}
+            {# <span class="old-price">{{ categorie.prix }} FCFA</span> #}
+            {# <span class="d-block"><small>(Par {{categorie.unite}})</small></span> #}
+        </div>
+        
+        
+        <div class="product-action-1 show">
+            {# <a aria-label="Ajouter au panier" class="action-btn hover-up" href="{{ path('ajouter_au_panier', {'id': categorie.id}) }}"><i class="fi-rs-shopping-bag-add"></i></a> #}
+            {# <a aria-label="Ajouter au panier" class="action-btn hover-up addToCart produitNonCommande {% if app.session.get('panier')[categorie.id] is defined %}d-none{% endif %}" data-id="{{ categorie.id }}" href="javascript:void(0);"><i class="fi-rs-shopping-bag-add"></i></a> #}
+            {# <a aria-label="Retirer du panier" class="action-btn btn-perso-danger hover-up removeFromCart produitCommande {% if app.session.get('panier')[categorie.id] is not defined %}d-none{% endif %}" data-id="{{ categorie.id }}" href="javascript:void(0);"><i class="fi-rs-trash"></i></a> #}
+        </div>
+        
+    </div>
+</div>

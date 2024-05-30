@@ -6,7 +6,7 @@
             <div class="carausel-6-columns" id="carausel-6-columns">
                 {% for categorie in categories %}
                     <div class="card-1">
-                        <figure class=" img-hover-scale overflow-hidden justify-content-center">
+                        <figure class="img-hover-scale overflow-hidden justify-content-center">
                             <a href="{{ path('detail_categorie', {'id': categorie.id }) }}">
                             {% if categorie.fichier is not null %}
                                 
@@ -19,9 +19,7 @@
                         </figure>
                         <h5 class="text-truncate px-2"><a href="{{ path('detail_categorie', {'id': categorie.id }) }}" title="{{ categorie.libelle }}">{{ categorie.libelle }}</a></h5>
                         <a href="{{ path('detail_categorie', {'id': categorie.id }) }}" class="button py-2 mb-2 text-white">Consulter</a>
-
                     </div>
-                    
                     
                     {# <div class="card-1">
                         <figure class=" img-hover-scale overflow-hidden">
