@@ -17,7 +17,7 @@
                             {% endif %}
                             </a>
                         </figure>
-                        <h5><a href="{{ path('detail_categorie', {'id': categorie.id }) }}">{{ categorie.libelle }}</a></h5>
+                        <h5 class="text-truncate px-2"><a href="{{ path('detail_categorie', {'id': categorie.id }) }}" title="{{ categorie.libelle }}">{{ categorie.libelle }}</a></h5>
                         <a href="{{ path('detail_categorie', {'id': categorie.id }) }}" class="button py-2 mb-2 text-white">Consulter</a>
 
                     </div>

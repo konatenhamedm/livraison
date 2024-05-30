@@ -17,10 +17,10 @@
         </div> #}
     </div>
     <div class="product-content-wrap">
-        <div class="product-category">
-            <a href="{{ path('detail_categorie', {'id': product.categorie.id }) }}">{{ product.categorie.libelle }}</a>
+        <div class="product-category text-truncate">
+            <a href="{{ path('detail_categorie', {'id': product.categorie.id }) }}" title="{{ product.categorie.libelle }}">{{ product.categorie.libelle }}</a>
         </div>
-        <h2><a href="{{ path('detail_produit', {'id': product.id }) }}">{{ product.libelle }}</a></h2>
+        <h2 class="text-truncate"><a href="{{ path('detail_produit', {'id': product.id }) }}" title="{{ product.libelle }}">{{ product.libelle }}</a></h2>
         <div class="product-price">
             <span class="price">{{ product.prix }} FCFA</span>
             {# <span class="old-price">{{ product.prix }} FCFA</span> #}
