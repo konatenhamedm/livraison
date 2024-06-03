@@ -4,7 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Commande;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Commande>
@@ -16,9 +18,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CommandeRepository extends ServiceEntityRepository
 {
+    //private $user;
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Commande::class);
+        // $this->user = $user;
     }
 
     public function save(Commande $entity, bool $flush = false): void
@@ -30,6 +34,37 @@ class CommandeRepository extends ServiceEntityRepository
         }
     }
 
+
+    public function findCommandeUserPaginated(int $page, string $user, int $limit = 12): array
+    {
+
+        // dd($this->user);
+        $limit = abs($limit);
+
+        $resultat = [];
+        $qb = $this->createQueryBuilder('c')
+            ->innerJoin('c.utilisateur', 'u')
+            ->andWhere('u.email = :user')
+            ->setParameter('user', $user)
+            ->setMaxResults($limit)
+            ->setFirstResult(($page * $limit) - $limit);
+
+        $paginator = new Paginator($qb);
+        $data = $paginator->getQuery()->getResult();
+
+        // if (empty($data)) {
+        //     return $resultat;
+        // }
+
+        $pages = ceil($paginator->count() / $limit);
+        $resultat = [
+            'data' => $data,
+            'pages' => $pages,
+            'page' => $page,
+            'limit' => $limit
+        ];
+        return $resultat;
+    }
 
     //    /**
     //     * @return Commande[] Returns an array of Commande objects

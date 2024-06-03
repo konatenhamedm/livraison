@@ -11,6 +11,7 @@ use App\Entity\Produit;
 use App\Entity\LigneCommande;
 use App\Entity\UtilisateurSimple;
 use App\Form\RegisterType;
+use App\Form\UtilisateurSimpleType;
 use App\Form\UtilisateurType;
 use App\Repository\CategorieRepository;
 use App\Repository\CommandeRepository;
@@ -32,6 +33,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
@@ -409,14 +411,16 @@ class NewSiteController extends AbstractController
             return $this->redirectToRoute('app_auth_simple', ['redirect' => $this->generateUrl('account')]);
         }
 
-        return $this->render('new_site/account/dashboard.html.twig', [
-            
-        ]);
+        return $this->render('new_site/account/dashboard.html.twig', []);
     }
 
     #[Route(path: 'mon-compte/commandes', name: 'orders')]
-    public function indexOrders(Request $request, FavoriteRepository $favoriteRepository): Response
+    public function indexOrders(Request $request, FavoriteRepository $favoriteRepository, CommandeRepository $commandeRepository, UserInterface $userInterface): Response
     {
+
+        // dd($userInterface->getId);
+        // dd();
+
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_auth_simple', ['redirect' => $this->generateUrl('orders')]);
         }
@@ -427,11 +431,13 @@ class NewSiteController extends AbstractController
         $nbrePerPage = 16;
 
         $orders = [
-            'data' => [],
+            'data' => $commandeRepository->findCommandeUserPaginated($page, $this->getUser()->getEmail(), 12),
             'pages' => 1,
             'page' => 1,
             'limit' => 1
         ];
+
+        // dd($orders);
         // $favoriteRepository->findProduitsPaginatedFavorites($page, $search, $nbrePerPage);
 
 
@@ -511,14 +517,69 @@ class NewSiteController extends AbstractController
 
 
     #[Route(path: 'mon-compte/informations-personnelles', name: 'informations')]
-    public function indexPersonnal(Request $request, FavoriteRepository $favoriteRepository): Response
+    public function indexPersonnal(Request $request, FavoriteRepository $favoriteRepository,  FormError $formError, UtilisateurSimpleRepository $utilisateurSimpleRepository): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_auth_simple', ['redirect' => $this->generateUrl('informations')]);
         }
 
+        $user = $this->getUser();
+
+        $form = $this->createForm(UtilisateurSimpleType::class, $user, [
+            'method' => 'POST',
+            //'type'=>'autre',
+            'action' => $this->generateUrl('informations'),
+        ]);
+
+        $form->handleRequest($request);
+
+        $data = null;
+        $statutCode = Response::HTTP_OK;
+
+        $isAjax = $request->isXmlHttpRequest();
+        //$redirect1 = $this->generateUrl("app_login_site");
+        $fullRedirect = false;
+        if ($form->isSubmitted()) {
+            $response = [];
+            $redirect = $this->generateUrl("informations");
+
+            // $user = $utilisateurRepository->findOneByEmail($inscriptionDTO->getEmail());
+            if ($form->isValid()) {
+
+
+                $utilisateurSimpleRepository->save($user, true);
+
+                $data = true;
+                $fullRedirect = true;
+                $statut = 1;
+                $message = 'Compte crée avec succès';
+                $this->addFlash('success', 'Votre compte a été crée avec succès. Veuillez vous connecter pour continuer l\'opération');
+            } else {
+                $message = $formError->all($form);
+                $statut = 0;
+                $statutCode = 500;
+                if (!$isAjax) {
+                    $this->addFlash('warning', $message);
+                }
+            }
+
+
+
+            if ($isAjax) {
+
+
+                return $this->json(compact('statut', 'message', 'redirect', 'data', 'fullRedirect'), $statutCode);
+            } else {
+                // dd("");
+                if ($statut == 1) {
+                    return $this->redirect($redirect);
+                }
+            }
+        }
+
 
         return $this->render('new_site/account/informations.html.twig', [
+            'form' => $form->createView()
         ]);
     }
     #[Route(path: '/home', name: 'app_default')]
