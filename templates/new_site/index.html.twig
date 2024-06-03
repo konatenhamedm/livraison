@@ -22,7 +22,7 @@
     <script>
         $(document).ready(function () {
             
-            var updateTimers = [];
+            // var updateTimers = [];
             $('.qty-up, .qty-down').click(function() {
                 var $card = $(this).closest('.product-cart-wrap');
                 var productId = $card.data('product_id');
@@ -36,9 +36,18 @@
                 if ($(this).hasClass('qty-up')) {
                     $qty.text(currentQty + 1);
                     $('#panierMontant').text(parseFloat(montantPanier) + pricePerUnit + ' FCFA');
-                } else if ($(this).hasClass('qty-down') && currentQty > 1) {
+                    if(currentQty == 1) {
+                        $(this).parent().find('.qty-down').removeClass('d-none')
+                        $(this).parent().find('.removeFromCart').addClass('d-none')
+                    }
+                } else if ($(this).hasClass('qty-down')) {
                     $qty.text(currentQty - 1);
                     $('#panierMontant').text(parseFloat(montantPanier) - pricePerUnit + ' FCFA');
+                    
+                    if(currentQty <= 2) {
+                        $(this).addClass('d-none')
+                        $(this).parent().find('.removeFromCart').removeClass('d-none')
+                    }
                 }
 
                 var newTotal = (parseInt($qty.text()) * pricePerUnit);

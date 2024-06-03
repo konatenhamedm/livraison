@@ -49,8 +49,8 @@ class RegisterType extends AbstractType
             /*  ->add('nom', TextType::class, ['label' => 'Nom', 'attr' => ['placeholder' => '']]) */
             /*  ->add('situation', TextType::class, ['label' => 'Situation géographique', 'attr' => ['placeholder' => '']]) */
             /* ->add('prenom', TextType::class, ['label' => 'Prénoms', 'attr' => ['placeholder' => '']]) */
-            ->add('contact', TextType::class, ['label' => false, 'attr' => ['placeholder' => 'Contact(s)'], 'required' => true, 'empty_data' => ''])
-            ->add('adresse', TextareaType::class, ['label' => false, 'attr' => ['placeholder' => 'Adresse de livraison par defaut'], 'required' => true, 'empty_data' => '']);
+            ->add('contact', TextType::class, ['label' => false, 'attr' => ['placeholder' => 'Contact(s)'], 'required' => true, 'empty_data' => '']);
+            // ->add('adresse', TextareaType::class, ['label' => false, 'attr' => ['placeholder' => 'Adresse de livraison par defaut'], 'required' => true, 'empty_data' => '']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
