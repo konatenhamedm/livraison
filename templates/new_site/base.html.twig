@@ -345,6 +345,9 @@
             $.ajax({ ...settings, ...options });
         }
 
+        var updateTimers = [];
+
+
         function ajouterAuPanier(id, quantite = -1, silent = false) {
             var url = "{{ path('ajouter_au_panier', {id: 'id'}) }}".replace('id', id);
             var data = {};
@@ -571,7 +574,9 @@
            */
 
             $('.removeFromCart').on('click', function () {
-                supprimerDuPanier($(this).data('id'), true)
+                var productId = $(this).data('id');
+                clearTimeout(updateTimers[productId]);
+                supprimerDuPanier(productId, true)
             });
         })
     </script>

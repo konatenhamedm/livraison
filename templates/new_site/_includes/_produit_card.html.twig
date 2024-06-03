@@ -21,12 +21,30 @@
             <a href="{{ path('detail_categorie', {'id': product.categorie.id }) }}" title="{{ product.categorie.libelle }}">{{ product.categorie.libelle }}</a>
         </div>
         <h2 class="text-truncate"><a href="{{ path('detail_produit', {'id': product.id }) }}" title="{{ product.libelle }}">{{ product.libelle }}</a></h2>
-        <div class="product-price">
-            <span class="price">{{ product.prix }} FCFA</span>
-            {# <span class="old-price">{{ product.prix }} FCFA</span> #}
-            <span class="d-block"><small>(Par {{product.unite}})</small></span>
-        </div>
         
+        <div class="d-flex justify-content-between">
+            <div class="product-price">
+                <span class="price">{{ product.prix }} FCFA</span>
+                {# <span class="old-price">{{ product.prix }} FCFA</span> #}
+                <span class="d-block"><small>(Par {{product.unite}})</small></span>
+            </div>
+            <div class="produitCommande {% if app.session.get('panier')[product.id] is not defined %}d-none{% endif %}">
+                {# <hr class="divider"> #}
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="qty-down btn-perso-danger me-2 text-light {{ app.session.get('panier')[product.id] is not defined ? 'd-none' : (app.session.get('panier')[product.id] <= 1 ? 'd-none' : '') }}" style="border-radius:50%; background-color:#fd7e14; border-color: #fd7e14;"><i class="fi-rs-minus m-auto"></i></button>
+                    <button type="button" class="removeFromCart btn-perso-danger me-2 text-light {% if app.session.get('panier')[product.id] is defined and app.session.get('panier')[product.id] > 1 %}d-none{% endif %}" style="border-radius:50%; background-color:#fd7e14; border-color: #fd7e14;" data-id="{{ product.id }}"><i class="fi-rs-trash m-auto"></i></button>
+                    <div class="detail-qty border radius text-center" style="max-width:unset">
+                        {# <a href="javascript:void(0);" class="qty-down"><i class="fi-rs-angle-small-down"></i></a> #}
+                        <span class="qty-val px-2">{{ app.session.get('panier')[product.id] ?? 1 }}</span> <br />
+                        {# <a href="javascript:void(0);" class="qty-up"><i class="fi-rs-angle-small-up"></i></a> #}
+                    </div>
+                    <button type="button" class="qty-up btn-success ms-2" style="border-radius:50%; background-color:#0d6efd; border-color: #0d6efd;"><i class="fi-rs-plus m-auto"></i></button>
+                </div>
+                {# <div class="text-center">
+                    <small><span class="total-price">({{ (app.session.get('panier')[product.id] ?? 1) * product.prix }} FCFA)</span></small>
+                </div> #}
+            </div>          
+        </div>          
         
         <div class="product-action-1 show">
             {# <a aria-label="Ajouter au panier" class="action-btn hover-up" href="{{ path('ajouter_au_panier', {'id': product.id}) }}"><i class="fi-rs-shopping-bag-add"></i></a> #}
@@ -34,20 +52,6 @@
             <a aria-label="Retirer du panier" class="action-btn btn-perso-danger hover-up removeFromCart produitCommande {% if app.session.get('panier')[product.id] is not defined %}d-none{% endif %}" data-id="{{ product.id }}" href="javascript:void(0);"><i class="fi-rs-trash"></i></a>
         </div>
         
-        <div class="produitCommande {% if app.session.get('panier')[product.id] is not defined %}d-none{% endif %}">
-            <hr class="divider">
-            <div class="d-flex justify-content-between">
-                <button type="button" class="qty-down btn btn-sm btn-perso-danger me-2" style="border-radius:50%; background-color:#fd7e14; border-color: #fd7e14;"><i class="fi-rs-minus m-auto"></i></button>
-                <div class="detail-qty border radius text-center" style="max-width:unset">
-                    {# <a href="javascript:void(0);" class="qty-down"><i class="fi-rs-angle-small-down"></i></a> #}
-                    <span class="qty-val px-2">{{ app.session.get('panier')[product.id] ?? 1 }}</span> <br />
-                    {# <a href="javascript:void(0);" class="qty-up"><i class="fi-rs-angle-small-up"></i></a> #}
-                </div>
-                <button type="button" class="qty-up btn btn-sm btn-success ms-2" style="border-radius:50%; background-color:#0d6efd; border-color: #0d6efd;"><i class="fi-rs-plus m-auto"></i></button>
-            </div>
-            <div class="text-center">
-                <small><span class="total-price">({{ (app.session.get('panier')[product.id] ?? 1) * product.prix }} FCFA)</span></small>
-            </div>
-        </div>    
+          
     </div>
 </div>
