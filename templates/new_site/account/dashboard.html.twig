@@ -1,0 +1,24 @@
+{% extends 'new_site/account/compte.html.twig' %}
+
+{% set active = active ?? 'dashboard' %}
+
+{% block breadcrumbs %}
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{{ path('new_site') }}" rel="nofollow">Accueil</a>
+                <span></span> Mon compte
+                <span></span> Tableau de bord
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block contenu %}
+    {# <p>From your account dashboard. you can easily check &amp; view your <a href="#">recent orders</a>, manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a></p> #}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    </script>
+{% endblock %}

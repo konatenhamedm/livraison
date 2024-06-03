@@ -43,10 +43,19 @@
                                     </td>
                                     <td class="price text-nowrap" {# data-title="PU" #}><span>{{ item.produit.prix }} FCFA</span></td>
                                     <td class="text-center">
-                                        <div class="detail-qty border radius  m-auto">
+                                        {# <div class="detail-qty border radius  m-auto">
                                             <a href="javascript:void(0);" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
                                             <span class="qty-val">{{ item.quantite }}</span>
                                             <a href="javascript:void(0);" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                        </div> #}
+                                        <div class="d-flex justify-content-between">
+                                            <button type="button" class="qty-down btn btn-sm btn-perso-danger me-2" style="border-radius:50%; background-color:#fd7e14; border-color: #fd7e14;"><i class="fi-rs-minus m-auto"></i></button>
+                                            <div class="detail-qty border radius text-center" style="max-width:unset">
+                                                {# <a href="javascript:void(0);" class="qty-down"><i class="fi-rs-angle-small-down"></i></a> #}
+                                                <span class="qty-val px-2">{{ item.quantite }}</span> <br />
+                                                {# <a href="javascript:void(0);" class="qty-up"><i class="fi-rs-angle-small-up"></i></a> #}
+                                            </div>
+                                            <button type="button" class="qty-up btn btn-sm btn-success ms-2" style="border-radius:50%; background-color:#0d6efd; border-color: #0d6efd;"><i class="fi-rs-plus m-auto"></i></button>
                                         </div>
                                     </td>
                                     <td class="text-right">

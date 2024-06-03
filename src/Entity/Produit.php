@@ -9,6 +9,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
+
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 class Produit
 {
@@ -284,5 +287,18 @@ class Produit
         }
 
         return $this;
+    }
+
+    public function isFavorite(SessionInterface $session): bool
+    {
+        $userId = $session->get('user_id');
+
+        foreach ($this->favorites as $favorite) {
+            if ($favorite->getUser()->getId() === $userId) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

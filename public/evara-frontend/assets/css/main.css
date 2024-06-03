@@ -3482,6 +3482,12 @@ table .product-thumbnail img {
   border: 1px solid #cce7d0;
 }
 
+.btn-perso-danger {
+  background-color: #f6e8eb;
+  color: #81081c;
+  border-color: #81081c;
+}
+
 .product-cart-wrap .product-action-1 button, .product-cart-wrap .product-action-1 a.action-btn.btn-perso-danger {
   background-color: #f6e8eb;
   color: #81081c;

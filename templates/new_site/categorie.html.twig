@@ -18,23 +18,25 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    {# <div class="shop-product-fillter">
+                    <div class="shop-product-fillter">
                         <div class="totall-product">
-                            <p> We found <strong class="text-brand">688</strong> items for you!</p>
+                            <p> Liste des produits de la catégorie <strong class="text-brand">{{ categorie.libelle }}</strong></p>
                         </div>
                         <div class="sort-by-product-area">
                             <div class="sort-by-cover mr-10">
                                 <div class="sort-by-product-wrap">
                                     <div class="sort-by">
-                                        <span><i class="fi-rs-apps"></i>Show:</span>
+                                        <span><i class="fi-rs-apps"></i>Changer de catégorie:</span>
                                     </div>
                                     <div class="sort-by-dropdown-wrap">
-                                        <span> 50 <i class="fi-rs-angle-small-down"></i></span>
+                                        <span> <i class="fi-rs-angle-small-down"></i></span>
                                     </div>
                                 </div>
                                 <div class="sort-by-dropdown">
                                     <ul>
-                                        <li><a class="active" href="#">50</a></li>
+                                        {% for catego in categories %}
+                                            <li><a class="{{ catego.id == categorie.id ? 'active' : '' }}" href="{{ catego.id == categorie.id ? 'javascript:void(0);' : path('detail_categorie', {'id': catego.id }) }}">{{ catego.libelle }}</a></li>
+                                        {% endfor %}
                                         <li><a href="#">100</a></li>
                                         <li><a href="#">150</a></li>
                                         <li><a href="#">200</a></li>
@@ -42,7 +44,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="sort-by-cover">
+                            {# <div class="sort-by-cover">
                                 <div class="sort-by-product-wrap">
                                     <div class="sort-by">
                                         <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
@@ -60,9 +62,9 @@
                                         <li><a href="#">Avg. Rating</a></li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div> #}
                         </div>
-                    </div> #}
+                    </div>
                     <div class="row product-grid-3">
                         {% for produit in categorie.produits %}
                             <div class="col-lg-3 col-md-4 col-12 col-sm-6">

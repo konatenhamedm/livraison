@@ -1,0 +1,156 @@
+{% extends 'new_site/account/compte.html.twig' %}
+
+{% set active = active ?? 'favorites' %}
+
+{% block breadcrumbs %}
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{{ path('new_site') }}" rel="nofollow">Accueil</a>
+                <span></span> <a href="{{ path('dashboard') }}">Mon Compte</a>
+                <span></span> Mes favoris
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block contenu %}
+    <div class="shop-product-fillter">
+        <div class="totall-product">
+            <p> Liste des <strong class="text-brand">produits favoris</strong></p>
+        </div>
+    </div>
+    <div class="row product-grid-3">
+        <div class="table-responsive">
+            <table class="table shopping-summery text-center">
+                <thead>
+                    <tr class="main-heading">
+                        <th scope="col" colspan="2">Produit</th>
+                        <th scope="col">Prix</th>
+                        {# <th scope="col">Statut</th> #}
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {# <tr>
+                        <td class="image product-thumbnail"><img src="{{ asset('evara-frontend/assets/imgs/shop/product-1-1.jpg') }}" alt="#"></td>
+                        <td class="product-des product-name">
+                            <h5 class="product-name"><a href="shop-product-right.html">J.Crew Mercantile Women's Short-Sleeve</a></h5>
+                            <p class="font-xs">Maboriosam in a tonto nesciung eget<br> distingy magndapibus.
+                            </p>
+                        </td>
+                        <td class="price" data-title="Price"><span>$65.00 </span></td>
+                        <td class="text-center" data-title="Stock">
+                            <span class="color3 font-weight-bold">In Stock</span>
+                        </td>
+                        <td class="text-right" data-title="Cart">
+                            <a href="javascript:void(0);"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</a>
+                            <a href="javascript:void(0);"><i class="fi-rs-trash"></i>
+                        </td>
+                    </tr> #}
+                    {# <tr>
+                        <td><img src="{{ asset('evara-frontend/assets/imgs/shop/product-1-1.jpg') }}" alt="#"></td>
+                        <td>
+                            <h5 class="product-name"><a href="shop-product-right.html">Amazon Brand - Daily Ritual Women's Jersey </a></h5>
+                            <p class="font-xs">Erat amet et et amet diam et et.<br> Justo amet at dolore
+                            </p>
+                        </td>
+                        <td class="price" data-title="Price"><span>$62.00 </span></td>
+                        <td class="text-center" data-title="Stock">
+                            <span class="text-danger font-weight-bold">Out of stock</span>
+                        </td>
+                        <td class="text-right" data-title="Cart">
+                            <a href="javascript:void(0);"><i class="fi-rs-headset mr-5"></i>Contact Us</a>
+                            <a href="javascript:void(0);"><i class="fi-rs-trash"></i></a>
+                        </td>
+                    </tr> #}
+        
+                    {% for favorite in favorites.data %}
+                        {# <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                            {% include 'new_site/_includes/_produit_card.html.twig' with {product: favorite.produit} %}
+                        </div> #}
+                        <tr>
+                            <td class="image">
+                                <img class="m-auto" src="{{ asset('uploads/'~ favorite.produit.fichier.path ~'/'~ favorite.produit.fichier.alt) }}" alt="" style="height: 80px; max-width: unset;">
+                            </td>
+                            <td class="product-des">
+                                <h5 class="product-name">
+                                    <a href="{{ path('detail_produit', {'id': favorite.produit.id }) }}" title="{{ favorite.produit.libelle }}">{{ favorite.produit.libelle }}</a>
+                                </h5>
+                                <p class="font-xs">
+                                    <a href="{{ path('detail_categorie', {'id': favorite.produit.categorie.id }) }}" title="{{ favorite.produit.categorie.libelle }}">{{ favorite.produit.categorie.libelle }}</a>
+                                </p>
+                            </td>
+                            <td class="price" data-title="Price"><span>{{ favorite.produit.prix }} FCFA <small>(Par {{favorite.produit.unite}})</small></span></td>
+                            {# <td class="text-center" data-title="Stock">
+                                <span class="color3 font-weight-bold">Disponible</span>
+                            </td> #}
+                            <td class="text-right" data-title="Cart">
+                                {# <a aria-label="Ajouter au panier" class="action-btn hover-up addToCart {% if app.session.get('panier')[favorite.produit.id] is defined %}d-none{% endif %}" data-id="{{ favorite.produit.id }}" href="javascript:void(0);"><i class="fi-rs-shopping-bag-add"></i></a> #}
+                                <a href="{{ path('supprimer_des_favoris', {'produit': favorite.produit.id }) }}" class="btnAjoutFavoris"><i class="fi-rs-trash"></i></a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">
+                                <div class="my-3 m-auto text-center">
+                                    <img src="{{ asset("evara-frontend/assets/imgs/theme/icons/feature-6.png") }}" alt="">
+                                    <h4 class="mt-3 text-center text-muted">Aucun produit trouvé</h4>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                    {% set path = "favorites" %}
+                    {% set pages = favorites.pages %}
+                    {% set currentPage = favorites.page %}
+
+                    {% include "new_site/_partials/_pagination.html.twig" %}
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            
+            var updateTimers = [];
+            $('.qty-up, .qty-down').click(function() {
+                var $card = $(this).closest('.product-cart-wrap');
+                var $qty = $card.find('.qty-val');
+                var currentQty = parseInt($qty.text());
+                var pricePerUnit = parseFloat($card.find('span.price').text().replace(' FCFA', ''));
+
+                var montantPanier = $('#panierMontant').text().replace(' FCFA', '');
+
+                if ($(this).hasClass('qty-up')) {
+                    $qty.text(currentQty + 1);
+                    $('#panierMontant').text(parseFloat(montantPanier) + pricePerUnit + ' FCFA');
+                } else if ($(this).hasClass('qty-down') && currentQty > 1) {
+                    $qty.text(currentQty - 1);
+                    $('#panierMontant').text(parseFloat(montantPanier) - pricePerUnit + ' FCFA');
+                }
+
+                var newTotal = (parseInt($qty.text()) * pricePerUnit);
+
+                $card.find('.total-price').text(newTotal + ' FCFA');
+
+                var productId = $card.data('product_id');
+                
+                // Reset the timer if it's already set
+                clearTimeout(updateTimers[productId]);
+
+                // Set a new timer
+                updateTimers[productId] = setTimeout(function() {
+                    ajouterAuPanier(productId, $qty.text(), true);
+                }, 2000); // 2000 milliseconds = 2 seconds
+            });
+
+        })
+    </script>
+{% endblock %}

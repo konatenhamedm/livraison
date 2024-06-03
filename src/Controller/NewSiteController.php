@@ -149,10 +149,11 @@ class NewSiteController extends AbstractController
 
 
     #[Route('categorie/{id}', name: 'detail_categorie', methods: ['GET'])]
-    public function detailCategorie(Categorie $categorie)
+    public function detailCategorie(Categorie $categorie, CategorieRepository $categorieRepository)
     {
 
         return $this->render('new_site/categorie.html.twig', [
+            'categories' => $categorieRepository->findAll(),
             'categorie' => $categorie
         ]);
     }
@@ -401,7 +402,46 @@ class NewSiteController extends AbstractController
     }
 
 
-    #[Route(path: 'favoris', name: 'favorites')]
+    #[Route(path: 'mon-compte', name: 'dashboard')]
+    public function dashboardAccount(Request $request): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_auth_simple', ['redirect' => $this->generateUrl('account')]);
+        }
+
+        return $this->render('new_site/account/dashboard.html.twig', [
+            
+        ]);
+    }
+
+    #[Route(path: 'mon-compte/commandes', name: 'orders')]
+    public function indexOrders(Request $request, FavoriteRepository $favoriteRepository): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_auth_simple', ['redirect' => $this->generateUrl('orders')]);
+        }
+
+        $page = $request->query->getInt('page', 1);
+        $search = $request->query->get('search', '');
+
+        $nbrePerPage = 16;
+
+        $orders = [
+            'data' => [],
+            'pages' => 1,
+            'page' => 1,
+            'limit' => 1
+        ];
+        // $favoriteRepository->findProduitsPaginatedFavorites($page, $search, $nbrePerPage);
+
+
+        return $this->render('new_site/account/orders.html.twig', [
+            'orders' => $orders,
+            'search' => $search,
+        ]);
+    }
+
+    #[Route(path: 'mon-compte/favoris', name: 'favorites')]
     public function indexFavorites(Request $request, FavoriteRepository $favoriteRepository): Response
     {
         if (!$this->getUser()) {
@@ -416,7 +456,7 @@ class NewSiteController extends AbstractController
         $favorites = $favoriteRepository->findProduitsPaginatedFavorites($page, $search, $nbrePerPage);
 
 
-        return $this->render('new_site/favorites.html.twig', [
+        return $this->render('new_site/account/favorites.html.twig', [
             'favorites' => $favorites,
             'search' => $search,
         ]);
@@ -449,11 +489,38 @@ class NewSiteController extends AbstractController
     #[Route(path: 'favoris/supprimer/{produit}', name: 'supprimer_des_favoris')]
     public function removeFavorites(Produit $produit, FavoriteRepository $favoriteRepository, SessionInterface $session)
     {
-        //
+        if (!$this->getUser()) {
+            // return $this->redirectToRoute('app_auth_simple', ['redirect' => $this->generateUrl('ajouter_aux_favoris', ['produit' => $produit.id])]);
+            return $this->redirectToRoute('app_auth_simple');
+        }
+
+        $favorite = $favoriteRepository->findOneBy(['produit' => $produit, 'userFront' => $this->getUser()]);
+        if (!$favorite) {
+            $favorite = new Favorite();
+            $favorite->setProduit($produit);
+            $favorite->setUserFront($this->getUser());
+            $favorite->setDateFav(date_create());
+
+            $favoriteRepository->save($favorite, true);
+        } else {
+            $favoriteRepository->remove($favorite, true);
+        }
+
+        return $this->redirectToRoute('favorites');
     }
 
 
+    #[Route(path: 'mon-compte/informations-personnelles', name: 'informations')]
+    public function indexPersonnal(Request $request, FavoriteRepository $favoriteRepository): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_auth_simple', ['redirect' => $this->generateUrl('informations')]);
+        }
 
+
+        return $this->render('new_site/account/informations.html.twig', [
+        ]);
+    }
     #[Route(path: '/home', name: 'app_default')]
     public function index(Request $request): Response
     {

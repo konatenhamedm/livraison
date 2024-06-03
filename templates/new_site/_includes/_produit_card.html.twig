@@ -37,12 +37,16 @@
         <div class="produitCommande {% if app.session.get('panier')[product.id] is not defined %}d-none{% endif %}">
             <hr class="divider">
             <div class="d-flex justify-content-between">
-                <span class="total-price">{{ (app.session.get('panier')[product.id] ?? 1) * product.prix }} FCFA</span>
-                <div class="detail-qty border radius">
-                    <a href="javascript:void(0);" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
-                    <span class="qty-val px-2">{{ app.session.get('panier')[product.id] ?? 1 }}</span>
-                    <a href="javascript:void(0);" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                <button type="button" class="qty-down btn btn-sm btn-perso-danger me-2" style="border-radius:50%; background-color:#fd7e14; border-color: #fd7e14;"><i class="fi-rs-minus m-auto"></i></button>
+                <div class="detail-qty border radius text-center" style="max-width:unset">
+                    {# <a href="javascript:void(0);" class="qty-down"><i class="fi-rs-angle-small-down"></i></a> #}
+                    <span class="qty-val px-2">{{ app.session.get('panier')[product.id] ?? 1 }}</span> <br />
+                    {# <a href="javascript:void(0);" class="qty-up"><i class="fi-rs-angle-small-up"></i></a> #}
                 </div>
+                <button type="button" class="qty-up btn btn-sm btn-success ms-2" style="border-radius:50%; background-color:#0d6efd; border-color: #0d6efd;"><i class="fi-rs-plus m-auto"></i></button>
+            </div>
+            <div class="text-center">
+                <small><span class="total-price">({{ (app.session.get('panier')[product.id] ?? 1) * product.prix }} FCFA)</span></small>
             </div>
         </div>    
     </div>

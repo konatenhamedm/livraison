@@ -24,15 +24,26 @@
                 <div class="col-xl-3 col-lg-4">
                     <div class="header-info header-info-right">
                         <ul>
-                            {# <li>
-                                <a class="language-dropdown-active" href="#"> <i class="fi-rs-world"></i> English <i class="fi-rs-angle-small-down"></i></a>
-                                <ul class="language-dropdown">
-                                    <li><a href="#"><img src="{{ asset('evara-frontend/assets/imgs/theme/flag-fr.png') }}" alt="">Français</a></li>
-                                    <li><a href="#"><img src="{{ asset('evara-frontend/assets/imgs/theme/flag-dt.png') }}" alt="">Deutsch</a></li>
-                                    <li><a href="#"><img src="{{ asset('evara-frontend/assets/imgs/theme/flag-ru.png') }}" alt="">Pусский</a></li>
-                                </ul>
-                            </li> #}
                             <li>
+                            
+                                {% if app.user %}
+                                    {# <a href="javascript:void(0);">{{ app.user.username }} <i class="fi-rs-angle-down"></i></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{{ path('dashboard') }}">Mon compte</a></li>
+                                        <li><a href="{{ path('app_auth_simple') }}">Déconnexion</a></li>
+                                    </ul> #}
+
+                                    <a class="language-dropdown-active" href="#"> <i class="fi-rs-user"></i> {{ app.user.username }} <i class="fi-rs-angle-small-down"></i></a>
+                                    <ul class="language-dropdown">
+                                        <li><a href="{{ path('dashboard') }}">Mon compte</a></li>
+                                        <li><a href="{{ path('app_auth_simple') }}">Déconnexion</a></li>
+                                    </ul>
+                                {% else %}
+                                   <a href="{{ path('app_auth_simple') }}">Connexion / Inscription</a>
+                                    
+                                {% endif %}
+                            </li>
+                            {# <li>
                                 <i class="fi-rs-user"></i>
                                 
                                 {% if app.user %}
@@ -41,7 +52,7 @@
                                    <a href="{{ path('app_auth_simple') }}">Connexion / Inscription</a>
                                     
                                 {% endif %}
-                            </li>
+                            </li> #}
                         </ul>
                     </div>
                 </div>
@@ -293,13 +304,15 @@
                         {# Wishlist icon #}
                         <div class="header-action-icon-2">
                             <a href="{{ path('favorites') }}">
-                                <img class="svgInject" alt="favorites" src="{{ asset('evara-frontend/assets/imgs/theme/icons/icon-heart.svg') }}">
+                                {# <img class="svgInject" alt="favorites" src="{{ asset('evara-frontend/assets/imgs/theme/icons/icon-heart.svg') }}"> #}
+                                <img class="svgInject" alt="favorites" src="{{ asset('images/red heart.png') }}">
                                 {# <span class="pro-count blue">4</span> #}
                             </a>
                         </div>
                         <div class="header-action-icon-2">
                             <a class="mini-cart-icon" href="{{ path('panier') }}">
-                                <img alt="cart" src="{{ asset('evara-frontend/assets/imgs/theme/icons/icon-cart.svg') }}">
+                                {# <img alt="cart" src="{{ asset('evara-frontend/assets/imgs/theme/icons/icon-cart.svg') }}"> #}
+                                <img alt="cart" src="{{ asset('images/shopping bag.png') }}">
                                 <span id="panierNbre" class="pro-count blue {{ app.session.get('panier')|length == 0 ? 'd-none' : '' }}">{{ app.session.get('panier')|length }}</span>
                             </a>
                             {# <div class="cart-dropdown-wrap cart-dropdown-hm2">
