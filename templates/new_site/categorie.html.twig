@@ -214,6 +214,43 @@
 
 {% block scripts %}
     <script>
-        
+        $(document).ready(function () {
+            
+            var updateTimers = [];
+            $('.qty-up, .qty-down').click(function() {
+                var $card = $(this).closest('.product-cart-wrap');
+                var productId = $card.data('product_id');
+
+                var $qty = $card.find('.qty-val');
+                var currentQty = parseInt($qty.text());
+                var pricePerUnit = parseFloat($card.find('span.price').text().replace(' FCFA', ''));
+
+                var montantPanier = $('#panierMontant').text().replace(' FCFA', '');
+
+                if ($(this).hasClass('qty-up')) {
+                    $qty.text(currentQty + 1);
+                    $('#panierMontant').text(parseFloat(montantPanier) + pricePerUnit + ' FCFA');
+                } else if ($(this).hasClass('qty-down') && currentQty > 1) {
+                    $qty.text(currentQty - 1);
+                    $('#panierMontant').text(parseFloat(montantPanier) - pricePerUnit + ' FCFA');
+                }
+
+                var newTotal = (parseInt($qty.text()) * pricePerUnit);
+
+                var cards = $('.product-cart-wrap[data-product_id="'+productId+'"]')
+                cards.find('.total-price').text(newTotal + ' FCFA');
+                cards.find('.qty-val').text($qty.text());
+                
+                // Reset the timer if it's already set
+                clearTimeout(updateTimers[productId]);
+
+                // Set a new timer
+                updateTimers[productId] = setTimeout(function() {
+                    ajouterAuPanier(productId, $qty.text(), true);
+                }, 2000); // 2000 milliseconds = 2 seconds
+            });
+
+
+        })
     </script>
 {% endblock %}
